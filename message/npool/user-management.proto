@@ -1,0 +1,483 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "github.com/NpoolPlatform/user-management/message/npool";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+// a service of managing users
+service User {
+    // Method Version
+    rpc Version (google.protobuf.Empty) returns (VersionResponse){
+        option (google.api.http) = {
+            post: "/version"
+            body: "*"
+        };
+    }
+    /*
+    User can choose signup with username, email, phone or only emial or only phone.
+    */
+    rpc SignUp (SignupRequest) returns (SignupResponse) {
+        option (google.api.http) = {
+            post: "/v1/signup"
+            body: "*"
+        };
+    };
+    /*
+    Set user password.
+    */
+    rpc SetPassword (SetPasswordRequest) returns (SetPasswordResponse) {
+        option (google.api.http) = {
+            post: "/v1/set/password"
+            body: "*"
+        };
+    };
+    /*
+    Get a user's info by his(her) id, this api can be request by user self of admin.
+    */
+    rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/user"
+            body: "*"
+        };
+    };
+    /*
+    Update user's basic info.
+    */
+    rpc UpdateUserInfo (UpdateUserInfoRequest) returns (UpdateUserInfoResponse) {
+        option (google.api.http) = {
+            post: "/v1/update/user"
+            body: "*"
+        };
+    };
+    /*
+    Bind user's phone number.
+    Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input.
+    Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
+    */
+    rpc BindUserPhone (BindUserPhoneRequest) returns (BindUserPhoneResponse) {
+        option (google.api.http) = {
+            post: "/v1/bind/phone"
+            body: "*"
+        };
+    };
+    /*
+    Bind user's email address.
+    Before bind a email address to user, it needs to send email verify code and confirm the verify code user input.
+    Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
+    */
+    rpc BindUserEmail (BindUserEmailRequest) returns (BindUserEmailResponse) {
+        option (google.api.http) = {
+            post: "/v1/bind/email"
+            body: "*"
+        };
+    };
+    /*
+    Unbind user's phone number.
+    Before unbind user's phone number, it needs to send phone verify code and confirm the verify code user input.
+    Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
+    */
+    rpc UnbindUserPhone (UnbindUserPhoneRequest) returns (UnbindUserPhoneResponse) {
+        option (google.api.http) = {
+            post: "/v1/unbind/phone"
+            body: "*"
+        };
+    };
+    /*
+    Unbind user's email address.
+    Before unbind user's email address, it needs to send email verify code and confirm the verify code user input.
+    Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
+    */
+    rpc UnbindUserEmail (UnbindUserEmailRequest) returns (UnbindUserEmailResponse) {
+        option (google.api.http) = {
+            post: "/v1/unbind/email"
+            body: "*"
+        };
+    };
+    /*
+    Link to a third-party oauth. save the UserId from third-party into mysql.
+    During Linking, user need to authenticate in third-party and use login-oauth api to get access_token and then get user info from third-party(provider).
+    need api: https://login.npool.top/v1/login/oauth
+    */
+    rpc BindThirdParty (BindThirdPartyRequest) returns (BindThirdPartyResponse) {
+        option (google.api.http) = {
+            post: "/v1/band/thirdparty"
+            body: "*"
+        };
+    };
+    /*
+    Unlink a third-party oauth. Delete the UserId we saved from mysql.
+    */
+    rpc UnbindThirdParty (UnbindThirdPartyRequest) returns (UnbindThirdPartyResponse) {
+        option (google.api.http) = {
+            post: "/v1/unbind/thirdparty"
+            body: "*"
+        };
+    };
+    /*
+    Change user's password. Before change users password, system need the user to do an authentication.
+    */
+    rpc ChangeUserPassword (ChangeUserPasswordRequest) returns (ChangeUserPasswordResponse) {
+        option (google.api.http) = {
+            post: "/v1/change/password"
+            body: "*"
+        };
+    };
+    /*
+    Forget password. 
+    If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password.
+    */
+    rpc ForgetPassword (ForgetPasswordRequest) returns (ForgetPasswordResponse) {
+        option (google.api.http) = {
+            post: "/v1/forget/password"
+            body: "*"
+        };
+    };
+    /*
+    Add user.
+    */
+    rpc AddUser (AddUserRequest) returns (AddUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/add/user"
+            body: "*"
+        };
+    };
+    /*
+    Delete users. 
+    This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
+    */
+    rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/delete/users"
+            body: "*"
+        };
+    };
+    /*
+    Logout user.
+    Permanently delete user personal account, user will not be able to log in after deletion. And service will not only delete basic user info, but also use other apis to delete connections among other service.
+    */
+    rpc LogoutUser (LogoutUserRequest) returns (LogoutUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/logout/user"
+            body: "*"
+        };
+    };
+    /*
+    Frozen user.
+    */
+    rpc FrozenUser (FrozenUserRequest) returns (FrozenUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/frozen/user"
+            body: "*"
+        };
+    };
+    /*
+    Unfrozen user.
+    */
+    rpc UnfrozenUser (UnfrozenUserRequest) returns (UnfrozenUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/unfrozen/user"
+            body: "*"
+        };
+    };
+    /*
+    Get frozen user list.
+    */
+    rpc GetFrozenUsers (google.protobuf.Empty) returns (GetFrozenUsersResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/frozen/user"
+            body: "*"
+        };
+    };
+    /*
+    Get user providers info.
+    */
+    rpc GetUserProviders (GetUserProvidersRequest) returns (GetUserProvidersResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/user/providers"
+            body: "*"
+        };
+    };
+
+}
+
+// request body and response
+message VersionResponse {
+    string Info = 100;
+}
+
+
+message SignupRequest {
+    // optional
+    string Username = 1;
+    string Password = 2;
+    // optional
+    string EmailAddress = 4;
+    // optional
+    string EmailVerifyCode = 5;
+    // optional
+    string PhoneNumber = 6;
+    // optional
+    string PhoneVerifyCode = 7;
+    string AppId = 8;
+}
+
+message SignupResponse {
+    string Info = 1;
+}
+
+message SetPasswordRequest {
+    string UserId = 1;
+    string Password = 2;
+}
+
+message SetPasswordResponse {
+    string Info = 1;
+}
+
+message GetUserRequest {
+    // UserId is who is queried.
+    string UserId = 1;
+}
+
+message UserBasicInfo {
+    string UserId = 1;
+    string Username = 2;
+    string Password = 15;
+    string Avatar = 3;
+    int32 Age = 4;
+    string Gender = 5;
+    string Region = 6;
+    string Birthday = 7;
+    string Country = 8;
+    string Province = 9;
+    string City = 10;
+    string PhoneNumber = 11;
+    string EmailAddress = 12;
+    int32 CreateAt = 13;
+    int32 UpdateAt = 14;
+    int32 LoginTimes = 19;
+    bool KycVerify = 16;
+    bool GaVerify = 17;
+    string SignupMethod = 18;
+    string Career = 20;
+    string DisplayName = 21;
+}
+
+message GetUserResponse {
+    UserBasicInfo UserInfo = 1;
+}
+
+message UpdateUserInfoRequest {
+    UserBasicInfo UserInfo = 1;
+}
+
+message UpdateUserInfoResponse {
+    UserBasicInfo UserInfo = 1;
+}
+
+message BindUserPhoneRequest {
+    string UserId = 1;
+    string PhoneNumber = 2;
+    string PhoneVerifyCode = 3;
+}
+
+message BindUserPhoneResponse {
+    string Info = 1;
+}
+
+message BindUserEmailRequest {
+    string UserId = 1;
+    string EmailAddress = 2;
+    string EmailVerifyCode = 3;
+}
+
+message BindUserEmailResponse {
+    string Info = 1;
+}
+
+message UnbindUserPhoneRequest {
+    string UserId = 1;
+    string PhoneNumber = 2;
+    string PhoneVerifyCode = 3;
+}
+
+message UnbindUserPhoneResponse {
+    string Info = 1;
+}
+
+message UnbindUserEmailRequest {
+    string UserId = 1;
+    string EmailAddress = 2;
+    string EmailVerifyCode = 3;
+}
+
+message UnbindUserEmailResponse {
+    string Info = 1;
+}
+
+message UserProvider {
+    string ID = 1;
+    string UserId = 2;
+    string ProviderId = 3;
+    string ProviderUserId = 4;
+    string UserProviderInfo = 5;
+    int32 CreateAt = 6;
+    int32 UpdateAt = 7;
+}
+
+message BindThirdPartyRequest {
+    string UserId = 1;
+    string AppId = 2;
+    // third party(provider)'s id
+    string ProviderId = 3;
+    // UserId in third party(provider)
+    string ProviderUserId = 4;
+    string UserProviderInfo = 5;
+}
+
+message BindThirdPartyResponse {
+    UserProvider UserProviderInfo = 1;
+}
+
+message UnbindThirdPartyRequest {
+    string UserId = 1;
+    string AppId = 2;
+    string ProviderId = 3;
+}
+
+message UnbindThirdPartyResponse {
+    UserProvider UserProviderInfo = 1;
+}
+
+message ChangeUserPasswordRequest {
+    string UserId = 1;
+    string AppId = 2;
+    string OldPassword = 3;
+    string Password = 4;
+}
+
+message ChangeUserPasswordResponse {
+    string Info = 1;
+}
+
+message CertificateKycRequest {
+    string UserId = 1;
+    string AppId = 2;
+    string FirstName = 3;
+    string LastName = 4;
+    string FrontCardImg = 5;
+    string BackCardImg = 6;
+    string UserCardImg = 7;
+    string CardType = 8;
+    string CardId = 9;
+    string Region = 10;
+}
+
+message CertificateKycResponse {
+    string Info = 1;
+}
+
+message GetGaQRCodeRequest {
+    string UserId = 1;
+}
+
+message GetGaQRCodeResponse {
+    string GaQRCode = 1;
+}
+
+message VerifyGaRequest {
+    string UserId = 1;
+    string GaCode = 2;
+}
+
+message VerifyGaResponse {
+    string Info = 1;
+}
+
+message ForgetPasswordRequest {
+    // Optional
+    string PhoneNumber = 1;
+    // Optional
+    string PhoneVerifyCode = 2;
+    // Optional
+    string EmailAddress = 3;
+    // Optional
+    string EmailVerifyCode = 4;
+    string Password = 5;
+}
+
+message ForgetPasswordResponse {
+    string Info = 1;
+}
+
+message DeleteUserRequest {
+    // an array of UserId who are being deleted.
+    repeated string DeleteUserIds = 1;
+}
+
+message DeleteUserResponse {
+    string Info = 1;
+}
+
+message LogoutUserRequest {
+    string UserId = 1;
+}
+
+message LogoutUserResponse {
+    string Info = 1;
+}
+
+message AddUserRequest {
+    string AppId = 1;
+    UserBasicInfo UserInfo = 2;
+}
+
+message AddUserResponse {
+    UserBasicInfo UserInfo = 1;
+}
+
+message FrozenUser {
+    string Id = 1;
+    string UserId = 2;
+    string FrozenBy = 3;
+    string FrozenCause = 4;
+    int32 StartAt = 5;
+    int32 EndAt = 6;
+    string Status = 7;
+    string UnfrozenBy = 8;
+}
+
+message FrozenUserRequest {
+    string UserId = 1;
+    string FrozenBy = 2;
+    string FrozenCause =3;
+}
+
+message FrozenUserResponse {
+    FrozenUser FrozenUserInfo = 1;
+}
+
+message UnfrozenUserRequest {
+    string Id = 1;
+    string UserId = 2;
+    string UnfrozenBy = 3;
+}
+
+message UnfrozenUserResponse {
+    FrozenUser UnFrozenUserInfo = 1;
+}
+
+message GetFrozenUsersResponse {
+    repeated FrozenUser FrozenUsers = 1;
+}
+
+message GetUserProvidersRequest {
+    string UserId = 1;
+}
+
+message GetUserProvidersResponse {
+    repeated UserProvider UserProviders = 1;
+}

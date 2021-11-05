@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-management
+  namespace: kube-system
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-management
+  template:
+    metadata:
+      labels:
+        app: user-management
+    spec:
+      containers:
+      - name: user-management
+        image: entropypool/user-management:latest
+        imagePullPolicy: Always
+        env:
+        - name: ENV_ENVIRONMENT_TARGET
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.target
+        - name: ENV_CONSUL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.consul_host
+        - name: ENV_CONSUL_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: system-environment
+              key: environment.consul_port
+        - name: ENV_CLUSTER_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-management
+  namespace: kube-system
+spec:
+  ports:
+  - name: api
+    port: 8080

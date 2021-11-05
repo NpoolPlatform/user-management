@@ -1,0 +1,5 @@
+/output
+/bin
+tmp
+*.json
+*.log

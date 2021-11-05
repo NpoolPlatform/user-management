@@ -1,0 +1,39 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: user-management-npool-top-ingress
+  namespace: kube-system
+  annotations:
+    k8s.kuboard.cn/displayName: user-management
+    k8s.kuboard.cn/workload: user-management
+    kubernetes.io/ingress.class: "traefik-internet"
+spec:
+  rules:
+  - host: api.npool.top
+    http:
+      paths:
+      - path: /user-management
+        backend:
+          serviceName: user-management
+          servicePort: http
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: user-management-xpool-top-ingress
+  namespace: kube-system
+  annotations:
+    k8s.kuboard.cn/displayName: user-management
+    k8s.kuboard.cn/workload: user-management
+    kubernetes.io/ingress.class: "traefik-internet"
+spec:
+  rules:
+  - host: api.xpool.top
+    http:
+      paths:
+      - path: /user-management
+        backend:
+          serviceName: user-management
+          servicePort: http

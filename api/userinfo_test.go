@@ -40,9 +40,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			EmailAddress: signupUserInfo.EmailAddress,
 		}).
 		Post("http://localhost:32759/v1/signup")
-	fmt.Println("sign up error", err)
 	if assert.Nil(t, err) {
-		fmt.Println("resp1 is", resp1)
 		assert.Equal(t, 200, resp1.StatusCode())
 		info := npool.SignupResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)

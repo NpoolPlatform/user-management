@@ -103,7 +103,7 @@ service User {
     */
     rpc BindThirdParty (BindThirdPartyRequest) returns (BindThirdPartyResponse) {
         option (google.api.http) = {
-            post: "/v1/band/thirdparty"
+            post: "/v1/bind/thirdparty"
             body: "*"
         };
     };

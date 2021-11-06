@@ -48,6 +48,16 @@ func TestFrozenInfoCRUD(t *testing.T) {
 		frozenInfo.Id = resp.FrozenUserInfo.Id
 	}
 
+	// create a frozen user request which is still in frozen.
+	_, err = Create(context.Background(), &npool.FrozenUserRequest{
+		UserId:      frozenInfo.UserId,
+		FrozenBy:    frozenInfo.FrozenBy,
+		FrozenCause: frozenInfo.FrozenCause,
+	})
+	if assert.NotNil(t, err) {
+		fmt.Println(err)
+	}
+
 	// unfrozen user.
 	frozenInfo.UnfrozenBy = uuid.New().String()
 	frozenInfo.Id = resp.FrozenUserInfo.Id

@@ -897,7 +897,7 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/BindThirdParty", runtime.WithHTTPPathPattern("/v1/band/thirdparty"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/BindThirdParty", runtime.WithHTTPPathPattern("/v1/bind/thirdparty"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1346,7 +1346,7 @@ func RegisterUserHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/BindThirdParty", runtime.WithHTTPPathPattern("/v1/band/thirdparty"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/BindThirdParty", runtime.WithHTTPPathPattern("/v1/bind/thirdparty"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1564,7 +1564,7 @@ var (
 
 	pattern_User_UnbindUserEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "unbind", "email"}, ""))
 
-	pattern_User_BindThirdParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "band", "thirdparty"}, ""))
+	pattern_User_BindThirdParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "bind", "thirdparty"}, ""))
 
 	pattern_User_UnbindThirdParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "unbind", "thirdparty"}, ""))
 

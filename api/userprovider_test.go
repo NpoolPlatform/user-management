@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFrozenUserAPI(t *testing.T) {
+func TestUserProviderAPI(t *testing.T) {
 	if runByGithubAction, err := strconv.ParseBool(os.Getenv("RUN_BY_GITHUB_ACTION")); err == nil && runByGithubAction {
 		return
 	}
@@ -21,7 +21,7 @@ func TestFrozenUserAPI(t *testing.T) {
 	cli := resty.New()
 
 	createUser := npool.UserBasicInfo{
-		Username:     "test-frozen" + uuid.New().String(),
+		Username:     "test-provider" + uuid.New().String(),
 		Password:     "123456789",
 		EmailAddress: uuid.New().String() + ".com",
 	}
@@ -35,6 +35,7 @@ func TestFrozenUserAPI(t *testing.T) {
 		Post("http://localhost:32759/v1/signup")
 	fmt.Println("sign up error", err)
 	if assert.Nil(t, err) {
+		fmt.Println("resp1 is", resp1)
 		assert.Equal(t, 200, resp1.StatusCode())
 		info := npool.SignupResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
@@ -45,61 +46,58 @@ func TestFrozenUserAPI(t *testing.T) {
 		}
 	}
 
-	frozenUserInfo := npool.FrozenUser{
-		UserId:      createUser.UserId,
-		FrozenBy:    uuid.New().String(),
-		FrozenCause: "user has done some illegal operations",
+	userProvider := npool.UserProvider{
+		UserId:         createUser.UserId,
+		ProviderId:     uuid.New().String(),
+		ProviderUserId: uuid.New().String(),
 	}
 
 	resp2, err := cli.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.FrozenUserRequest{
-			UserId:      frozenUserInfo.UserId,
-			FrozenBy:    frozenUserInfo.FrozenBy,
-			FrozenCause: frozenUserInfo.FrozenCause,
-		}).
-		Post("http://localhost:32759/v1/frozen/user")
+		SetBody(&npool.BindThirdPartyRequest{
+			UserId:         userProvider.UserId,
+			ProviderId:     userProvider.ProviderId,
+			ProviderUserId: userProvider.ProviderUserId,
+		}).Post("http://localhost:32759/v1/bind/thirdparty")
 	if assert.Nil(t, err) {
 		fmt.Println("resp2 is", resp2)
 		assert.Equal(t, 200, resp2.StatusCode())
-		info := npool.FrozenUserResponse{}
+		info := npool.BindThirdPartyResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.FrozenUserInfo.Id, uuid.UUID{})
-			assert.Equal(t, info.FrozenUserInfo.UserId, frozenUserInfo.UserId)
-			assert.Equal(t, info.FrozenUserInfo.FrozenBy, frozenUserInfo.FrozenBy)
-			assert.Equal(t, info.FrozenUserInfo.FrozenCause, frozenUserInfo.FrozenCause)
-			frozenUserInfo.Id = info.FrozenUserInfo.Id
+			assert.NotEqual(t, info.UserProviderInfo.ID, uuid.UUID{})
+			assert.Equal(t, info.UserProviderInfo.UserId, userProvider.UserId)
+			assert.Equal(t, info.UserProviderInfo.ProviderId, userProvider.ProviderId)
+			assert.Equal(t, info.UserProviderInfo.ProviderUserId, userProvider.ProviderUserId)
+			userProvider.ID = info.UserProviderInfo.ID
 		}
 	}
 
 	resp3, err := cli.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.UnfrozenUserRequest{
-			Id:         frozenUserInfo.Id,
-			UserId:     frozenUserInfo.UserId,
-			UnfrozenBy: frozenUserInfo.FrozenBy,
-		}).
-		Post("http://localhost:32759/v1/unfrozen/user")
+		SetBody(&npool.GetUserProvidersRequest{
+			UserId: userProvider.UserId,
+		}).Post("http://localhost:32759/v1/get/user/providers")
 	if assert.Nil(t, err) {
-		fmt.Println("resp3 is", resp3)
 		assert.Equal(t, 200, resp3.StatusCode())
-		info := npool.UnfrozenUserResponse{}
-		err := json.Unmarshal(resp3.Body(), &info)
-		if assert.Nil(t, err) {
-			assert.Equal(t, info.UnFrozenUserInfo.Id, frozenUserInfo.Id)
-			assert.Equal(t, info.UnFrozenUserInfo.UserId, frozenUserInfo.UserId)
-			assert.Equal(t, info.UnFrozenUserInfo.FrozenBy, frozenUserInfo.FrozenBy)
-			assert.Equal(t, info.UnFrozenUserInfo.FrozenCause, frozenUserInfo.FrozenCause)
-			assert.Equal(t, info.UnFrozenUserInfo.UnfrozenBy, frozenUserInfo.FrozenBy)
-		}
+		fmt.Printf("get user providers list resp is: %v", resp3)
 	}
 
 	resp4, err := cli.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.GetFrozenUsersRequest{}).
-		Post("http://localhost:32759/v1/get/frozen/user")
+		SetBody(&npool.UnbindThirdPartyRequest{
+			UserId:     userProvider.UserId,
+			ProviderId: userProvider.ProviderId,
+		}).Post("http://localhost:32759/v1/unbind/thirdparty")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp4.StatusCode())
+		info := npool.UnbindThirdPartyResponse{}
+		err := json.Unmarshal(resp4.Body(), &info)
+		if assert.Nil(t, err) {
+			assert.NotEqual(t, info.UserProviderInfo.ID, uuid.UUID{})
+			assert.Equal(t, info.UserProviderInfo.UserId, userProvider.UserId)
+			assert.Equal(t, info.UserProviderInfo.ProviderId, userProvider.ProviderId)
+			fmt.Printf("provider user id is: %v\n", info.UserProviderInfo.ProviderUserId)
+		}
 	}
 }

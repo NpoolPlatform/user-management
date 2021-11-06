@@ -45,7 +45,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 		UserProvider.
 		Query().
 		Where(
-			userprovider.Or(
+			userprovider.And(
 				userprovider.UserID(userID),
 				userprovider.ProviderID(providerID),
 				userprovider.DeleteAt(0),
@@ -84,7 +84,7 @@ func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUser
 		UserProvider.
 		Query().
 		Where(
-			userprovider.Or(
+			userprovider.And(
 				userprovider.UserID(userID),
 				userprovider.DeleteAt(0),
 			),
@@ -113,7 +113,7 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
 
-	id, err := QueryUserProviderIDByUserIDAndProviderID(ctx, userID, providerID)
+	id, providerUserID, err := QueryUserProviderIDByUserIDAndProviderID(ctx, userID, providerID)
 	if err != nil {
 		return nil, err
 	}
@@ -121,6 +121,7 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 	info, err := db.Client().
 		UserProvider.
 		UpdateOneID(id).
+		SetProviderUserID("deleted" + providerUserID + time.Now().String()).
 		SetDeleteAt(time.Now().UnixNano()).
 		Save(ctx)
 	if err != nil {
@@ -132,21 +133,21 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 	}, nil
 }
 
-func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, providerID uuid.UUID) (uuid.UUID, error) {
+func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, providerID uuid.UUID) (uuid.UUID, string, error) {
 	info, err := db.Client().
 		UserProvider.
 		Query().
 		Where(
-			userprovider.Or(
+			userprovider.And(
 				userprovider.UserID(userID),
 				userprovider.ProviderID(providerID),
 			),
 		).All(ctx)
 	if err != nil {
-		return uuid.UUID{}, xerrors.Errorf("fail to get user provider info: %v", err)
+		return uuid.UUID{}, "", xerrors.Errorf("fail to get user provider info: %v", err)
 	}
 	if len(info) == 0 {
-		return uuid.UUID{}, xerrors.Errorf("empty user provider")
+		return uuid.UUID{}, "", xerrors.Errorf("empty user provider")
 	}
-	return info[0].ID, nil
+	return info[0].ID, info[0].ProviderUserID, nil
 }

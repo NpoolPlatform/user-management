@@ -23,6 +23,7 @@
     - [FrozenUser](#user.v1.FrozenUser)
     - [FrozenUserRequest](#user.v1.FrozenUserRequest)
     - [FrozenUserResponse](#user.v1.FrozenUserResponse)
+    - [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest)
     - [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse)
     - [GetGaQRCodeRequest](#user.v1.GetGaQRCodeRequest)
     - [GetGaQRCodeResponse](#user.v1.GetGaQRCodeResponse)
@@ -30,10 +31,9 @@
     - [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse)
     - [GetUserRequest](#user.v1.GetUserRequest)
     - [GetUserResponse](#user.v1.GetUserResponse)
-    - [LogoutUserRequest](#user.v1.LogoutUserRequest)
-    - [LogoutUserResponse](#user.v1.LogoutUserResponse)
-    - [SetPasswordRequest](#user.v1.SetPasswordRequest)
-    - [SetPasswordResponse](#user.v1.SetPasswordResponse)
+    - [GetUsersRequest](#user.v1.GetUsersRequest)
+    - [GetUsersResponse](#user.v1.GetUsersResponse)
+    - [PageInfo](#user.v1.PageInfo)
     - [SignupRequest](#user.v1.SignupRequest)
     - [SignupResponse](#user.v1.SignupResponse)
     - [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest)
@@ -140,7 +140,6 @@
 | ----- | ---- | ----- | ----------- |
 | UserId | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  |  |
-| EmailVerifyCode | [string](#string) |  |  |
 
 
 
@@ -172,7 +171,6 @@
 | ----- | ---- | ----- | ----------- |
 | UserId | [string](#string) |  |  |
 | PhoneNumber | [string](#string) |  |  |
-| PhoneVerifyCode | [string](#string) |  |  |
 
 
 
@@ -305,9 +303,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | PhoneNumber | [string](#string) |  | Optional |
-| PhoneVerifyCode | [string](#string) |  | Optional |
 | EmailAddress | [string](#string) |  | Optional |
-| EmailVerifyCode | [string](#string) |  | Optional |
 | Password | [string](#string) |  |  |
 
 
@@ -378,6 +374,21 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | FrozenUserInfo | [FrozenUser](#user.v1.FrozenUser) |  |  |
+
+
+
+
+
+
+<a name="user.v1.GetFrozenUsersRequest"></a>
+
+### GetFrozenUsersRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| PageInfo | [PageInfo](#user.v1.PageInfo) |  |  |
 
 
 
@@ -489,61 +500,46 @@
 
 
 
-<a name="user.v1.LogoutUserRequest"></a>
+<a name="user.v1.GetUsersRequest"></a>
 
-### LogoutUserRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.LogoutUserResponse"></a>
-
-### LogoutUserResponse
+### GetUsersRequest
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
+| PageInfo | [PageInfo](#user.v1.PageInfo) |  |  |
 
 
 
 
 
 
-<a name="user.v1.SetPasswordRequest"></a>
+<a name="user.v1.GetUsersResponse"></a>
 
-### SetPasswordRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| Password | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.SetPasswordResponse"></a>
-
-### SetPasswordResponse
+### GetUsersResponse
 
 
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
+| UserInfos | [UserBasicInfo](#user.v1.UserBasicInfo) | repeated |  |
+
+
+
+
+
+
+<a name="user.v1.PageInfo"></a>
+
+### PageInfo
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| PageIndex | [int32](#int32) |  |  |
+| PageSize | [int32](#int32) |  |  |
 
 
 
@@ -561,9 +557,7 @@
 | Username | [string](#string) |  | optional |
 | Password | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  | optional |
-| EmailVerifyCode | [string](#string) |  | optional |
 | PhoneNumber | [string](#string) |  | optional |
-| PhoneVerifyCode | [string](#string) |  | optional |
 | AppId | [string](#string) |  |  |
 
 
@@ -579,7 +573,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
+| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -627,8 +621,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | UserId | [string](#string) |  |  |
-| EmailAddress | [string](#string) |  |  |
-| EmailVerifyCode | [string](#string) |  |  |
 
 
 
@@ -659,8 +651,6 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | UserId | [string](#string) |  |  |
-| PhoneNumber | [string](#string) |  |  |
-| PhoneVerifyCode | [string](#string) |  |  |
 
 
 
@@ -861,8 +851,8 @@ a service of managing users
 | ----------- | ------------ | ------------- | ------------|
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#user.v1.VersionResponse) | Method Version |
 | SignUp | [SignupRequest](#user.v1.SignupRequest) | [SignupResponse](#user.v1.SignupResponse) | User can choose signup with username, email, phone or only emial or only phone. |
-| SetPassword | [SetPasswordRequest](#user.v1.SetPasswordRequest) | [SetPasswordResponse](#user.v1.SetPasswordResponse) | Set user password. |
 | GetUser | [GetUserRequest](#user.v1.GetUserRequest) | [GetUserResponse](#user.v1.GetUserResponse) | Get a user&#39;s info by his(her) id, this api can be request by user self of admin. |
+| GetUsers | [GetUsersRequest](#user.v1.GetUsersRequest) | [GetUsersResponse](#user.v1.GetUsersResponse) | Get all users. |
 | UpdateUserInfo | [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest) | [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse) | Update user&#39;s basic info. |
 | BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code |
 | BindUserEmail | [BindUserEmailRequest](#user.v1.BindUserEmailRequest) | [BindUserEmailResponse](#user.v1.BindUserEmailResponse) | Bind user&#39;s email address. Before bind a email address to user, it needs to send email verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code |
@@ -874,10 +864,9 @@ a service of managing users
 | ForgetPassword | [ForgetPasswordRequest](#user.v1.ForgetPasswordRequest) | [ForgetPasswordResponse](#user.v1.ForgetPasswordResponse) | Forget password. If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password. |
 | AddUser | [AddUserRequest](#user.v1.AddUserRequest) | [AddUserResponse](#user.v1.AddUserResponse) | Add user. |
 | DeleteUser | [DeleteUserRequest](#user.v1.DeleteUserRequest) | [DeleteUserResponse](#user.v1.DeleteUserResponse) | Delete users. This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service. |
-| LogoutUser | [LogoutUserRequest](#user.v1.LogoutUserRequest) | [LogoutUserResponse](#user.v1.LogoutUserResponse) | Logout user. Permanently delete user personal account, user will not be able to log in after deletion. And service will not only delete basic user info, but also use other apis to delete connections among other service. |
 | FrozenUser | [FrozenUserRequest](#user.v1.FrozenUserRequest) | [FrozenUserResponse](#user.v1.FrozenUserResponse) | Frozen user. |
 | UnfrozenUser | [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest) | [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse) | Unfrozen user. |
-| GetFrozenUsers | [.google.protobuf.Empty](#google.protobuf.Empty) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
+| GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
 | GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
 
  

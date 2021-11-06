@@ -25,11 +25,11 @@ type UserClient interface {
 	//User can choose signup with username, email, phone or only emial or only phone.
 	SignUp(ctx context.Context, in *SignupRequest, opts ...grpc.CallOption) (*SignupResponse, error)
 	//
-	//Set user password.
-	SetPassword(ctx context.Context, in *SetPasswordRequest, opts ...grpc.CallOption) (*SetPasswordResponse, error)
-	//
 	//Get a user's info by his(her) id, this api can be request by user self of admin.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	//
+	//Get all users.
+	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
 	//
 	//Update user's basic info.
 	UpdateUserInfo(ctx context.Context, in *UpdateUserInfoRequest, opts ...grpc.CallOption) (*UpdateUserInfoResponse, error)
@@ -76,10 +76,6 @@ type UserClient interface {
 	//This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	//
-	//Logout user.
-	//Permanently delete user personal account, user will not be able to log in after deletion. And service will not only delete basic user info, but also use other apis to delete connections among other service.
-	LogoutUser(ctx context.Context, in *LogoutUserRequest, opts ...grpc.CallOption) (*LogoutUserResponse, error)
-	//
 	//Frozen user.
 	FrozenUser(ctx context.Context, in *FrozenUserRequest, opts ...grpc.CallOption) (*FrozenUserResponse, error)
 	//
@@ -87,7 +83,7 @@ type UserClient interface {
 	UnfrozenUser(ctx context.Context, in *UnfrozenUserRequest, opts ...grpc.CallOption) (*UnfrozenUserResponse, error)
 	//
 	//Get frozen user list.
-	GetFrozenUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error)
+	GetFrozenUsers(ctx context.Context, in *GetFrozenUsersRequest, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error)
 	//
 	//Get user providers info.
 	GetUserProviders(ctx context.Context, in *GetUserProvidersRequest, opts ...grpc.CallOption) (*GetUserProvidersResponse, error)
@@ -119,18 +115,18 @@ func (c *userClient) SignUp(ctx context.Context, in *SignupRequest, opts ...grpc
 	return out, nil
 }
 
-func (c *userClient) SetPassword(ctx context.Context, in *SetPasswordRequest, opts ...grpc.CallOption) (*SetPasswordResponse, error) {
-	out := new(SetPasswordResponse)
-	err := c.cc.Invoke(ctx, "/user.v1.User/SetPassword", in, out, opts...)
+func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
+	out := new(GetUserResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/GetUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
-	out := new(GetUserResponse)
-	err := c.cc.Invoke(ctx, "/user.v1.User/GetUser", in, out, opts...)
+func (c *userClient) GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error) {
+	out := new(GetUsersResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/GetUsers", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -236,15 +232,6 @@ func (c *userClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts
 	return out, nil
 }
 
-func (c *userClient) LogoutUser(ctx context.Context, in *LogoutUserRequest, opts ...grpc.CallOption) (*LogoutUserResponse, error) {
-	out := new(LogoutUserResponse)
-	err := c.cc.Invoke(ctx, "/user.v1.User/LogoutUser", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *userClient) FrozenUser(ctx context.Context, in *FrozenUserRequest, opts ...grpc.CallOption) (*FrozenUserResponse, error) {
 	out := new(FrozenUserResponse)
 	err := c.cc.Invoke(ctx, "/user.v1.User/FrozenUser", in, out, opts...)
@@ -263,7 +250,7 @@ func (c *userClient) UnfrozenUser(ctx context.Context, in *UnfrozenUserRequest, 
 	return out, nil
 }
 
-func (c *userClient) GetFrozenUsers(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error) {
+func (c *userClient) GetFrozenUsers(ctx context.Context, in *GetFrozenUsersRequest, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error) {
 	out := new(GetFrozenUsersResponse)
 	err := c.cc.Invoke(ctx, "/user.v1.User/GetFrozenUsers", in, out, opts...)
 	if err != nil {
@@ -291,11 +278,11 @@ type UserServer interface {
 	//User can choose signup with username, email, phone or only emial or only phone.
 	SignUp(context.Context, *SignupRequest) (*SignupResponse, error)
 	//
-	//Set user password.
-	SetPassword(context.Context, *SetPasswordRequest) (*SetPasswordResponse, error)
-	//
 	//Get a user's info by his(her) id, this api can be request by user self of admin.
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	//
+	//Get all users.
+	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
 	//
 	//Update user's basic info.
 	UpdateUserInfo(context.Context, *UpdateUserInfoRequest) (*UpdateUserInfoResponse, error)
@@ -342,10 +329,6 @@ type UserServer interface {
 	//This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	//
-	//Logout user.
-	//Permanently delete user personal account, user will not be able to log in after deletion. And service will not only delete basic user info, but also use other apis to delete connections among other service.
-	LogoutUser(context.Context, *LogoutUserRequest) (*LogoutUserResponse, error)
-	//
 	//Frozen user.
 	FrozenUser(context.Context, *FrozenUserRequest) (*FrozenUserResponse, error)
 	//
@@ -353,7 +336,7 @@ type UserServer interface {
 	UnfrozenUser(context.Context, *UnfrozenUserRequest) (*UnfrozenUserResponse, error)
 	//
 	//Get frozen user list.
-	GetFrozenUsers(context.Context, *emptypb.Empty) (*GetFrozenUsersResponse, error)
+	GetFrozenUsers(context.Context, *GetFrozenUsersRequest) (*GetFrozenUsersResponse, error)
 	//
 	//Get user providers info.
 	GetUserProviders(context.Context, *GetUserProvidersRequest) (*GetUserProvidersResponse, error)
@@ -370,11 +353,11 @@ func (UnimplementedUserServer) Version(context.Context, *emptypb.Empty) (*Versio
 func (UnimplementedUserServer) SignUp(context.Context, *SignupRequest) (*SignupResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SignUp not implemented")
 }
-func (UnimplementedUserServer) SetPassword(context.Context, *SetPasswordRequest) (*SetPasswordResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SetPassword not implemented")
-}
 func (UnimplementedUserServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUserServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
 }
 func (UnimplementedUserServer) UpdateUserInfo(context.Context, *UpdateUserInfoRequest) (*UpdateUserInfoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserInfo not implemented")
@@ -409,16 +392,13 @@ func (UnimplementedUserServer) AddUser(context.Context, *AddUserRequest) (*AddUs
 func (UnimplementedUserServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
-func (UnimplementedUserServer) LogoutUser(context.Context, *LogoutUserRequest) (*LogoutUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method LogoutUser not implemented")
-}
 func (UnimplementedUserServer) FrozenUser(context.Context, *FrozenUserRequest) (*FrozenUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method FrozenUser not implemented")
 }
 func (UnimplementedUserServer) UnfrozenUser(context.Context, *UnfrozenUserRequest) (*UnfrozenUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnfrozenUser not implemented")
 }
-func (UnimplementedUserServer) GetFrozenUsers(context.Context, *emptypb.Empty) (*GetFrozenUsersResponse, error) {
+func (UnimplementedUserServer) GetFrozenUsers(context.Context, *GetFrozenUsersRequest) (*GetFrozenUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFrozenUsers not implemented")
 }
 func (UnimplementedUserServer) GetUserProviders(context.Context, *GetUserProvidersRequest) (*GetUserProvidersResponse, error) {
@@ -473,24 +453,6 @@ func _User_SignUp_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_SetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SetPasswordRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).SetPassword(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/user.v1.User/SetPassword",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).SetPassword(ctx, req.(*SetPasswordRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserRequest)
 	if err := dec(in); err != nil {
@@ -505,6 +467,24 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUsersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUsers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/GetUsers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUsers(ctx, req.(*GetUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -707,24 +687,6 @@ func _User_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_LogoutUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogoutUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(UserServer).LogoutUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/user.v1.User/LogoutUser",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).LogoutUser(ctx, req.(*LogoutUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _User_FrozenUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(FrozenUserRequest)
 	if err := dec(in); err != nil {
@@ -762,7 +724,7 @@ func _User_UnfrozenUser_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _User_GetFrozenUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(emptypb.Empty)
+	in := new(GetFrozenUsersRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -774,7 +736,7 @@ func _User_GetFrozenUsers_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/user.v1.User/GetFrozenUsers",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).GetFrozenUsers(ctx, req.(*emptypb.Empty))
+		return srv.(UserServer).GetFrozenUsers(ctx, req.(*GetFrozenUsersRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -813,12 +775,12 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_SignUp_Handler,
 		},
 		{
-			MethodName: "SetPassword",
-			Handler:    _User_SetPassword_Handler,
-		},
-		{
 			MethodName: "GetUser",
 			Handler:    _User_GetUser_Handler,
+		},
+		{
+			MethodName: "GetUsers",
+			Handler:    _User_GetUsers_Handler,
 		},
 		{
 			MethodName: "UpdateUserInfo",
@@ -863,10 +825,6 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteUser",
 			Handler:    _User_DeleteUser_Handler,
-		},
-		{
-			MethodName: "LogoutUser",
-			Handler:    _User_LogoutUser_Handler,
 		},
 		{
 			MethodName: "FrozenUser",

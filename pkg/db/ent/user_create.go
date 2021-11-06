@@ -44,6 +44,14 @@ func (uc *UserCreate) SetDisplayName(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableDisplayName sets the "display_name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableDisplayName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetDisplayName(*s)
+	}
+	return uc
+}
+
 // SetPhoneNumber sets the "phone_number" field.
 func (uc *UserCreate) SetPhoneNumber(s string) *UserCreate {
 	uc.mutation.SetPhoneNumber(s)
@@ -152,9 +160,25 @@ func (uc *UserCreate) SetAvatar(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (uc *UserCreate) SetNillableAvatar(s *string) *UserCreate {
+	if s != nil {
+		uc.SetAvatar(*s)
+	}
+	return uc
+}
+
 // SetRegion sets the "region" field.
 func (uc *UserCreate) SetRegion(s string) *UserCreate {
 	uc.mutation.SetRegion(s)
+	return uc
+}
+
+// SetNillableRegion sets the "region" field if the given value is not nil.
+func (uc *UserCreate) SetNillableRegion(s *string) *UserCreate {
+	if s != nil {
+		uc.SetRegion(*s)
+	}
 	return uc
 }
 
@@ -164,9 +188,25 @@ func (uc *UserCreate) SetAge(i int32) *UserCreate {
 	return uc
 }
 
+// SetNillableAge sets the "age" field if the given value is not nil.
+func (uc *UserCreate) SetNillableAge(i *int32) *UserCreate {
+	if i != nil {
+		uc.SetAge(*i)
+	}
+	return uc
+}
+
 // SetGender sets the "gender" field.
 func (uc *UserCreate) SetGender(s string) *UserCreate {
 	uc.mutation.SetGender(s)
+	return uc
+}
+
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (uc *UserCreate) SetNillableGender(s *string) *UserCreate {
+	if s != nil {
+		uc.SetGender(*s)
+	}
 	return uc
 }
 
@@ -176,9 +216,25 @@ func (uc *UserCreate) SetBirthday(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (uc *UserCreate) SetNillableBirthday(s *string) *UserCreate {
+	if s != nil {
+		uc.SetBirthday(*s)
+	}
+	return uc
+}
+
 // SetCountry sets the "country" field.
 func (uc *UserCreate) SetCountry(s string) *UserCreate {
 	uc.mutation.SetCountry(s)
+	return uc
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (uc *UserCreate) SetNillableCountry(s *string) *UserCreate {
+	if s != nil {
+		uc.SetCountry(*s)
+	}
 	return uc
 }
 
@@ -188,15 +244,39 @@ func (uc *UserCreate) SetProvince(s string) *UserCreate {
 	return uc
 }
 
+// SetNillableProvince sets the "province" field if the given value is not nil.
+func (uc *UserCreate) SetNillableProvince(s *string) *UserCreate {
+	if s != nil {
+		uc.SetProvince(*s)
+	}
+	return uc
+}
+
 // SetCity sets the "city" field.
 func (uc *UserCreate) SetCity(s string) *UserCreate {
 	uc.mutation.SetCity(s)
 	return uc
 }
 
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (uc *UserCreate) SetNillableCity(s *string) *UserCreate {
+	if s != nil {
+		uc.SetCity(*s)
+	}
+	return uc
+}
+
 // SetCareer sets the "career" field.
 func (uc *UserCreate) SetCareer(s string) *UserCreate {
 	uc.mutation.SetCareer(s)
+	return uc
+}
+
+// SetNillableCareer sets the "career" field if the given value is not nil.
+func (uc *UserCreate) SetNillableCareer(s *string) *UserCreate {
+	if s != nil {
+		uc.SetCareer(*s)
+	}
 	return uc
 }
 
@@ -277,6 +357,10 @@ func (uc *UserCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (uc *UserCreate) defaults() {
+	if _, ok := uc.mutation.DisplayName(); !ok {
+		v := user.DefaultDisplayName
+		uc.mutation.SetDisplayName(v)
+	}
 	if _, ok := uc.mutation.LoginTimes(); !ok {
 		v := user.DefaultLoginTimes
 		uc.mutation.SetLoginTimes(v)
@@ -300,6 +384,42 @@ func (uc *UserCreate) defaults() {
 	if _, ok := uc.mutation.DeleteAt(); !ok {
 		v := user.DefaultDeleteAt()
 		uc.mutation.SetDeleteAt(v)
+	}
+	if _, ok := uc.mutation.Avatar(); !ok {
+		v := user.DefaultAvatar
+		uc.mutation.SetAvatar(v)
+	}
+	if _, ok := uc.mutation.Region(); !ok {
+		v := user.DefaultRegion
+		uc.mutation.SetRegion(v)
+	}
+	if _, ok := uc.mutation.Age(); !ok {
+		v := user.DefaultAge
+		uc.mutation.SetAge(v)
+	}
+	if _, ok := uc.mutation.Gender(); !ok {
+		v := user.DefaultGender
+		uc.mutation.SetGender(v)
+	}
+	if _, ok := uc.mutation.Birthday(); !ok {
+		v := user.DefaultBirthday
+		uc.mutation.SetBirthday(v)
+	}
+	if _, ok := uc.mutation.Country(); !ok {
+		v := user.DefaultCountry
+		uc.mutation.SetCountry(v)
+	}
+	if _, ok := uc.mutation.Province(); !ok {
+		v := user.DefaultProvince
+		uc.mutation.SetProvince(v)
+	}
+	if _, ok := uc.mutation.City(); !ok {
+		v := user.DefaultCity
+		uc.mutation.SetCity(v)
+	}
+	if _, ok := uc.mutation.Career(); !ok {
+		v := user.DefaultCareer
+		uc.mutation.SetCareer(v)
 	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()

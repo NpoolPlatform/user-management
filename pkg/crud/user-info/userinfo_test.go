@@ -25,9 +25,7 @@ func init() {
 
 func assertUserBasicInfo(t *testing.T, err error, userInfo, myUserInfo *npool.UserBasicInfo) {
 	if assert.Nil(t, err) {
-		salt, err := GetUserSalt(context.Background(), userInfo.UserId)
 		if assert.Nil(t, err) {
-			assert.Nil(t, encryption.VerifyUserPassword(myUserInfo.Password, userInfo.Password, salt))
 			assert.Equal(t, userInfo.UserId, myUserInfo.UserId)
 			assert.Equal(t, userInfo.Username, myUserInfo.Username)
 			assert.Equal(t, userInfo.Age, myUserInfo.Age)
@@ -51,7 +49,6 @@ func TestUserInfoCRUD(t *testing.T) {
 		return
 	}
 	userInfo := npool.UserBasicInfo{
-		UserId:       uuid.New().String(),
 		Username:     uuid.New().String(),
 		Password:     "123456789",
 		Age:          22,
@@ -73,8 +70,9 @@ func TestUserInfoCRUD(t *testing.T) {
 		UserInfo: &userInfo,
 	})
 	if assert.Nil(t, err) {
-		salt, err := GetUserSalt(context.Background(), userInfo.UserId)
+		salt, err := GetUserSalt(context.Background(), resp.UserInfo.UserId)
 		if assert.Nil(t, err) {
+			userInfo.UserId = resp.UserInfo.UserId
 			assert.Nil(t, encryption.VerifyUserPassword(userInfo.Password, resp.UserInfo.Password, salt))
 			assert.NotEqual(t, resp.UserInfo.UserId, uuid.UUID{})
 			assert.Equal(t, resp.UserInfo.Username, userInfo.Username)
@@ -99,6 +97,9 @@ func TestUserInfoCRUD(t *testing.T) {
 	})
 	assertUserBasicInfo(t, err, resp1.UserInfo, &userInfo)
 
+	err = SetPassword(context.Background(), userInfo.Password, userInfo.UserId)
+	assert.Nil(t, err)
+
 	resp2, err := Get(context.Background(), &npool.GetUserRequest{
 		UserId: userInfo.UserId,
 	})
@@ -122,6 +123,16 @@ func TestUserInfoCRUD(t *testing.T) {
 	resp7, err := QueryUserByUsername(context.Background(), userInfo.Username)
 	if assert.Nil(t, err) {
 		fmt.Println(resp7)
+	}
+
+	resp8, err := GetAll(context.Background())
+	if assert.Nil(t, err) {
+		fmt.Printf("get all user is: %v\n", resp8)
+	}
+
+	resp9, err := GetUserPassword(context.Background(), userInfo.UserId)
+	if assert.Nil(t, err) {
+		fmt.Printf("get user password is: %v\n", resp9)
 	}
 
 	resp3, err := Delete(context.Background(), &npool.DeleteUserRequest{

@@ -23,7 +23,7 @@ func (User) Fields() []ent.Field {
 		field.String("username").Unique(),
 		field.String("password"),
 		field.String("salt"),
-		field.String("display_name"),
+		field.String("display_name").Default(""),
 		field.String("phone_number").Unique(),
 		field.String("email_address").Unique(),
 		field.Int32("login_times").
@@ -48,15 +48,15 @@ func (User) Fields() []ent.Field {
 			DefaultFunc(func() int64 {
 				return 0
 			}),
-		field.String("avatar"),
-		field.String("region"),
-		field.Int32("age"),
-		field.String("gender"),
-		field.String("birthday"),
-		field.String("country"),
-		field.String("province"),
-		field.String("city"),
-		field.String("career"),
+		field.String("avatar").Default(""),
+		field.String("region").Default(""),
+		field.Int32("age").Default(0),
+		field.String("gender").Default(""),
+		field.String("birthday").Default(""),
+		field.String("country").Default(""),
+		field.String("province").Default(""),
+		field.String("city").Default(""),
+		field.String("career").Default(""),
 	}
 }
 

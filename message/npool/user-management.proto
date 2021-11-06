@@ -26,20 +26,20 @@ service User {
         };
     };
     /*
-    Set user password.
-    */
-    rpc SetPassword (SetPasswordRequest) returns (SetPasswordResponse) {
-        option (google.api.http) = {
-            post: "/v1/set/password"
-            body: "*"
-        };
-    };
-    /*
     Get a user's info by his(her) id, this api can be request by user self of admin.
     */
     rpc GetUser (GetUserRequest) returns (GetUserResponse) {
         option (google.api.http) = {
             post: "/v1/get/user"
+            body: "*"
+        };
+    };
+    /*
+    Get all users.
+    */
+    rpc GetUsers (GetUsersRequest) returns (GetUsersResponse) {
+        option (google.api.http) = {
+            post: "/v1/get/users"
             body: "*"
         };
     };
@@ -155,16 +155,6 @@ service User {
         };
     };
     /*
-    Logout user.
-    Permanently delete user personal account, user will not be able to log in after deletion. And service will not only delete basic user info, but also use other apis to delete connections among other service.
-    */
-    rpc LogoutUser (LogoutUserRequest) returns (LogoutUserResponse) {
-        option (google.api.http) = {
-            post: "/v1/logout/user"
-            body: "*"
-        };
-    };
-    /*
     Frozen user.
     */
     rpc FrozenUser (FrozenUserRequest) returns (FrozenUserResponse) {
@@ -185,7 +175,7 @@ service User {
     /*
     Get frozen user list.
     */
-    rpc GetFrozenUsers (google.protobuf.Empty) returns (GetFrozenUsersResponse) {
+    rpc GetFrozenUsers (GetFrozenUsersRequest) returns (GetFrozenUsersResponse) {
         option (google.api.http) = {
             post: "/v1/get/frozen/user"
             body: "*"
@@ -208,38 +198,9 @@ message VersionResponse {
     string Info = 100;
 }
 
-
-message SignupRequest {
-    // optional
-    string Username = 1;
-    string Password = 2;
-    // optional
-    string EmailAddress = 4;
-    // optional
-    string EmailVerifyCode = 5;
-    // optional
-    string PhoneNumber = 6;
-    // optional
-    string PhoneVerifyCode = 7;
-    string AppId = 8;
-}
-
-message SignupResponse {
-    string Info = 1;
-}
-
-message SetPasswordRequest {
-    string UserId = 1;
-    string Password = 2;
-}
-
-message SetPasswordResponse {
-    string Info = 1;
-}
-
-message GetUserRequest {
-    // UserId is who is queried.
-    string UserId = 1;
+message PageInfo {
+    int32 PageIndex = 1;
+    int32 PageSize = 2;
 }
 
 message UserBasicInfo {
@@ -266,8 +227,36 @@ message UserBasicInfo {
     string DisplayName = 21;
 }
 
+message SignupRequest {
+    // optional
+    string Username = 1;
+    string Password = 2;
+    // optional
+    string EmailAddress = 4;
+    // optional
+    string PhoneNumber = 6;
+    string AppId = 8;
+}
+
+message SignupResponse {
+    UserBasicInfo UserInfo = 1;
+}
+
+message GetUserRequest {
+    // UserId is who is queried.
+    string UserId = 1;
+}
+
 message GetUserResponse {
     UserBasicInfo UserInfo = 1;
+}
+
+message GetUsersRequest {
+    PageInfo PageInfo = 1;
+}
+
+message GetUsersResponse {
+    repeated UserBasicInfo UserInfos = 1;
 }
 
 message UpdateUserInfoRequest {
@@ -281,7 +270,6 @@ message UpdateUserInfoResponse {
 message BindUserPhoneRequest {
     string UserId = 1;
     string PhoneNumber = 2;
-    string PhoneVerifyCode = 3;
 }
 
 message BindUserPhoneResponse {
@@ -291,7 +279,6 @@ message BindUserPhoneResponse {
 message BindUserEmailRequest {
     string UserId = 1;
     string EmailAddress = 2;
-    string EmailVerifyCode = 3;
 }
 
 message BindUserEmailResponse {
@@ -300,8 +287,6 @@ message BindUserEmailResponse {
 
 message UnbindUserPhoneRequest {
     string UserId = 1;
-    string PhoneNumber = 2;
-    string PhoneVerifyCode = 3;
 }
 
 message UnbindUserPhoneResponse {
@@ -310,8 +295,6 @@ message UnbindUserPhoneResponse {
 
 message UnbindUserEmailRequest {
     string UserId = 1;
-    string EmailAddress = 2;
-    string EmailVerifyCode = 3;
 }
 
 message UnbindUserEmailResponse {
@@ -355,8 +338,8 @@ message UnbindThirdPartyResponse {
 message ChangeUserPasswordRequest {
     string UserId = 1;
     string AppId = 2;
-    string OldPassword = 3;
-    string Password = 4;
+    string OldPassword = 4;
+    string Password = 5;
 }
 
 message ChangeUserPasswordResponse {
@@ -401,11 +384,7 @@ message ForgetPasswordRequest {
     // Optional
     string PhoneNumber = 1;
     // Optional
-    string PhoneVerifyCode = 2;
-    // Optional
     string EmailAddress = 3;
-    // Optional
-    string EmailVerifyCode = 4;
     string Password = 5;
 }
 
@@ -419,14 +398,6 @@ message DeleteUserRequest {
 }
 
 message DeleteUserResponse {
-    string Info = 1;
-}
-
-message LogoutUserRequest {
-    string UserId = 1;
-}
-
-message LogoutUserResponse {
     string Info = 1;
 }
 
@@ -468,6 +439,10 @@ message UnfrozenUserRequest {
 
 message UnfrozenUserResponse {
     FrozenUser UnFrozenUserInfo = 1;
+}
+
+message GetFrozenUsersRequest {
+    PageInfo PageInfo = 1;
 }
 
 message GetFrozenUsersResponse {

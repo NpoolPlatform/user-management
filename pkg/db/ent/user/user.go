@@ -97,6 +97,8 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultDisplayName holds the default value on creation for the "display_name" field.
+	DefaultDisplayName string
 	// DefaultLoginTimes holds the default value on creation for the "login_times" field.
 	DefaultLoginTimes int32
 	// DefaultKycVerify holds the default value on creation for the "kyc_verify" field.
@@ -111,6 +113,24 @@ var (
 	UpdateDefaultUpdateAt func() int64
 	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
 	DefaultDeleteAt func() int64
+	// DefaultAvatar holds the default value on creation for the "avatar" field.
+	DefaultAvatar string
+	// DefaultRegion holds the default value on creation for the "region" field.
+	DefaultRegion string
+	// DefaultAge holds the default value on creation for the "age" field.
+	DefaultAge int32
+	// DefaultGender holds the default value on creation for the "gender" field.
+	DefaultGender string
+	// DefaultBirthday holds the default value on creation for the "birthday" field.
+	DefaultBirthday string
+	// DefaultCountry holds the default value on creation for the "country" field.
+	DefaultCountry string
+	// DefaultProvince holds the default value on creation for the "province" field.
+	DefaultProvince string
+	// DefaultCity holds the default value on creation for the "city" field.
+	DefaultCity string
+	// DefaultCareer holds the default value on creation for the "career" field.
+	DefaultCareer string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

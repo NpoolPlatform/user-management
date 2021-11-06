@@ -50,6 +50,14 @@ func (uu *UserUpdate) SetDisplayName(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableDisplayName sets the "display_name" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDisplayName(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetDisplayName(*s)
+	}
+	return uu
+}
+
 // SetPhoneNumber sets the "phone_number" field.
 func (uu *UserUpdate) SetPhoneNumber(s string) *UserUpdate {
 	uu.mutation.SetPhoneNumber(s)
@@ -178,9 +186,25 @@ func (uu *UserUpdate) SetAvatar(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableAvatar(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetAvatar(*s)
+	}
+	return uu
+}
+
 // SetRegion sets the "region" field.
 func (uu *UserUpdate) SetRegion(s string) *UserUpdate {
 	uu.mutation.SetRegion(s)
+	return uu
+}
+
+// SetNillableRegion sets the "region" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableRegion(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetRegion(*s)
+	}
 	return uu
 }
 
@@ -188,6 +212,14 @@ func (uu *UserUpdate) SetRegion(s string) *UserUpdate {
 func (uu *UserUpdate) SetAge(i int32) *UserUpdate {
 	uu.mutation.ResetAge()
 	uu.mutation.SetAge(i)
+	return uu
+}
+
+// SetNillableAge sets the "age" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableAge(i *int32) *UserUpdate {
+	if i != nil {
+		uu.SetAge(*i)
+	}
 	return uu
 }
 
@@ -203,9 +235,25 @@ func (uu *UserUpdate) SetGender(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableGender(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetGender(*s)
+	}
+	return uu
+}
+
 // SetBirthday sets the "birthday" field.
 func (uu *UserUpdate) SetBirthday(s string) *UserUpdate {
 	uu.mutation.SetBirthday(s)
+	return uu
+}
+
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableBirthday(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetBirthday(*s)
+	}
 	return uu
 }
 
@@ -215,9 +263,25 @@ func (uu *UserUpdate) SetCountry(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCountry(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetCountry(*s)
+	}
+	return uu
+}
+
 // SetProvince sets the "province" field.
 func (uu *UserUpdate) SetProvince(s string) *UserUpdate {
 	uu.mutation.SetProvince(s)
+	return uu
+}
+
+// SetNillableProvince sets the "province" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableProvince(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetProvince(*s)
+	}
 	return uu
 }
 
@@ -227,9 +291,25 @@ func (uu *UserUpdate) SetCity(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCity(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetCity(*s)
+	}
+	return uu
+}
+
 // SetCareer sets the "career" field.
 func (uu *UserUpdate) SetCareer(s string) *UserUpdate {
 	uu.mutation.SetCareer(s)
+	return uu
+}
+
+// SetNillableCareer sets the "career" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCareer(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetCareer(*s)
+	}
 	return uu
 }
 
@@ -551,6 +631,14 @@ func (uuo *UserUpdateOne) SetDisplayName(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableDisplayName sets the "display_name" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDisplayName(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetDisplayName(*s)
+	}
+	return uuo
+}
+
 // SetPhoneNumber sets the "phone_number" field.
 func (uuo *UserUpdateOne) SetPhoneNumber(s string) *UserUpdateOne {
 	uuo.mutation.SetPhoneNumber(s)
@@ -679,9 +767,25 @@ func (uuo *UserUpdateOne) SetAvatar(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableAvatar sets the "avatar" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableAvatar(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetAvatar(*s)
+	}
+	return uuo
+}
+
 // SetRegion sets the "region" field.
 func (uuo *UserUpdateOne) SetRegion(s string) *UserUpdateOne {
 	uuo.mutation.SetRegion(s)
+	return uuo
+}
+
+// SetNillableRegion sets the "region" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableRegion(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetRegion(*s)
+	}
 	return uuo
 }
 
@@ -689,6 +793,14 @@ func (uuo *UserUpdateOne) SetRegion(s string) *UserUpdateOne {
 func (uuo *UserUpdateOne) SetAge(i int32) *UserUpdateOne {
 	uuo.mutation.ResetAge()
 	uuo.mutation.SetAge(i)
+	return uuo
+}
+
+// SetNillableAge sets the "age" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableAge(i *int32) *UserUpdateOne {
+	if i != nil {
+		uuo.SetAge(*i)
+	}
 	return uuo
 }
 
@@ -704,9 +816,25 @@ func (uuo *UserUpdateOne) SetGender(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableGender sets the "gender" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableGender(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetGender(*s)
+	}
+	return uuo
+}
+
 // SetBirthday sets the "birthday" field.
 func (uuo *UserUpdateOne) SetBirthday(s string) *UserUpdateOne {
 	uuo.mutation.SetBirthday(s)
+	return uuo
+}
+
+// SetNillableBirthday sets the "birthday" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableBirthday(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetBirthday(*s)
+	}
 	return uuo
 }
 
@@ -716,9 +844,25 @@ func (uuo *UserUpdateOne) SetCountry(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCountry(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetCountry(*s)
+	}
+	return uuo
+}
+
 // SetProvince sets the "province" field.
 func (uuo *UserUpdateOne) SetProvince(s string) *UserUpdateOne {
 	uuo.mutation.SetProvince(s)
+	return uuo
+}
+
+// SetNillableProvince sets the "province" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableProvince(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetProvince(*s)
+	}
 	return uuo
 }
 
@@ -728,9 +872,25 @@ func (uuo *UserUpdateOne) SetCity(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillableCity sets the "city" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCity(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetCity(*s)
+	}
+	return uuo
+}
+
 // SetCareer sets the "career" field.
 func (uuo *UserUpdateOne) SetCareer(s string) *UserUpdateOne {
 	uuo.mutation.SetCareer(s)
+	return uuo
+}
+
+// SetNillableCareer sets the "career" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCareer(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetCareer(*s)
+	}
 	return uuo
 }
 

@@ -16,6 +16,10 @@ import (
 func init() {
 	userFields := schema.User{}.Fields()
 	_ = userFields
+	// userDescDisplayName is the schema descriptor for display_name field.
+	userDescDisplayName := userFields[4].Descriptor()
+	// user.DefaultDisplayName holds the default value on creation for the display_name field.
+	user.DefaultDisplayName = userDescDisplayName.Default.(string)
 	// userDescLoginTimes is the schema descriptor for login_times field.
 	userDescLoginTimes := userFields[7].Descriptor()
 	// user.DefaultLoginTimes holds the default value on creation for the login_times field.
@@ -42,6 +46,42 @@ func init() {
 	userDescDeleteAt := userFields[13].Descriptor()
 	// user.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	user.DefaultDeleteAt = userDescDeleteAt.Default.(func() int64)
+	// userDescAvatar is the schema descriptor for avatar field.
+	userDescAvatar := userFields[14].Descriptor()
+	// user.DefaultAvatar holds the default value on creation for the avatar field.
+	user.DefaultAvatar = userDescAvatar.Default.(string)
+	// userDescRegion is the schema descriptor for region field.
+	userDescRegion := userFields[15].Descriptor()
+	// user.DefaultRegion holds the default value on creation for the region field.
+	user.DefaultRegion = userDescRegion.Default.(string)
+	// userDescAge is the schema descriptor for age field.
+	userDescAge := userFields[16].Descriptor()
+	// user.DefaultAge holds the default value on creation for the age field.
+	user.DefaultAge = userDescAge.Default.(int32)
+	// userDescGender is the schema descriptor for gender field.
+	userDescGender := userFields[17].Descriptor()
+	// user.DefaultGender holds the default value on creation for the gender field.
+	user.DefaultGender = userDescGender.Default.(string)
+	// userDescBirthday is the schema descriptor for birthday field.
+	userDescBirthday := userFields[18].Descriptor()
+	// user.DefaultBirthday holds the default value on creation for the birthday field.
+	user.DefaultBirthday = userDescBirthday.Default.(string)
+	// userDescCountry is the schema descriptor for country field.
+	userDescCountry := userFields[19].Descriptor()
+	// user.DefaultCountry holds the default value on creation for the country field.
+	user.DefaultCountry = userDescCountry.Default.(string)
+	// userDescProvince is the schema descriptor for province field.
+	userDescProvince := userFields[20].Descriptor()
+	// user.DefaultProvince holds the default value on creation for the province field.
+	user.DefaultProvince = userDescProvince.Default.(string)
+	// userDescCity is the schema descriptor for city field.
+	userDescCity := userFields[21].Descriptor()
+	// user.DefaultCity holds the default value on creation for the city field.
+	user.DefaultCity = userDescCity.Default.(string)
+	// userDescCareer is the schema descriptor for career field.
+	userDescCareer := userFields[22].Descriptor()
+	// user.DefaultCareer holds the default value on creation for the career field.
+	user.DefaultCareer = userDescCareer.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

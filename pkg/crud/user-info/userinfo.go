@@ -2,6 +2,7 @@ package userinfo
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/NpoolPlatform/user-management/message/npool"
@@ -40,22 +41,7 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 }
 
 func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
-	myRow, err := db.Client().User.Query().Where(
-		user.Or(
-			user.Username(in.GetUserInfo().GetUsername()),
-		),
-	).All(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(myRow) != 0 {
-		if myRow[0].DeleteAt != 0 {
-			return nil, xerrors.Errorf("this user has already existed and has been deleted!")
-		}
-		return nil, xerrors.Errorf("user has already exist!")
-	}
-
+	fmt.Println("user info is", in)
 	password := in.GetUserInfo().GetPassword()
 
 	salt := encryption.Salt()
@@ -64,26 +50,22 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 		return nil, err
 	}
 	info, err := db.Client().User.Create().
-		SetID(uuid.MustParse(in.UserInfo.GetUserId())).
-		SetUsername(in.GetUserInfo().GetUsername()).
+		SetUsername(in.UserInfo.Username).
 		SetPassword(hashPassword).
 		SetSalt(salt).
-		SetDisplayName(in.GetUserInfo().GetDisplayName()).
-		SetPhoneNumber(in.GetUserInfo().GetPhoneNumber()).
-		SetEmailAddress(in.GetUserInfo().GetEmailAddress()).
-		SetLoginTimes(in.GetUserInfo().GetLoginTimes()).
-		SetKycVerify(in.GetUserInfo().GetKycVerify()).
-		SetGaVerify(in.GetUserInfo().GetGaVerify()).
-		SetSignupMethod(in.GetUserInfo().GetSignupMethod()).
-		SetAvatar(in.GetUserInfo().GetAvatar()).
-		SetRegion(in.GetUserInfo().GetRegion()).
-		SetAge(in.GetUserInfo().GetAge()).
-		SetGender(in.GetUserInfo().Gender).
-		SetBirthday(in.GetUserInfo().GetBirthday()).
-		SetCountry(in.GetUserInfo().GetCountry()).
-		SetProvince(in.GetUserInfo().GetProvince()).
-		SetCity(in.GetUserInfo().GetCity()).
-		SetCareer(in.GetUserInfo().GetCareer()).
+		SetDisplayName(in.UserInfo.DisplayName).
+		SetPhoneNumber(in.UserInfo.PhoneNumber).
+		SetEmailAddress(in.UserInfo.EmailAddress).
+		SetSignupMethod(in.UserInfo.SignupMethod).
+		SetAvatar(in.UserInfo.Avatar).
+		SetRegion(in.UserInfo.Region).
+		SetAge(in.UserInfo.Age).
+		SetGender(in.UserInfo.Gender).
+		SetBirthday(in.UserInfo.Birthday).
+		SetCountry(in.UserInfo.Country).
+		SetProvince(in.UserInfo.Province).
+		SetCity(in.UserInfo.City).
+		SetCareer(in.UserInfo.Career).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to create user: %v", err)
@@ -94,13 +76,36 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 	}, nil
 }
 
+func SetPassword(ctx context.Context, password, userID string) error {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return xerrors.Errorf("invalid user id: %v", err)
+	}
+
+	salt := encryption.Salt()
+	hashPassword, err := encryption.EncryptePassword(password, salt)
+	if err != nil {
+		return err
+	}
+
+	_, err = db.Client().
+		User.
+		UpdateOneID(id).
+		SetPassword(hashPassword).
+		Save(ctx)
+	if err != nil {
+		return xerrors.Errorf("fail to set password: %v", err)
+	}
+	return nil
+}
+
 func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.UpdateUserInfoResponse, error) {
 	id, err := uuid.Parse(in.GetUserInfo().GetUserId())
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
 	myRow, err := db.Client().User.Query().Where(
-		user.Or(
+		user.And(
 			user.ID(id),
 		),
 	).All(ctx)
@@ -153,8 +158,9 @@ func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse,
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.ID(id),
+				user.DeleteAt(0),
 			),
 		).All(ctx)
 	if err != nil {
@@ -162,15 +168,33 @@ func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse,
 	}
 
 	if len(info) == 0 {
-		return nil, xerrors.Errorf("empty result of user info")
-	}
-
-	if info[0].DeleteAt != 0 {
-		return nil, xerrors.Errorf("user has been deleted")
+		return nil, xerrors.Errorf("user doesn't exist")
 	}
 
 	return &npool.GetUserResponse{
 		UserInfo: dbRowToInfo(info[0]),
+	}, nil
+}
+
+func GetAll(ctx context.Context) (*npool.GetUsersResponse, error) {
+	infos, err := db.Client().
+		User.
+		Query().
+		Where(
+			user.And(
+				user.DeleteAt(0),
+			),
+		).
+		All(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to query users: %v", err)
+	}
+	response := []*npool.UserBasicInfo{}
+	for _, info := range infos {
+		response = append(response, dbRowToInfo(info))
+	}
+	return &npool.GetUsersResponse{
+		UserInfos: response,
 	}, nil
 }
 
@@ -195,6 +219,30 @@ func Delete(ctx context.Context, in *npool.DeleteUserRequest) (*npool.DeleteUser
 	}, nil
 }
 
+func GetUserPassword(ctx context.Context, userID string) (string, error) {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return "", xerrors.Errorf("invalid user id: %v", err)
+	}
+	info, err := db.Client().
+		User.
+		Query().
+		Where(
+			user.And(
+				user.ID(id),
+				user.DeleteAt(0),
+			),
+		).All(ctx)
+	if err != nil {
+		return "", xerrors.Errorf("fail to query user password: %v", err)
+	}
+
+	if len(info) == 0 {
+		return "", xerrors.Errorf("user doesn't exist")
+	}
+	return info[0].Password, nil
+}
+
 func GetUserSalt(ctx context.Context, userID string) (string, error) {
 	id, err := uuid.Parse(userID)
 	if err != nil {
@@ -204,8 +252,9 @@ func GetUserSalt(ctx context.Context, userID string) (string, error) {
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.ID(id),
+				user.DeleteAt(0),
 			),
 		).All(ctx)
 	if err != nil {
@@ -213,11 +262,7 @@ func GetUserSalt(ctx context.Context, userID string) (string, error) {
 	}
 
 	if len(info) == 0 {
-		return "", xerrors.Errorf("user is not exist")
-	}
-
-	if info[0].DeleteAt != 0 {
-		return "", xerrors.Errorf("user has already deleted")
+		return "", xerrors.Errorf("user doesn't exist")
 	}
 
 	return info[0].Salt, nil
@@ -228,7 +273,7 @@ func QueryUserByUsername(ctx context.Context, username string) (*npool.UserBasic
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.Username(username),
 				user.DeleteAt(0),
 			),
@@ -238,8 +283,9 @@ func QueryUserByUsername(ctx context.Context, username string) (*npool.UserBasic
 	}
 
 	if len(info) == 0 {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf("user doesn't exist")
 	}
+
 	return dbRowToInfo(info[0]), nil
 }
 
@@ -253,7 +299,7 @@ func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.ID(id),
 				user.DeleteAt(0),
 			),
@@ -263,8 +309,9 @@ func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo
 	}
 
 	if len(info) == 0 {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf("user doesn't exist")
 	}
+
 	return dbRowToInfo(info[0]), nil
 }
 
@@ -273,7 +320,7 @@ func QueryUserByPhoneNumber(ctx context.Context, phoneNumber string) (*npool.Use
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.PhoneNumber(phoneNumber),
 				user.DeleteAt(0),
 			),
@@ -283,8 +330,9 @@ func QueryUserByPhoneNumber(ctx context.Context, phoneNumber string) (*npool.Use
 	}
 
 	if len(info) == 0 {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf("user doesn't exist")
 	}
+
 	return dbRowToInfo(info[0]), nil
 }
 
@@ -293,7 +341,7 @@ func QueryUserByEmailAddress(ctx context.Context, emailAddress string) (*npool.U
 		User.
 		Query().
 		Where(
-			user.Or(
+			user.And(
 				user.EmailAddress(emailAddress),
 				user.DeleteAt(0),
 			),
@@ -303,7 +351,8 @@ func QueryUserByEmailAddress(ctx context.Context, emailAddress string) (*npool.U
 	}
 
 	if len(info) == 0 {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf("user doesn't exist")
 	}
+
 	return dbRowToInfo(info[0]), nil
 }

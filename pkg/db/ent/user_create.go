@@ -58,9 +58,25 @@ func (uc *UserCreate) SetPhoneNumber(s string) *UserCreate {
 	return uc
 }
 
+// SetNillablePhoneNumber sets the "phone_number" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePhoneNumber(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPhoneNumber(*s)
+	}
+	return uc
+}
+
 // SetEmailAddress sets the "email_address" field.
 func (uc *UserCreate) SetEmailAddress(s string) *UserCreate {
 	uc.mutation.SetEmailAddress(s)
+	return uc
+}
+
+// SetNillableEmailAddress sets the "email_address" field if the given value is not nil.
+func (uc *UserCreate) SetNillableEmailAddress(s *string) *UserCreate {
+	if s != nil {
+		uc.SetEmailAddress(*s)
+	}
 	return uc
 }
 
@@ -440,12 +456,6 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.DisplayName(); !ok {
 		return &ValidationError{Name: "display_name", err: errors.New(`ent: missing required field "display_name"`)}
-	}
-	if _, ok := uc.mutation.PhoneNumber(); !ok {
-		return &ValidationError{Name: "phone_number", err: errors.New(`ent: missing required field "phone_number"`)}
-	}
-	if _, ok := uc.mutation.EmailAddress(); !ok {
-		return &ValidationError{Name: "email_address", err: errors.New(`ent: missing required field "email_address"`)}
 	}
 	if _, ok := uc.mutation.LoginTimes(); !ok {
 		return &ValidationError{Name: "login_times", err: errors.New(`ent: missing required field "login_times"`)}

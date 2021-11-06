@@ -15,8 +15,8 @@ var (
 		{Name: "password", Type: field.TypeString},
 		{Name: "salt", Type: field.TypeString},
 		{Name: "display_name", Type: field.TypeString, Default: ""},
-		{Name: "phone_number", Type: field.TypeString, Unique: true},
-		{Name: "email_address", Type: field.TypeString, Unique: true},
+		{Name: "phone_number", Type: field.TypeString, Nullable: true},
+		{Name: "email_address", Type: field.TypeString, Nullable: true},
 		{Name: "login_times", Type: field.TypeInt32, Default: 0},
 		{Name: "kyc_verify", Type: field.TypeBool, Default: false},
 		{Name: "ga_verify", Type: field.TypeBool, Default: false},
@@ -39,23 +39,6 @@ var (
 		Name:       "users",
 		Columns:    UsersColumns,
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
-		Indexes: []*schema.Index{
-			{
-				Name:    "user_username",
-				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[1]},
-			},
-			{
-				Name:    "user_phone_number",
-				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[5]},
-			},
-			{
-				Name:    "user_email_address",
-				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[6]},
-			},
-		},
 	}
 	// UserFrozensColumns holds the columns for the "user_frozens" table.
 	UserFrozensColumns = []*schema.Column{

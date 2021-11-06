@@ -2,7 +2,6 @@ package userinfo
 
 import (
 	"context"
-	"fmt"
 	"time"
 
 	"github.com/NpoolPlatform/user-management/message/npool"
@@ -41,7 +40,6 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 }
 
 func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
-	fmt.Println("user info is", in)
 	password := in.GetUserInfo().GetPassword()
 
 	salt := encryption.Salt()
@@ -49,7 +47,9 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 	if err != nil {
 		return nil, err
 	}
-	info, err := db.Client().User.Create().
+	info, err := db.Client().
+		User.
+		Create().
 		SetUsername(in.UserInfo.Username).
 		SetPassword(hashPassword).
 		SetSalt(salt).

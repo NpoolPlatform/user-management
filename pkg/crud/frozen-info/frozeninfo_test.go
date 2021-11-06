@@ -45,6 +45,7 @@ func TestFrozenInfoCRUD(t *testing.T) {
 		assert.Equal(t, resp.FrozenUserInfo.FrozenBy, frozenInfo.FrozenBy)
 		assert.Equal(t, resp.FrozenUserInfo.FrozenCause, frozenInfo.FrozenCause)
 		assert.Equal(t, resp.FrozenUserInfo.Status, FrozenStatus)
+		frozenInfo.Id = resp.FrozenUserInfo.Id
 	}
 
 	// unfrozen user.

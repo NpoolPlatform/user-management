@@ -5,7 +5,6 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/schema/field"
-	"entgo.io/ent/schema/index"
 	"github.com/google/uuid"
 )
 
@@ -24,8 +23,8 @@ func (User) Fields() []ent.Field {
 		field.String("password"),
 		field.String("salt"),
 		field.String("display_name").Default(""),
-		field.String("phone_number").Unique(),
-		field.String("email_address").Unique(),
+		field.String("phone_number").Optional(),
+		field.String("email_address").Optional(),
 		field.Int32("login_times").
 			Default(0),
 		field.Bool("kyc_verify").
@@ -63,12 +62,4 @@ func (User) Fields() []ent.Field {
 // Edges of the User.
 func (User) Edges() []ent.Edge {
 	return nil
-}
-
-func (User) Indexes() []ent.Index {
-	return []ent.Index{
-		index.Fields("username"),
-		index.Fields("phone_number"),
-		index.Fields("email_address"),
-	}
 }

@@ -329,9 +329,22 @@ func (m *UserMutation) OldPhoneNumber(ctx context.Context) (v string, err error)
 	return oldValue.PhoneNumber, nil
 }
 
+// ClearPhoneNumber clears the value of the "phone_number" field.
+func (m *UserMutation) ClearPhoneNumber() {
+	m.phone_number = nil
+	m.clearedFields[user.FieldPhoneNumber] = struct{}{}
+}
+
+// PhoneNumberCleared returns if the "phone_number" field was cleared in this mutation.
+func (m *UserMutation) PhoneNumberCleared() bool {
+	_, ok := m.clearedFields[user.FieldPhoneNumber]
+	return ok
+}
+
 // ResetPhoneNumber resets all changes to the "phone_number" field.
 func (m *UserMutation) ResetPhoneNumber() {
 	m.phone_number = nil
+	delete(m.clearedFields, user.FieldPhoneNumber)
 }
 
 // SetEmailAddress sets the "email_address" field.
@@ -365,9 +378,22 @@ func (m *UserMutation) OldEmailAddress(ctx context.Context) (v string, err error
 	return oldValue.EmailAddress, nil
 }
 
+// ClearEmailAddress clears the value of the "email_address" field.
+func (m *UserMutation) ClearEmailAddress() {
+	m.email_address = nil
+	m.clearedFields[user.FieldEmailAddress] = struct{}{}
+}
+
+// EmailAddressCleared returns if the "email_address" field was cleared in this mutation.
+func (m *UserMutation) EmailAddressCleared() bool {
+	_, ok := m.clearedFields[user.FieldEmailAddress]
+	return ok
+}
+
 // ResetEmailAddress resets all changes to the "email_address" field.
 func (m *UserMutation) ResetEmailAddress() {
 	m.email_address = nil
+	delete(m.clearedFields, user.FieldEmailAddress)
 }
 
 // SetLoginTimes sets the "login_times" field.
@@ -1492,7 +1518,14 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *UserMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(user.FieldPhoneNumber) {
+		fields = append(fields, user.FieldPhoneNumber)
+	}
+	if m.FieldCleared(user.FieldEmailAddress) {
+		fields = append(fields, user.FieldEmailAddress)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1505,6 +1538,14 @@ func (m *UserMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *UserMutation) ClearField(name string) error {
+	switch name {
+	case user.FieldPhoneNumber:
+		m.ClearPhoneNumber()
+		return nil
+	case user.FieldEmailAddress:
+		m.ClearEmailAddress()
+		return nil
+	}
 	return fmt.Errorf("unknown User nullable field %s", name)
 }
 

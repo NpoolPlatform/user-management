@@ -15,6 +15,19 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 	if err == nil {
 		return nil, xerrors.Errorf("user exists")
 	}
+	if in.EmailAddress != "" {
+		_, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
+		if err == nil {
+			return nil, xerrors.Errorf("email has been used")
+		}
+	}
+
+	if in.PhoneNumber != "" {
+		_, err := userinfo.QueryUserByPhoneNumber(ctx, in.PhoneNumber)
+		if err == nil {
+			return nil, xerrors.Errorf("phone number has been used")
+		}
+	}
 
 	request := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
@@ -40,6 +53,20 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 	_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.Username)
 	if err == nil {
 		return nil, xerrors.Errorf("user exists")
+	}
+
+	if in.UserInfo.EmailAddress != "" {
+		_, err := userinfo.QueryUserByEmailAddress(ctx, in.UserInfo.EmailAddress)
+		if err == nil {
+			return nil, xerrors.Errorf("email has been used")
+		}
+	}
+
+	if in.UserInfo.PhoneNumber != "" {
+		_, err := userinfo.QueryUserByPhoneNumber(ctx, in.UserInfo.PhoneNumber)
+		if err == nil {
+			return nil, xerrors.Errorf("phone number has been used")
+		}
 	}
 
 	in.UserInfo.SignupMethod = "admin create"

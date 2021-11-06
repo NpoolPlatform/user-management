@@ -64,9 +64,37 @@ func (uu *UserUpdate) SetPhoneNumber(s string) *UserUpdate {
 	return uu
 }
 
+// SetNillablePhoneNumber sets the "phone_number" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePhoneNumber(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetPhoneNumber(*s)
+	}
+	return uu
+}
+
+// ClearPhoneNumber clears the value of the "phone_number" field.
+func (uu *UserUpdate) ClearPhoneNumber() *UserUpdate {
+	uu.mutation.ClearPhoneNumber()
+	return uu
+}
+
 // SetEmailAddress sets the "email_address" field.
 func (uu *UserUpdate) SetEmailAddress(s string) *UserUpdate {
 	uu.mutation.SetEmailAddress(s)
+	return uu
+}
+
+// SetNillableEmailAddress sets the "email_address" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableEmailAddress(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetEmailAddress(*s)
+	}
+	return uu
+}
+
+// ClearEmailAddress clears the value of the "email_address" field.
+func (uu *UserUpdate) ClearEmailAddress() *UserUpdate {
+	uu.mutation.ClearEmailAddress()
 	return uu
 }
 
@@ -434,10 +462,22 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldPhoneNumber,
 		})
 	}
+	if uu.mutation.PhoneNumberCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: user.FieldPhoneNumber,
+		})
+	}
 	if value, ok := uu.mutation.EmailAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
+			Column: user.FieldEmailAddress,
+		})
+	}
+	if uu.mutation.EmailAddressCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
 			Column: user.FieldEmailAddress,
 		})
 	}
@@ -645,9 +685,37 @@ func (uuo *UserUpdateOne) SetPhoneNumber(s string) *UserUpdateOne {
 	return uuo
 }
 
+// SetNillablePhoneNumber sets the "phone_number" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePhoneNumber(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetPhoneNumber(*s)
+	}
+	return uuo
+}
+
+// ClearPhoneNumber clears the value of the "phone_number" field.
+func (uuo *UserUpdateOne) ClearPhoneNumber() *UserUpdateOne {
+	uuo.mutation.ClearPhoneNumber()
+	return uuo
+}
+
 // SetEmailAddress sets the "email_address" field.
 func (uuo *UserUpdateOne) SetEmailAddress(s string) *UserUpdateOne {
 	uuo.mutation.SetEmailAddress(s)
+	return uuo
+}
+
+// SetNillableEmailAddress sets the "email_address" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableEmailAddress(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetEmailAddress(*s)
+	}
+	return uuo
+}
+
+// ClearEmailAddress clears the value of the "email_address" field.
+func (uuo *UserUpdateOne) ClearEmailAddress() *UserUpdateOne {
+	uuo.mutation.ClearEmailAddress()
 	return uuo
 }
 
@@ -1039,10 +1107,22 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldPhoneNumber,
 		})
 	}
+	if uuo.mutation.PhoneNumberCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: user.FieldPhoneNumber,
+		})
+	}
 	if value, ok := uuo.mutation.EmailAddress(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
+			Column: user.FieldEmailAddress,
+		})
+	}
+	if uuo.mutation.EmailAddressCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
 			Column: user.FieldEmailAddress,
 		})
 	}

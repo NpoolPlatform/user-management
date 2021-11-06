@@ -786,6 +786,20 @@ func PhoneNumberHasSuffix(v string) predicate.User {
 	})
 }
 
+// PhoneNumberIsNil applies the IsNil predicate on the "phone_number" field.
+func PhoneNumberIsNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldPhoneNumber)))
+	})
+}
+
+// PhoneNumberNotNil applies the NotNil predicate on the "phone_number" field.
+func PhoneNumberNotNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldPhoneNumber)))
+	})
+}
+
 // PhoneNumberEqualFold applies the EqualFold predicate on the "phone_number" field.
 func PhoneNumberEqualFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -894,6 +908,20 @@ func EmailAddressHasPrefix(v string) predicate.User {
 func EmailAddressHasSuffix(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.HasSuffix(s.C(FieldEmailAddress), v))
+	})
+}
+
+// EmailAddressIsNil applies the IsNil predicate on the "email_address" field.
+func EmailAddressIsNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldEmailAddress)))
+	})
+}
+
+// EmailAddressNotNil applies the NotNil predicate on the "email_address" field.
+func EmailAddressNotNil() predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldEmailAddress)))
 	})
 }
 

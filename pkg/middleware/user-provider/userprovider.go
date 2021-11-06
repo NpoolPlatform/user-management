@@ -1,0 +1,49 @@
+package userprovider
+
+import (
+	"context"
+
+	"github.com/NpoolPlatform/user-management/message/npool"
+	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
+	userprovider "github.com/NpoolPlatform/user-management/pkg/crud/user-provider"
+)
+
+func BindThirdParty(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindThirdPartyResponse, error) {
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := userprovider.Create(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func GetUserProviders(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUserProvidersResponse, error) {
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := userprovider.Get(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func UnbindUserProviders(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.UnbindThirdPartyResponse, error) {
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := userprovider.Delete(ctx, in)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}

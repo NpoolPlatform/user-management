@@ -43,7 +43,7 @@ pipeline {
       steps {
         sh (returnStdout: false, script: '''
           make -C tools/grpc install
-          PATH=$PATH:/usr/go/bin:$HOME/go/bin make -C message proto
+          PATH=$PATH:/usr/go/bin:$HOME/go/bin make -C message clean proto
           make verify-build
         '''.stripIndent())
       }
@@ -62,15 +62,14 @@ pipeline {
       steps {
         sh 'rm .apollo-base-config -rf'
         sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
-
         sh (returnStdout: false, script: '''
           devboxpod=`kubectl get pods -A | grep development-box | awk '{print $2}'`
           servicename="user-management"
           PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
           kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists user_management;"
+          kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename after-test || true
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename || true
           kubectl cp ./ kube-system/$devboxpod:/tmp/$servicename
-          kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename after-test || true
           username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`
           for vhost in `cat cmd/*/*.viper.yaml | grep hostname | awk '{print $2}' | sed 's/"//g' | sed 's/\\./-/g'`; do
             kubectl exec -it --namespace kube-system rabbitmq-0 -- rabbitmqctl add_vhost $vhost
@@ -83,7 +82,7 @@ pipeline {
           kubectl exec --namespace kube-system $devboxpod -- make -C /tmp/$servicename deps before-test test after-test
           kubectl exec --namespace kube-system $devboxpod -- rm -rf /tmp/$servicename
           swaggeruipod=`kubectl get pods -A | grep swagger | awk '{print $2}'`
-          kubectl cp ./message/npool/*.swagger.json kube-system/$swaggeruipod:/usr/share/nginx/html
+          kubectl cp message/npool/*.swagger.json kube-system/$swaggeruipod:/usr/share/nginx/html || true
         '''.stripIndent())
       }
     }
@@ -93,6 +92,12 @@ pipeline {
         expression { BUILD_TARGET == 'true' }
       }
       steps {
+        sh(returnStdout: true, script: '''
+          images=`docker images | grep entropypool | grep user-management | awk '{ print $3 }'`
+          for image in $images; do
+            docker rmi $image
+          done
+        '''.stripIndent())
         sh 'make generate-docker-images'
       }
     }
@@ -111,12 +116,10 @@ pipeline {
         expression { DEPLOY_TARGET == 'true' }
       }
       steps {
-        sh 'make deploy-to-k8s-cluster'
-
         sh 'rm .apollo-base-config -rf'
         sh 'git clone https://github.com/NpoolPlatform/apollo-base-config.git .apollo-base-config'
-
-        sh (returnStdout: true, script: '''
+        sh 'make deploy-to-k8s-cluster'
+        sh (returnStdout: false, script: '''
           PASSWORD=`kubectl get secret --namespace "kube-system" mysql-password-secret -o jsonpath="{.data.rootpassword}" | base64 --decode`
           kubectl -n kube-system exec mysql-0 -- mysql -h 127.0.0.1 -uroot -p$PASSWORD -P3306 -e "create database if not exists user_management;"
           username=`helm status rabbitmq --namespace kube-system | grep Username | awk -F ' : ' '{print $2}' | sed 's/"//g'`

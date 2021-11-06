@@ -2,4 +2,4 @@
 /bin
 tmp
 *.json
-*.log
+.apollo-base-config

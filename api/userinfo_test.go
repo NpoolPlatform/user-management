@@ -45,9 +45,25 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.SignupResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &signupUserInfo)
-			signupUserInfo.UserId = info.UserInfo.UserId
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &signupUserInfo)
+			signupUserInfo.UserId = info.Info.UserId
+		}
+	}
+
+	respp, err := cli.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(&npool.QueryUserExistRequest{
+			Username: signupUserInfo.Username,
+			Password: signupUserInfo.Password,
+		}).
+		Post("http://localhost:50070/v1/query/user/exist")
+	if assert.Nil(t, err) {
+		assert.Equal(t, 200, respp.StatusCode())
+		response := npool.QueryUserExistResponse{}
+		err := json.Unmarshal(respp.Body(), &response)
+		if assert.Nil(t, err) {
+			assert.NotNil(t, response.Info)
 		}
 	}
 
@@ -67,9 +83,9 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.AddUserResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &addUserInfo)
-			addUserInfo.UserId = info.UserInfo.UserId
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &addUserInfo)
+			addUserInfo.UserId = info.Info.UserId
 		}
 	}
 
@@ -84,8 +100,8 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.GetUserResponse{}
 		err := json.Unmarshal(resp3.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &signupUserInfo)
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &signupUserInfo)
 		}
 	}
 
@@ -100,7 +116,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp5, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.UpdateUserInfoRequest{
-			UserInfo: &addUserInfo,
+			Info: &addUserInfo,
 		}).
 		Post("http://localhost:50070/v1/update/user")
 	if assert.Nil(t, err) {
@@ -108,8 +124,8 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.UpdateUserInfoResponse{}
 		err := json.Unmarshal(resp5.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &addUserInfo)
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &addUserInfo)
 		}
 	}
 

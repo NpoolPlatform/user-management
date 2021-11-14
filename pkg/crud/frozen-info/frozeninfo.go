@@ -75,7 +75,7 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 	}
 
 	return &npool.FrozenUserResponse{
-		FrozenUserInfo: dbRowToInfo(info),
+		Info: dbRowToInfo(info),
 	}, nil
 }
 
@@ -118,7 +118,7 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 	}
 
 	return &npool.UnfrozenUserResponse{
-		UnFrozenUserInfo: dbRowToInfo(info),
+		Info: dbRowToInfo(info),
 	}, nil
 }
 
@@ -138,6 +138,6 @@ func Get(ctx context.Context) (*npool.GetFrozenUsersResponse, error) {
 		myInfos = append(myInfos, dbRowToInfo(info))
 	}
 	return &npool.GetFrozenUsersResponse{
-		FrozenUsers: myInfos,
+		Infos: myInfos,
 	}, nil
 }

@@ -71,7 +71,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 		return nil, xerrors.Errorf("fail to bind third party provider: %v", err)
 	}
 	return &npool.BindThirdPartyResponse{
-		UserProviderInfo: dbRowToInfo(createInfo),
+		Info: dbRowToInfo(createInfo),
 	}, nil
 }
 
@@ -98,7 +98,7 @@ func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUser
 		userProviders = append(userProviders, dbRowToInfo(info))
 	}
 	return &npool.GetUserProvidersResponse{
-		UserProviders: userProviders,
+		Infos: userProviders,
 	}, nil
 }
 
@@ -129,7 +129,7 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 	}
 
 	return &npool.UnbindThirdPartyResponse{
-		UserProviderInfo: dbRowToInfo(info),
+		Info: dbRowToInfo(info),
 	}, nil
 }
 

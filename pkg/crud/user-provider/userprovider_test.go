@@ -52,11 +52,11 @@ func TestUserProviderCRUD(t *testing.T) {
 		UserProviderInfo: userProvider.UserProviderInfo,
 	})
 	if assert.Nil(t, err) {
-		assert.NotEqual(t, resp.UserProviderInfo.ID, uuid.UUID{})
-		assert.Equal(t, resp.UserProviderInfo.UserId, userProvider.UserId)
-		assert.Equal(t, resp.UserProviderInfo.ProviderId, userProvider.ProviderId)
-		assert.Equal(t, resp.UserProviderInfo.ProviderUserId, userProvider.ProviderUserId)
-		assert.Equal(t, resp.UserProviderInfo.UserProviderInfo, userProvider.UserProviderInfo)
+		assert.NotEqual(t, resp.Info.ID, uuid.UUID{})
+		assert.Equal(t, resp.Info.UserId, userProvider.UserId)
+		assert.Equal(t, resp.Info.ProviderId, userProvider.ProviderId)
+		assert.Equal(t, resp.Info.ProviderUserId, userProvider.ProviderUserId)
+		assert.Equal(t, resp.Info.UserProviderInfo, userProvider.UserProviderInfo)
 	}
 
 	resp1, err := Get(context.Background(), &npool.GetUserProvidersRequest{

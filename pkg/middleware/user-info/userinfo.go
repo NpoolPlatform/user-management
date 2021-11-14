@@ -45,7 +45,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 	}
 
 	return &npool.SignupResponse{
-		UserInfo: resp.UserInfo,
+		Info: resp.Info,
 	}, nil
 }
 
@@ -75,9 +75,7 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 	if err != nil {
 		return nil, err
 	}
-	return &npool.AddUserResponse{
-		UserInfo: resp.UserInfo,
-	}, nil
+	return resp, nil
 }
 
 func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
@@ -138,7 +136,7 @@ func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.
 	userInfo.PhoneNumber = in.PhoneNumber
 
 	_, err = userinfo.Update(ctx, &npool.UpdateUserInfoRequest{
-		UserInfo: userInfo,
+		Info: userInfo,
 	})
 	if err != nil {
 		return nil, err
@@ -156,7 +154,7 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 	userInfo.EmailAddress = in.EmailAddress
 
 	_, err = userinfo.Update(ctx, &npool.UpdateUserInfoRequest{
-		UserInfo: userInfo,
+		Info: userInfo,
 	})
 	if err != nil {
 		return nil, err

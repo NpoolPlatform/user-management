@@ -40,12 +40,12 @@ func TestFrozenInfoCRUD(t *testing.T) {
 		FrozenCause: frozenInfo.FrozenCause,
 	})
 	if assert.Nil(t, err) {
-		assert.NotEqual(t, resp.FrozenUserInfo.Id, uuid.UUID{})
-		assert.Equal(t, resp.FrozenUserInfo.UserId, frozenInfo.UserId)
-		assert.Equal(t, resp.FrozenUserInfo.FrozenBy, frozenInfo.FrozenBy)
-		assert.Equal(t, resp.FrozenUserInfo.FrozenCause, frozenInfo.FrozenCause)
-		assert.Equal(t, resp.FrozenUserInfo.Status, FrozenStatus)
-		frozenInfo.Id = resp.FrozenUserInfo.Id
+		assert.NotEqual(t, resp.Info.Id, uuid.UUID{})
+		assert.Equal(t, resp.Info.UserId, frozenInfo.UserId)
+		assert.Equal(t, resp.Info.FrozenBy, frozenInfo.FrozenBy)
+		assert.Equal(t, resp.Info.FrozenCause, frozenInfo.FrozenCause)
+		assert.Equal(t, resp.Info.Status, FrozenStatus)
+		frozenInfo.Id = resp.Info.Id
 	}
 
 	// create a frozen user request which is still in frozen.
@@ -60,19 +60,19 @@ func TestFrozenInfoCRUD(t *testing.T) {
 
 	// unfrozen user.
 	frozenInfo.UnfrozenBy = uuid.New().String()
-	frozenInfo.Id = resp.FrozenUserInfo.Id
+	frozenInfo.Id = resp.Info.Id
 	resp1, err := Update(context.Background(), &npool.UnfrozenUserRequest{
 		Id:         frozenInfo.Id,
 		UnfrozenBy: frozenInfo.UnfrozenBy,
 		UserId:     frozenInfo.UserId,
 	})
 	if assert.Nil(t, err) {
-		assert.Equal(t, resp1.UnFrozenUserInfo.Id, frozenInfo.Id)
-		assert.Equal(t, resp1.UnFrozenUserInfo.UserId, frozenInfo.UserId)
-		assert.Equal(t, resp1.UnFrozenUserInfo.FrozenBy, frozenInfo.FrozenBy)
-		assert.Equal(t, resp1.UnFrozenUserInfo.FrozenCause, frozenInfo.FrozenCause)
-		assert.Equal(t, resp1.UnFrozenUserInfo.Status, UnfrozenStatus)
-		assert.Equal(t, resp1.UnFrozenUserInfo.UnfrozenBy, frozenInfo.UnfrozenBy)
+		assert.Equal(t, resp1.Info.Id, frozenInfo.Id)
+		assert.Equal(t, resp1.Info.UserId, frozenInfo.UserId)
+		assert.Equal(t, resp1.Info.FrozenBy, frozenInfo.FrozenBy)
+		assert.Equal(t, resp1.Info.FrozenCause, frozenInfo.FrozenCause)
+		assert.Equal(t, resp1.Info.Status, UnfrozenStatus)
+		assert.Equal(t, resp1.Info.UnfrozenBy, frozenInfo.UnfrozenBy)
 	}
 
 	// get user frozen list.

@@ -18,9 +18,7 @@ func FrozenUser(ctx context.Context, in *npool.FrozenUserRequest) (*npool.Frozen
 	if err != nil {
 		return nil, err
 	}
-	return &npool.FrozenUserResponse{
-		FrozenUserInfo: resp.FrozenUserInfo,
-	}, nil
+	return resp, nil
 }
 
 func UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.UnfrozenUserResponse, error) {
@@ -32,7 +30,5 @@ func UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Un
 	if err != nil {
 		return nil, err
 	}
-	return &npool.UnfrozenUserResponse{
-		UnFrozenUserInfo: resp.UnFrozenUserInfo,
-	}, nil
+	return resp, nil
 }

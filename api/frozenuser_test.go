@@ -33,15 +33,14 @@ func TestFrozenUserAPI(t *testing.T) {
 			EmailAddress: createUser.EmailAddress,
 		}).
 		Post("http://localhost:50070/v1/signup")
-	fmt.Println("sign up error", err)
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp1.StatusCode())
 		info := npool.SignupResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &createUser)
-			createUser.UserId = info.UserInfo.UserId
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &createUser)
+			createUser.UserId = info.Info.UserId
 		}
 	}
 
@@ -65,11 +64,11 @@ func TestFrozenUserAPI(t *testing.T) {
 		info := npool.FrozenUserResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.FrozenUserInfo.Id, uuid.UUID{})
-			assert.Equal(t, info.FrozenUserInfo.UserId, frozenUserInfo.UserId)
-			assert.Equal(t, info.FrozenUserInfo.FrozenBy, frozenUserInfo.FrozenBy)
-			assert.Equal(t, info.FrozenUserInfo.FrozenCause, frozenUserInfo.FrozenCause)
-			frozenUserInfo.Id = info.FrozenUserInfo.Id
+			assert.NotEqual(t, info.Info.Id, uuid.UUID{})
+			assert.Equal(t, info.Info.UserId, frozenUserInfo.UserId)
+			assert.Equal(t, info.Info.FrozenBy, frozenUserInfo.FrozenBy)
+			assert.Equal(t, info.Info.FrozenCause, frozenUserInfo.FrozenCause)
+			frozenUserInfo.Id = info.Info.Id
 		}
 	}
 
@@ -87,11 +86,11 @@ func TestFrozenUserAPI(t *testing.T) {
 		info := npool.UnfrozenUserResponse{}
 		err := json.Unmarshal(resp3.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.Equal(t, info.UnFrozenUserInfo.Id, frozenUserInfo.Id)
-			assert.Equal(t, info.UnFrozenUserInfo.UserId, frozenUserInfo.UserId)
-			assert.Equal(t, info.UnFrozenUserInfo.FrozenBy, frozenUserInfo.FrozenBy)
-			assert.Equal(t, info.UnFrozenUserInfo.FrozenCause, frozenUserInfo.FrozenCause)
-			assert.Equal(t, info.UnFrozenUserInfo.UnfrozenBy, frozenUserInfo.FrozenBy)
+			assert.Equal(t, info.Info.Id, frozenUserInfo.Id)
+			assert.Equal(t, info.Info.UserId, frozenUserInfo.UserId)
+			assert.Equal(t, info.Info.FrozenBy, frozenUserInfo.FrozenBy)
+			assert.Equal(t, info.Info.FrozenCause, frozenUserInfo.FrozenCause)
+			assert.Equal(t, info.Info.UnfrozenBy, frozenUserInfo.FrozenBy)
 		}
 	}
 

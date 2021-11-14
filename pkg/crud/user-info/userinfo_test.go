@@ -70,32 +70,40 @@ func TestUserInfoCRUD(t *testing.T) {
 		UserInfo: &userInfo,
 	})
 	if assert.Nil(t, err) {
-		salt, err := GetUserSalt(context.Background(), resp.UserInfo.UserId)
+		salt, err := GetUserSalt(context.Background(), resp.Info.UserId)
 		if assert.Nil(t, err) {
-			userInfo.UserId = resp.UserInfo.UserId
-			assert.Nil(t, encryption.VerifyUserPassword(userInfo.Password, resp.UserInfo.Password, salt))
-			assert.NotEqual(t, resp.UserInfo.UserId, uuid.UUID{})
-			assert.Equal(t, resp.UserInfo.Username, userInfo.Username)
-			assert.Equal(t, resp.UserInfo.Age, userInfo.Age)
-			assert.Equal(t, resp.UserInfo.Gender, userInfo.Gender)
-			assert.Equal(t, resp.UserInfo.Region, userInfo.Region)
-			assert.Equal(t, resp.UserInfo.Birthday, userInfo.Birthday)
-			assert.Equal(t, resp.UserInfo.Country, userInfo.Country)
-			assert.Equal(t, resp.UserInfo.City, userInfo.City)
-			assert.Equal(t, resp.UserInfo.Province, userInfo.Province)
-			assert.Equal(t, resp.UserInfo.PhoneNumber, userInfo.PhoneNumber)
-			assert.Equal(t, resp.UserInfo.EmailAddress, userInfo.EmailAddress)
-			assert.Equal(t, resp.UserInfo.SignupMethod, userInfo.SignupMethod)
-			assert.Equal(t, resp.UserInfo.Career, userInfo.Career)
-			assert.Equal(t, resp.UserInfo.DisplayName, userInfo.DisplayName)
+			userInfo.UserId = resp.Info.UserId
+			assert.Nil(t, encryption.VerifyUserPassword(userInfo.Password, resp.Info.Password, salt))
+			assert.NotEqual(t, resp.Info.UserId, uuid.UUID{})
+			assert.Equal(t, resp.Info.Username, userInfo.Username)
+			assert.Equal(t, resp.Info.Age, userInfo.Age)
+			assert.Equal(t, resp.Info.Gender, userInfo.Gender)
+			assert.Equal(t, resp.Info.Region, userInfo.Region)
+			assert.Equal(t, resp.Info.Birthday, userInfo.Birthday)
+			assert.Equal(t, resp.Info.Country, userInfo.Country)
+			assert.Equal(t, resp.Info.City, userInfo.City)
+			assert.Equal(t, resp.Info.Province, userInfo.Province)
+			assert.Equal(t, resp.Info.PhoneNumber, userInfo.PhoneNumber)
+			assert.Equal(t, resp.Info.EmailAddress, userInfo.EmailAddress)
+			assert.Equal(t, resp.Info.SignupMethod, userInfo.SignupMethod)
+			assert.Equal(t, resp.Info.Career, userInfo.Career)
+			assert.Equal(t, resp.Info.DisplayName, userInfo.DisplayName)
 		}
+	}
+
+	resp10, err := QueryUserExist(context.Background(), &npool.QueryUserExistRequest{
+		Username: userInfo.Username,
+		Password: userInfo.Password,
+	})
+	if assert.Nil(t, err) {
+		assert.NotNil(t, resp10)
 	}
 
 	userInfo.DisplayName = "lpzCrazy"
 	resp1, err := Update(context.Background(), &npool.UpdateUserInfoRequest{
-		UserInfo: &userInfo,
+		Info: &userInfo,
 	})
-	assertUserBasicInfo(t, err, resp1.UserInfo, &userInfo)
+	assertUserBasicInfo(t, err, resp1.Info, &userInfo)
 
 	err = SetPassword(context.Background(), userInfo.Password, userInfo.UserId)
 	assert.Nil(t, err)
@@ -103,7 +111,7 @@ func TestUserInfoCRUD(t *testing.T) {
 	resp2, err := Get(context.Background(), &npool.GetUserRequest{
 		UserId: userInfo.UserId,
 	})
-	assertUserBasicInfo(t, err, resp2.UserInfo, &userInfo)
+	assertUserBasicInfo(t, err, resp2.Info, &userInfo)
 
 	resp4, err := QueryUserByUserID(context.Background(), userInfo.UserId)
 	if assert.Nil(t, err) {

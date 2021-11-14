@@ -7,13 +7,15 @@ import (
 	"github.com/NpoolPlatform/user-management/message/npool"
 	crud "github.com/NpoolPlatform/user-management/pkg/crud/frozen-info"
 	middleware "github.com/NpoolPlatform/user-management/pkg/middleware/frozen-user"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func (s *Server) FrozenUser(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUserResponse, error) {
 	resp, err := middleware.FrozenUser(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to frozen user: %v", err)
-		return nil, err
+		return &npool.FrozenUserResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -22,7 +24,7 @@ func (s *Server) UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest
 	resp, err := middleware.UnfrozenUser(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to unfrozen user: %v", err)
-		return nil, err
+		return &npool.UnfrozenUserResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -31,7 +33,7 @@ func (s *Server) GetFrozenUsers(ctx context.Context, in *npool.GetFrozenUsersReq
 	resp, err := crud.Get(ctx)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get frozen user list: %v", err)
-		return nil, err
+		return &npool.GetFrozenUsersResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
 	}
 	return resp, nil
 }

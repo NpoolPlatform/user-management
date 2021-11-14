@@ -190,7 +190,12 @@ service User {
             body: "*"
         };
     };
-
+    rpc QueryUserExist (QueryUserExistRequest) returns (QueryUserExistResponse) {
+        option (google.api.http) = {
+            post: "/v1/query/user/exist"
+            body: "*"
+        };
+    };
 }
 
 // request body and response
@@ -239,7 +244,7 @@ message SignupRequest {
 }
 
 message SignupResponse {
-    UserBasicInfo UserInfo = 1;
+    UserBasicInfo Info = 1;
 }
 
 message GetUserRequest {
@@ -248,23 +253,23 @@ message GetUserRequest {
 }
 
 message GetUserResponse {
-    UserBasicInfo UserInfo = 1;
+    UserBasicInfo Info = 1;
 }
 
 message GetUsersRequest {
-    PageInfo PageInfo = 1;
+    PageInfo Info = 1;
 }
 
 message GetUsersResponse {
-    repeated UserBasicInfo UserInfos = 1;
+    repeated UserBasicInfo Infos = 1;
 }
 
 message UpdateUserInfoRequest {
-    UserBasicInfo UserInfo = 1;
+    UserBasicInfo Info = 1;
 }
 
 message UpdateUserInfoResponse {
-    UserBasicInfo UserInfo = 1;
+    UserBasicInfo Info = 1;
 }
 
 message BindUserPhoneRequest {
@@ -322,7 +327,7 @@ message BindThirdPartyRequest {
 }
 
 message BindThirdPartyResponse {
-    UserProvider UserProviderInfo = 1;
+    UserProvider Info = 1;
 }
 
 message UnbindThirdPartyRequest {
@@ -332,7 +337,7 @@ message UnbindThirdPartyRequest {
 }
 
 message UnbindThirdPartyResponse {
-    UserProvider UserProviderInfo = 1;
+    UserProvider Info = 1;
 }
 
 message ChangeUserPasswordRequest {
@@ -368,7 +373,7 @@ message GetGaQRCodeRequest {
 }
 
 message GetGaQRCodeResponse {
-    string GaQRCode = 1;
+    string Info = 1;
 }
 
 message VerifyGaRequest {
@@ -407,7 +412,7 @@ message AddUserRequest {
 }
 
 message AddUserResponse {
-    UserBasicInfo UserInfo = 1;
+    UserBasicInfo Info = 1;
 }
 
 message FrozenUser {
@@ -428,7 +433,7 @@ message FrozenUserRequest {
 }
 
 message FrozenUserResponse {
-    FrozenUser FrozenUserInfo = 1;
+    FrozenUser Info = 1;
 }
 
 message UnfrozenUserRequest {
@@ -438,15 +443,15 @@ message UnfrozenUserRequest {
 }
 
 message UnfrozenUserResponse {
-    FrozenUser UnFrozenUserInfo = 1;
+    FrozenUser Info = 1;
 }
 
 message GetFrozenUsersRequest {
-    PageInfo PageInfo = 1;
+    PageInfo Info = 1;
 }
 
 message GetFrozenUsersResponse {
-    repeated FrozenUser FrozenUsers = 1;
+    repeated FrozenUser Infos = 1;
 }
 
 message GetUserProvidersRequest {
@@ -454,5 +459,14 @@ message GetUserProvidersRequest {
 }
 
 message GetUserProvidersResponse {
-    repeated UserProvider UserProviders = 1;
+    repeated UserProvider Infos = 1;
+}
+
+message QueryUserExistRequest {
+    string Username = 1;
+    string Password = 2;
+}
+
+message QueryUserExistResponse {
+    UserBasicInfo Info = 1;
 }

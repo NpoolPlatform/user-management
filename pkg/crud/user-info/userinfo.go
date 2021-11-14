@@ -72,7 +72,7 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 	}
 
 	return &npool.AddUserResponse{
-		UserInfo: dbRowToInfo(info),
+		Info: dbRowToInfo(info),
 	}, nil
 }
 
@@ -100,7 +100,7 @@ func SetPassword(ctx context.Context, password, userID string) error {
 }
 
 func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.UpdateUserInfoResponse, error) {
-	id, err := uuid.Parse(in.GetUserInfo().GetUserId())
+	id, err := uuid.Parse(in.Info.UserId)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -123,28 +123,28 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 
 	info, err := db.Client().User.
 		UpdateOneID(id).
-		SetAvatar(in.GetUserInfo().GetAvatar()).
-		SetRegion(in.GetUserInfo().GetRegion()).
-		SetAge(in.GetUserInfo().GetAge()).
-		SetGender(in.GetUserInfo().Gender).
-		SetBirthday(in.GetUserInfo().GetBirthday()).
-		SetCountry(in.GetUserInfo().GetCountry()).
-		SetProvince(in.GetUserInfo().GetProvince()).
-		SetCity(in.GetUserInfo().GetCity()).
-		SetCareer(in.GetUserInfo().GetCareer()).
-		SetPhoneNumber(in.GetUserInfo().GetPhoneNumber()).
-		SetEmailAddress(in.GetUserInfo().GetEmailAddress()).
-		SetLoginTimes(in.GetUserInfo().GetLoginTimes()).
-		SetKycVerify(in.GetUserInfo().GetKycVerify()).
-		SetGaVerify(in.GetUserInfo().GetGaVerify()).
-		SetDisplayName(in.GetUserInfo().GetDisplayName()).
+		SetAvatar(in.GetInfo().GetAvatar()).
+		SetRegion(in.GetInfo().GetRegion()).
+		SetAge(in.GetInfo().GetAge()).
+		SetGender(in.GetInfo().Gender).
+		SetBirthday(in.GetInfo().GetBirthday()).
+		SetCountry(in.GetInfo().GetCountry()).
+		SetProvince(in.GetInfo().GetProvince()).
+		SetCity(in.GetInfo().GetCity()).
+		SetCareer(in.GetInfo().GetCareer()).
+		SetPhoneNumber(in.GetInfo().GetPhoneNumber()).
+		SetEmailAddress(in.GetInfo().GetEmailAddress()).
+		SetLoginTimes(in.GetInfo().GetLoginTimes()).
+		SetKycVerify(in.GetInfo().GetKycVerify()).
+		SetGaVerify(in.GetInfo().GetGaVerify()).
+		SetDisplayName(in.GetInfo().GetDisplayName()).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to update user info: %v", err)
 	}
 
 	return &npool.UpdateUserInfoResponse{
-		UserInfo: dbRowToInfo(info),
+		Info: dbRowToInfo(info),
 	}, nil
 }
 
@@ -172,7 +172,7 @@ func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse,
 	}
 
 	return &npool.GetUserResponse{
-		UserInfo: dbRowToInfo(info[0]),
+		Info: dbRowToInfo(info[0]),
 	}, nil
 }
 
@@ -194,7 +194,7 @@ func GetAll(ctx context.Context) (*npool.GetUsersResponse, error) {
 		response = append(response, dbRowToInfo(info))
 	}
 	return &npool.GetUsersResponse{
-		UserInfos: response,
+		Infos: response,
 	}, nil
 }
 
@@ -355,4 +355,41 @@ func QueryUserByEmailAddress(ctx context.Context, emailAddress string) (*npool.U
 	}
 
 	return dbRowToInfo(info[0]), nil
+}
+
+func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npool.QueryUserExistResponse, error) {
+	info, err := db.Client().
+		User.
+		Query().
+		Where(
+			user.Or(
+				user.Username(in.Username),
+				user.PhoneNumber(in.Username),
+				user.EmailAddress(in.Username),
+			),
+			user.And(
+				user.DeleteAt(0),
+			),
+		).Only(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to query user: %v", err)
+	}
+
+	salt, err := GetUserSalt(ctx, info.ID.String())
+	if err != nil {
+		return nil, xerrors.Errorf("fail to get user's salt: %v", err)
+	}
+
+	dbPassword, err := GetUserPassword(ctx, info.ID.String())
+	if err != nil {
+		return nil, xerrors.Errorf("fail to get user's password: %v", err)
+	}
+
+	err = encryption.VerifyUserPassword(in.Password, dbPassword, salt)
+	if err != nil {
+		return nil, xerrors.Errorf("user password not equal: %v", err)
+	}
+	return &npool.QueryUserExistResponse{
+		Info: dbRowToInfo(info),
+	}, nil
 }

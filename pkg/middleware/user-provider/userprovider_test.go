@@ -38,7 +38,7 @@ func TestUserProviderMiddleware(t *testing.T) { // nolint
 	assert.Nil(t, err)
 
 	userProvider := npool.UserProvider{
-		UserId:         resp.UserInfo.UserId,
+		UserId:         resp.Info.UserId,
 		ProviderId:     uuid.New().String(),
 		ProviderUserId: "test-provider" + uuid.New().String(),
 	}
@@ -49,11 +49,11 @@ func TestUserProviderMiddleware(t *testing.T) { // nolint
 		ProviderUserId: userProvider.ProviderUserId,
 	})
 	if assert.Nil(t, err) {
-		assert.NotEqual(t, uuid.UUID{}, resp1.UserProviderInfo.ID)
-		assert.Equal(t, userProvider.UserId, resp1.UserProviderInfo.UserId)
-		assert.Equal(t, userProvider.ProviderId, resp1.UserProviderInfo.ProviderId)
-		assert.Equal(t, userProvider.ProviderUserId, resp1.UserProviderInfo.ProviderUserId)
-		userProvider.ID = resp1.UserProviderInfo.ID
+		assert.NotEqual(t, uuid.UUID{}, resp1.Info.ID)
+		assert.Equal(t, userProvider.UserId, resp1.Info.UserId)
+		assert.Equal(t, userProvider.ProviderId, resp1.Info.ProviderId)
+		assert.Equal(t, userProvider.ProviderUserId, resp1.Info.ProviderUserId)
+		userProvider.ID = resp1.Info.ID
 	}
 
 	resp2, err := GetUserProviders(context.Background(), &npool.GetUserProvidersRequest{
@@ -67,9 +67,9 @@ func TestUserProviderMiddleware(t *testing.T) { // nolint
 		ProviderId: userProvider.ProviderId,
 	})
 	if assert.Nil(t, err) {
-		assert.Equal(t, resp3.UserProviderInfo.ID, userProvider.ID)
-		assert.Equal(t, resp3.UserProviderInfo.UserId, userProvider.UserId)
-		assert.Equal(t, resp3.UserProviderInfo.ProviderId, userProvider.ProviderId)
-		fmt.Printf("provider user id is: %v\n", resp3.UserProviderInfo.ProviderUserId)
+		assert.Equal(t, resp3.Info.ID, userProvider.ID)
+		assert.Equal(t, resp3.Info.UserId, userProvider.UserId)
+		assert.Equal(t, resp3.Info.ProviderId, userProvider.ProviderId)
+		fmt.Printf("provider user id is: %v\n", resp3.Info.ProviderUserId)
 	}
 }

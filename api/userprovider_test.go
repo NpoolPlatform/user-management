@@ -40,9 +40,9 @@ func TestUserProviderAPI(t *testing.T) {
 		info := npool.SignupResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserInfo.UserId, uuid.UUID{})
-			assertUserInfo(t, info.UserInfo, &createUser)
-			createUser.UserId = info.UserInfo.UserId
+			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assertUserInfo(t, info.Info, &createUser)
+			createUser.UserId = info.Info.UserId
 		}
 	}
 
@@ -65,11 +65,11 @@ func TestUserProviderAPI(t *testing.T) {
 		info := npool.BindThirdPartyResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserProviderInfo.ID, uuid.UUID{})
-			assert.Equal(t, info.UserProviderInfo.UserId, userProvider.UserId)
-			assert.Equal(t, info.UserProviderInfo.ProviderId, userProvider.ProviderId)
-			assert.Equal(t, info.UserProviderInfo.ProviderUserId, userProvider.ProviderUserId)
-			userProvider.ID = info.UserProviderInfo.ID
+			assert.NotEqual(t, info.Info.ID, uuid.UUID{})
+			assert.Equal(t, info.Info.UserId, userProvider.UserId)
+			assert.Equal(t, info.Info.ProviderId, userProvider.ProviderId)
+			assert.Equal(t, info.Info.ProviderUserId, userProvider.ProviderUserId)
+			userProvider.ID = info.Info.ID
 		}
 	}
 
@@ -94,10 +94,10 @@ func TestUserProviderAPI(t *testing.T) {
 		info := npool.UnbindThirdPartyResponse{}
 		err := json.Unmarshal(resp4.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.UserProviderInfo.ID, uuid.UUID{})
-			assert.Equal(t, info.UserProviderInfo.UserId, userProvider.UserId)
-			assert.Equal(t, info.UserProviderInfo.ProviderId, userProvider.ProviderId)
-			fmt.Printf("provider user id is: %v\n", info.UserProviderInfo.ProviderUserId)
+			assert.NotEqual(t, info.Info.ID, uuid.UUID{})
+			assert.Equal(t, info.Info.UserId, userProvider.UserId)
+			assert.Equal(t, info.Info.ProviderId, userProvider.ProviderId)
+			fmt.Printf("provider user id is: %v\n", info.Info.ProviderUserId)
 		}
 	}
 }

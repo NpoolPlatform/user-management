@@ -34,6 +34,8 @@
     - [GetUsersRequest](#user.v1.GetUsersRequest)
     - [GetUsersResponse](#user.v1.GetUsersResponse)
     - [PageInfo](#user.v1.PageInfo)
+    - [QueryUserExistRequest](#user.v1.QueryUserExistRequest)
+    - [QueryUserExistResponse](#user.v1.QueryUserExistResponse)
     - [SignupRequest](#user.v1.SignupRequest)
     - [SignupResponse](#user.v1.SignupResponse)
     - [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest)
@@ -89,7 +91,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -123,7 +125,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserProviderInfo | [UserProvider](#user.v1.UserProvider) |  |  |
+| Info | [UserProvider](#user.v1.UserProvider) |  |  |
 
 
 
@@ -373,7 +375,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| FrozenUserInfo | [FrozenUser](#user.v1.FrozenUser) |  |  |
+| Info | [FrozenUser](#user.v1.FrozenUser) |  |  |
 
 
 
@@ -388,7 +390,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| PageInfo | [PageInfo](#user.v1.PageInfo) |  |  |
+| Info | [PageInfo](#user.v1.PageInfo) |  |  |
 
 
 
@@ -403,7 +405,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| FrozenUsers | [FrozenUser](#user.v1.FrozenUser) | repeated |  |
+| Infos | [FrozenUser](#user.v1.FrozenUser) | repeated |  |
 
 
 
@@ -433,7 +435,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| GaQRCode | [string](#string) |  |  |
+| Info | [string](#string) |  |  |
 
 
 
@@ -463,7 +465,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserProviders | [UserProvider](#user.v1.UserProvider) | repeated |  |
+| Infos | [UserProvider](#user.v1.UserProvider) | repeated |  |
 
 
 
@@ -493,7 +495,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -508,7 +510,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| PageInfo | [PageInfo](#user.v1.PageInfo) |  |  |
+| Info | [PageInfo](#user.v1.PageInfo) |  |  |
 
 
 
@@ -523,7 +525,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfos | [UserBasicInfo](#user.v1.UserBasicInfo) | repeated |  |
+| Infos | [UserBasicInfo](#user.v1.UserBasicInfo) | repeated |  |
 
 
 
@@ -540,6 +542,37 @@
 | ----- | ---- | ----- | ----------- |
 | PageIndex | [uint32](#uint32) |  |  |
 | PageSize | [uint32](#uint32) |  |  |
+
+
+
+
+
+
+<a name="user.v1.QueryUserExistRequest"></a>
+
+### QueryUserExistRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Username | [string](#string) |  |  |
+| Password | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.QueryUserExistResponse"></a>
+
+### QueryUserExistResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -573,7 +606,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -605,7 +638,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserProviderInfo | [UserProvider](#user.v1.UserProvider) |  |  |
+| Info | [UserProvider](#user.v1.UserProvider) |  |  |
 
 
 
@@ -697,7 +730,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UnFrozenUserInfo | [FrozenUser](#user.v1.FrozenUser) |  |  |
+| Info | [FrozenUser](#user.v1.FrozenUser) |  |  |
 
 
 
@@ -712,7 +745,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -727,7 +760,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
 
@@ -868,6 +901,7 @@ a service of managing users
 | UnfrozenUser | [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest) | [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse) | Unfrozen user. |
 | GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
 | GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
+| QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) |  |
 
  
 

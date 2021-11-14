@@ -24,19 +24,19 @@ func (UserProvider) Fields() []ent.Field {
 		field.UUID("provider_id", uuid.UUID{}),
 		field.String("provider_user_id").Unique(),
 		field.String("user_provider_info"),
-		field.Int64("create_at").
-			DefaultFunc(func() int64 {
-				return time.Now().Unix()
+		field.Uint32("create_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
 			}),
-		field.Int64("update_at").
-			DefaultFunc(func() int64 {
-				return time.Now().Unix()
+		field.Uint32("update_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
 			}).
-			UpdateDefault(func() int64 {
-				return time.Now().Unix()
+			UpdateDefault(func() uint32 {
+				return uint32(time.Now().Unix())
 			}),
-		field.Int64("delete_at").
-			DefaultFunc(func() int64 {
+		field.Uint32("delete_at").
+			DefaultFunc(func() uint32 {
 				return 0
 			}),
 	}

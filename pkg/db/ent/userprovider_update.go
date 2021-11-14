@@ -52,57 +52,57 @@ func (upu *UserProviderUpdate) SetUserProviderInfo(s string) *UserProviderUpdate
 }
 
 // SetCreateAt sets the "create_at" field.
-func (upu *UserProviderUpdate) SetCreateAt(i int64) *UserProviderUpdate {
+func (upu *UserProviderUpdate) SetCreateAt(u uint32) *UserProviderUpdate {
 	upu.mutation.ResetCreateAt()
-	upu.mutation.SetCreateAt(i)
+	upu.mutation.SetCreateAt(u)
 	return upu
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (upu *UserProviderUpdate) SetNillableCreateAt(i *int64) *UserProviderUpdate {
-	if i != nil {
-		upu.SetCreateAt(*i)
+func (upu *UserProviderUpdate) SetNillableCreateAt(u *uint32) *UserProviderUpdate {
+	if u != nil {
+		upu.SetCreateAt(*u)
 	}
 	return upu
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (upu *UserProviderUpdate) AddCreateAt(i int64) *UserProviderUpdate {
-	upu.mutation.AddCreateAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (upu *UserProviderUpdate) AddCreateAt(u uint32) *UserProviderUpdate {
+	upu.mutation.AddCreateAt(u)
 	return upu
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (upu *UserProviderUpdate) SetUpdateAt(i int64) *UserProviderUpdate {
+func (upu *UserProviderUpdate) SetUpdateAt(u uint32) *UserProviderUpdate {
 	upu.mutation.ResetUpdateAt()
-	upu.mutation.SetUpdateAt(i)
+	upu.mutation.SetUpdateAt(u)
 	return upu
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (upu *UserProviderUpdate) AddUpdateAt(i int64) *UserProviderUpdate {
-	upu.mutation.AddUpdateAt(i)
+// AddUpdateAt adds u to the "update_at" field.
+func (upu *UserProviderUpdate) AddUpdateAt(u uint32) *UserProviderUpdate {
+	upu.mutation.AddUpdateAt(u)
 	return upu
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (upu *UserProviderUpdate) SetDeleteAt(i int64) *UserProviderUpdate {
+func (upu *UserProviderUpdate) SetDeleteAt(u uint32) *UserProviderUpdate {
 	upu.mutation.ResetDeleteAt()
-	upu.mutation.SetDeleteAt(i)
+	upu.mutation.SetDeleteAt(u)
 	return upu
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (upu *UserProviderUpdate) SetNillableDeleteAt(i *int64) *UserProviderUpdate {
-	if i != nil {
-		upu.SetDeleteAt(*i)
+func (upu *UserProviderUpdate) SetNillableDeleteAt(u *uint32) *UserProviderUpdate {
+	if u != nil {
+		upu.SetDeleteAt(*u)
 	}
 	return upu
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (upu *UserProviderUpdate) AddDeleteAt(i int64) *UserProviderUpdate {
-	upu.mutation.AddDeleteAt(i)
+// AddDeleteAt adds u to the "delete_at" field.
+func (upu *UserProviderUpdate) AddDeleteAt(u uint32) *UserProviderUpdate {
+	upu.mutation.AddDeleteAt(u)
 	return upu
 }
 
@@ -222,42 +222,42 @@ func (upu *UserProviderUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := upu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldCreateAt,
 		})
 	}
 	if value, ok := upu.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldCreateAt,
 		})
 	}
 	if value, ok := upu.mutation.UpdateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldUpdateAt,
 		})
 	}
 	if value, ok := upu.mutation.AddedUpdateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldUpdateAt,
 		})
 	}
 	if value, ok := upu.mutation.DeleteAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldDeleteAt,
 		})
 	}
 	if value, ok := upu.mutation.AddedDeleteAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldDeleteAt,
 		})
@@ -306,57 +306,57 @@ func (upuo *UserProviderUpdateOne) SetUserProviderInfo(s string) *UserProviderUp
 }
 
 // SetCreateAt sets the "create_at" field.
-func (upuo *UserProviderUpdateOne) SetCreateAt(i int64) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) SetCreateAt(u uint32) *UserProviderUpdateOne {
 	upuo.mutation.ResetCreateAt()
-	upuo.mutation.SetCreateAt(i)
+	upuo.mutation.SetCreateAt(u)
 	return upuo
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (upuo *UserProviderUpdateOne) SetNillableCreateAt(i *int64) *UserProviderUpdateOne {
-	if i != nil {
-		upuo.SetCreateAt(*i)
+func (upuo *UserProviderUpdateOne) SetNillableCreateAt(u *uint32) *UserProviderUpdateOne {
+	if u != nil {
+		upuo.SetCreateAt(*u)
 	}
 	return upuo
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (upuo *UserProviderUpdateOne) AddCreateAt(i int64) *UserProviderUpdateOne {
-	upuo.mutation.AddCreateAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (upuo *UserProviderUpdateOne) AddCreateAt(u uint32) *UserProviderUpdateOne {
+	upuo.mutation.AddCreateAt(u)
 	return upuo
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (upuo *UserProviderUpdateOne) SetUpdateAt(i int64) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) SetUpdateAt(u uint32) *UserProviderUpdateOne {
 	upuo.mutation.ResetUpdateAt()
-	upuo.mutation.SetUpdateAt(i)
+	upuo.mutation.SetUpdateAt(u)
 	return upuo
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (upuo *UserProviderUpdateOne) AddUpdateAt(i int64) *UserProviderUpdateOne {
-	upuo.mutation.AddUpdateAt(i)
+// AddUpdateAt adds u to the "update_at" field.
+func (upuo *UserProviderUpdateOne) AddUpdateAt(u uint32) *UserProviderUpdateOne {
+	upuo.mutation.AddUpdateAt(u)
 	return upuo
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (upuo *UserProviderUpdateOne) SetDeleteAt(i int64) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) SetDeleteAt(u uint32) *UserProviderUpdateOne {
 	upuo.mutation.ResetDeleteAt()
-	upuo.mutation.SetDeleteAt(i)
+	upuo.mutation.SetDeleteAt(u)
 	return upuo
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (upuo *UserProviderUpdateOne) SetNillableDeleteAt(i *int64) *UserProviderUpdateOne {
-	if i != nil {
-		upuo.SetDeleteAt(*i)
+func (upuo *UserProviderUpdateOne) SetNillableDeleteAt(u *uint32) *UserProviderUpdateOne {
+	if u != nil {
+		upuo.SetDeleteAt(*u)
 	}
 	return upuo
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (upuo *UserProviderUpdateOne) AddDeleteAt(i int64) *UserProviderUpdateOne {
-	upuo.mutation.AddDeleteAt(i)
+// AddDeleteAt adds u to the "delete_at" field.
+func (upuo *UserProviderUpdateOne) AddDeleteAt(u uint32) *UserProviderUpdateOne {
+	upuo.mutation.AddDeleteAt(u)
 	return upuo
 }
 
@@ -500,42 +500,42 @@ func (upuo *UserProviderUpdateOne) sqlSave(ctx context.Context) (_node *UserProv
 	}
 	if value, ok := upuo.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldCreateAt,
 		})
 	}
 	if value, ok := upuo.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldCreateAt,
 		})
 	}
 	if value, ok := upuo.mutation.UpdateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldUpdateAt,
 		})
 	}
 	if value, ok := upuo.mutation.AddedUpdateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldUpdateAt,
 		})
 	}
 	if value, ok := upuo.mutation.DeleteAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldDeleteAt,
 		})
 	}
 	if value, ok := upuo.mutation.AddedDeleteAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldDeleteAt,
 		})

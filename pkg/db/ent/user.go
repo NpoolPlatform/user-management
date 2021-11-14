@@ -29,7 +29,7 @@ type User struct {
 	// EmailAddress holds the value of the "email_address" field.
 	EmailAddress string `json:"email_address,omitempty"`
 	// LoginTimes holds the value of the "login_times" field.
-	LoginTimes int32 `json:"login_times,omitempty"`
+	LoginTimes uint32 `json:"login_times,omitempty"`
 	// KycVerify holds the value of the "kyc_verify" field.
 	KycVerify bool `json:"kyc_verify,omitempty"`
 	// GaVerify holds the value of the "ga_verify" field.
@@ -37,17 +37,17 @@ type User struct {
 	// SignupMethod holds the value of the "signup_method" field.
 	SignupMethod string `json:"signup_method,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
-	CreateAt int64 `json:"create_at,omitempty"`
+	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
-	UpdateAt int64 `json:"update_at,omitempty"`
+	UpdateAt uint32 `json:"update_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt int64 `json:"delete_at,omitempty"`
+	DeleteAt uint32 `json:"delete_at,omitempty"`
 	// Avatar holds the value of the "avatar" field.
 	Avatar string `json:"avatar,omitempty"`
 	// Region holds the value of the "region" field.
 	Region string `json:"region,omitempty"`
 	// Age holds the value of the "age" field.
-	Age int32 `json:"age,omitempty"`
+	Age uint32 `json:"age,omitempty"`
 	// Gender holds the value of the "gender" field.
 	Gender string `json:"gender,omitempty"`
 	// Birthday holds the value of the "birthday" field.
@@ -136,7 +136,7 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field login_times", values[i])
 			} else if value.Valid {
-				u.LoginTimes = int32(value.Int64)
+				u.LoginTimes = uint32(value.Int64)
 			}
 		case user.FieldKycVerify:
 			if value, ok := values[i].(*sql.NullBool); !ok {
@@ -160,19 +160,19 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field create_at", values[i])
 			} else if value.Valid {
-				u.CreateAt = value.Int64
+				u.CreateAt = uint32(value.Int64)
 			}
 		case user.FieldUpdateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field update_at", values[i])
 			} else if value.Valid {
-				u.UpdateAt = value.Int64
+				u.UpdateAt = uint32(value.Int64)
 			}
 		case user.FieldDeleteAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
 			} else if value.Valid {
-				u.DeleteAt = value.Int64
+				u.DeleteAt = uint32(value.Int64)
 			}
 		case user.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -190,7 +190,7 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field age", values[i])
 			} else if value.Valid {
-				u.Age = int32(value.Int64)
+				u.Age = uint32(value.Int64)
 			}
 		case user.FieldGender:
 			if value, ok := values[i].(*sql.NullString); !ok {

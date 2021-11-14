@@ -81,15 +81,15 @@ func (uc *UserCreate) SetNillableEmailAddress(s *string) *UserCreate {
 }
 
 // SetLoginTimes sets the "login_times" field.
-func (uc *UserCreate) SetLoginTimes(i int32) *UserCreate {
-	uc.mutation.SetLoginTimes(i)
+func (uc *UserCreate) SetLoginTimes(u uint32) *UserCreate {
+	uc.mutation.SetLoginTimes(u)
 	return uc
 }
 
 // SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uc *UserCreate) SetNillableLoginTimes(i *int32) *UserCreate {
-	if i != nil {
-		uc.SetLoginTimes(*i)
+func (uc *UserCreate) SetNillableLoginTimes(u *uint32) *UserCreate {
+	if u != nil {
+		uc.SetLoginTimes(*u)
 	}
 	return uc
 }
@@ -129,43 +129,43 @@ func (uc *UserCreate) SetSignupMethod(s string) *UserCreate {
 }
 
 // SetCreateAt sets the "create_at" field.
-func (uc *UserCreate) SetCreateAt(i int64) *UserCreate {
-	uc.mutation.SetCreateAt(i)
+func (uc *UserCreate) SetCreateAt(u uint32) *UserCreate {
+	uc.mutation.SetCreateAt(u)
 	return uc
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (uc *UserCreate) SetNillableCreateAt(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetCreateAt(*i)
+func (uc *UserCreate) SetNillableCreateAt(u *uint32) *UserCreate {
+	if u != nil {
+		uc.SetCreateAt(*u)
 	}
 	return uc
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (uc *UserCreate) SetUpdateAt(i int64) *UserCreate {
-	uc.mutation.SetUpdateAt(i)
+func (uc *UserCreate) SetUpdateAt(u uint32) *UserCreate {
+	uc.mutation.SetUpdateAt(u)
 	return uc
 }
 
 // SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
-func (uc *UserCreate) SetNillableUpdateAt(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetUpdateAt(*i)
+func (uc *UserCreate) SetNillableUpdateAt(u *uint32) *UserCreate {
+	if u != nil {
+		uc.SetUpdateAt(*u)
 	}
 	return uc
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (uc *UserCreate) SetDeleteAt(i int64) *UserCreate {
-	uc.mutation.SetDeleteAt(i)
+func (uc *UserCreate) SetDeleteAt(u uint32) *UserCreate {
+	uc.mutation.SetDeleteAt(u)
 	return uc
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (uc *UserCreate) SetNillableDeleteAt(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetDeleteAt(*i)
+func (uc *UserCreate) SetNillableDeleteAt(u *uint32) *UserCreate {
+	if u != nil {
+		uc.SetDeleteAt(*u)
 	}
 	return uc
 }
@@ -199,15 +199,15 @@ func (uc *UserCreate) SetNillableRegion(s *string) *UserCreate {
 }
 
 // SetAge sets the "age" field.
-func (uc *UserCreate) SetAge(i int32) *UserCreate {
-	uc.mutation.SetAge(i)
+func (uc *UserCreate) SetAge(u uint32) *UserCreate {
+	uc.mutation.SetAge(u)
 	return uc
 }
 
 // SetNillableAge sets the "age" field if the given value is not nil.
-func (uc *UserCreate) SetNillableAge(i *int32) *UserCreate {
-	if i != nil {
-		uc.SetAge(*i)
+func (uc *UserCreate) SetNillableAge(u *uint32) *UserCreate {
+	if u != nil {
+		uc.SetAge(*u)
 	}
 	return uc
 }
@@ -587,7 +587,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.LoginTimes(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldLoginTimes,
 		})
@@ -619,7 +619,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldCreateAt,
 		})
@@ -627,7 +627,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.UpdateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldUpdateAt,
 		})
@@ -635,7 +635,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.DeleteAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldDeleteAt,
 		})
@@ -659,7 +659,7 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := uc.mutation.Age(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldAge,
 		})

@@ -338,8 +338,8 @@
 | UserId | [string](#string) |  |  |
 | FrozenBy | [string](#string) |  |  |
 | FrozenCause | [string](#string) |  |  |
-| StartAt | [int32](#int32) |  |  |
-| EndAt | [int32](#int32) |  |  |
+| StartAt | [uint32](#uint32) |  |  |
+| EndAt | [uint32](#uint32) |  |  |
 | Status | [string](#string) |  |  |
 | UnfrozenBy | [string](#string) |  |  |
 
@@ -538,8 +538,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| PageIndex | [int32](#int32) |  |  |
-| PageSize | [int32](#int32) |  |  |
+| PageIndex | [uint32](#uint32) |  |  |
+| PageSize | [uint32](#uint32) |  |  |
 
 
 
@@ -746,7 +746,7 @@
 | Username | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
 | Avatar | [string](#string) |  |  |
-| Age | [int32](#int32) |  |  |
+| Age | [uint32](#uint32) |  |  |
 | Gender | [string](#string) |  |  |
 | Region | [string](#string) |  |  |
 | Birthday | [string](#string) |  |  |
@@ -755,9 +755,9 @@
 | City | [string](#string) |  |  |
 | PhoneNumber | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  |  |
-| CreateAt | [int32](#int32) |  |  |
-| UpdateAt | [int32](#int32) |  |  |
-| LoginTimes | [int32](#int32) |  |  |
+| CreateAt | [uint32](#uint32) |  |  |
+| UpdateAt | [uint32](#uint32) |  |  |
+| LoginTimes | [uint32](#uint32) |  |  |
 | KycVerify | [bool](#bool) |  |  |
 | GaVerify | [bool](#bool) |  |  |
 | SignupMethod | [string](#string) |  |  |
@@ -782,8 +782,8 @@
 | ProviderId | [string](#string) |  |  |
 | ProviderUserId | [string](#string) |  |  |
 | UserProviderInfo | [string](#string) |  |  |
-| CreateAt | [int32](#int32) |  |  |
-| UpdateAt | [int32](#int32) |  |  |
+| CreateAt | [uint32](#uint32) |  |  |
+| UpdateAt | [uint32](#uint32) |  |  |
 
 
 

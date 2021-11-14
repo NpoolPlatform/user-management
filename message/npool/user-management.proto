@@ -199,8 +199,8 @@ message VersionResponse {
 }
 
 message PageInfo {
-    int32 PageIndex = 1;
-    int32 PageSize = 2;
+    uint32 PageIndex = 1;
+    uint32 PageSize = 2;
 }
 
 message UserBasicInfo {
@@ -208,7 +208,7 @@ message UserBasicInfo {
     string Username = 2;
     string Password = 15;
     string Avatar = 3;
-    int32 Age = 4;
+    uint32 Age = 4;
     string Gender = 5;
     string Region = 6;
     string Birthday = 7;
@@ -217,9 +217,9 @@ message UserBasicInfo {
     string City = 10;
     string PhoneNumber = 11;
     string EmailAddress = 12;
-    int32 CreateAt = 13;
-    int32 UpdateAt = 14;
-    int32 LoginTimes = 19;
+    uint32 CreateAt = 13;
+    uint32 UpdateAt = 14;
+    uint32 LoginTimes = 19;
     bool KycVerify = 16;
     bool GaVerify = 17;
     string SignupMethod = 18;
@@ -307,8 +307,8 @@ message UserProvider {
     string ProviderId = 3;
     string ProviderUserId = 4;
     string UserProviderInfo = 5;
-    int32 CreateAt = 6;
-    int32 UpdateAt = 7;
+    uint32 CreateAt = 6;
+    uint32 UpdateAt = 7;
 }
 
 message BindThirdPartyRequest {
@@ -415,8 +415,8 @@ message FrozenUser {
     string UserId = 2;
     string FrozenBy = 3;
     string FrozenCause = 4;
-    int32 StartAt = 5;
-    int32 EndAt = 6;
+    uint32 StartAt = 5;
+    uint32 EndAt = 6;
     string Status = 7;
     string UnfrozenBy = 8;
 }

@@ -25,8 +25,8 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 		KycVerify:    row.KycVerify,
 		GaVerify:     row.GaVerify,
 		SignupMethod: row.SignupMethod,
-		CreateAt:     int32(row.CreateAt),
-		UpdateAt:     int32(row.UpdateAt),
+		CreateAt:     row.CreateAt,
+		UpdateAt:     row.UpdateAt,
 		Avatar:       row.Avatar,
 		Region:       row.Region,
 		Age:          row.Age,
@@ -208,7 +208,7 @@ func Delete(ctx context.Context, in *npool.DeleteUserRequest) (*npool.DeleteUser
 		_, err = db.Client().
 			User.
 			UpdateOneID(id).
-			SetDeleteAt(time.Now().UnixNano()).
+			SetDeleteAt(uint32(time.Now().Unix())).
 			Save(ctx)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to delete user: %v", err)

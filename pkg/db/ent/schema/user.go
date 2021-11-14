@@ -25,31 +25,31 @@ func (User) Fields() []ent.Field {
 		field.String("display_name").Default(""),
 		field.String("phone_number").Optional(),
 		field.String("email_address").Optional(),
-		field.Int32("login_times").
+		field.Uint32("login_times").
 			Default(0),
 		field.Bool("kyc_verify").
 			Default(false),
 		field.Bool("ga_verify").
 			Default(false),
 		field.String("signup_method"),
-		field.Int64("create_at").
-			DefaultFunc(func() int64 {
-				return time.Now().Unix()
+		field.Uint32("create_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
 			}),
-		field.Int64("update_at").
-			DefaultFunc(func() int64 {
-				return time.Now().Unix()
+		field.Uint32("update_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
 			}).
-			UpdateDefault(func() int64 {
-				return time.Now().Unix()
+			UpdateDefault(func() uint32 {
+				return uint32(time.Now().Unix())
 			}),
-		field.Int64("delete_at").
-			DefaultFunc(func() int64 {
+		field.Uint32("delete_at").
+			DefaultFunc(func() uint32 {
 				return 0
 			}),
 		field.String("avatar").Default(""),
 		field.String("region").Default(""),
-		field.Int32("age").Default(0),
+		field.Uint32("age").Default(0),
 		field.String("gender").Default(""),
 		field.String("birthday").Default(""),
 		field.String("country").Default(""),

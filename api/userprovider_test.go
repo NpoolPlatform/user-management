@@ -32,7 +32,7 @@ func TestUserProviderAPI(t *testing.T) {
 			Password:     createUser.Password,
 			EmailAddress: createUser.EmailAddress,
 		}).
-		Post("http://localhost:32759/v1/signup")
+		Post("http://localhost:50070/v1/signup")
 	fmt.Println("sign up error", err)
 	if assert.Nil(t, err) {
 		fmt.Println("resp1 is", resp1)
@@ -58,7 +58,7 @@ func TestUserProviderAPI(t *testing.T) {
 			UserId:         userProvider.UserId,
 			ProviderId:     userProvider.ProviderId,
 			ProviderUserId: userProvider.ProviderUserId,
-		}).Post("http://localhost:32759/v1/bind/thirdparty")
+		}).Post("http://localhost:50070/v1/bind/thirdparty")
 	if assert.Nil(t, err) {
 		fmt.Println("resp2 is", resp2)
 		assert.Equal(t, 200, resp2.StatusCode())
@@ -77,7 +77,7 @@ func TestUserProviderAPI(t *testing.T) {
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUserProvidersRequest{
 			UserId: userProvider.UserId,
-		}).Post("http://localhost:32759/v1/get/user/providers")
+		}).Post("http://localhost:50070/v1/get/user/providers")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp3.StatusCode())
 		fmt.Printf("get user providers list resp is: %v", resp3)
@@ -88,7 +88,7 @@ func TestUserProviderAPI(t *testing.T) {
 		SetBody(&npool.UnbindThirdPartyRequest{
 			UserId:     userProvider.UserId,
 			ProviderId: userProvider.ProviderId,
-		}).Post("http://localhost:32759/v1/unbind/thirdparty")
+		}).Post("http://localhost:50070/v1/unbind/thirdparty")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp4.StatusCode())
 		info := npool.UnbindThirdPartyResponse{}

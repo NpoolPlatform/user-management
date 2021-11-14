@@ -17,8 +17,8 @@ const (
 	FieldFrozenBy = "frozen_by"
 	// FieldFrozenCause holds the string denoting the frozen_cause field in the database.
 	FieldFrozenCause = "frozen_cause"
-	// FieldStartAt holds the string denoting the start_at field in the database.
-	FieldStartAt = "start_at"
+	// FieldCreateAt holds the string denoting the create_at field in the database.
+	FieldCreateAt = "create_at"
 	// FieldEndAt holds the string denoting the end_at field in the database.
 	FieldEndAt = "end_at"
 	// FieldStatus holds the string denoting the status field in the database.
@@ -35,7 +35,7 @@ var Columns = []string{
 	FieldUserID,
 	FieldFrozenBy,
 	FieldFrozenCause,
-	FieldStartAt,
+	FieldCreateAt,
 	FieldEndAt,
 	FieldStatus,
 	FieldUnfrozenBy,
@@ -52,10 +52,10 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultStartAt holds the default value on creation for the "start_at" field.
-	DefaultStartAt func() int64
+	// DefaultCreateAt holds the default value on creation for the "create_at" field.
+	DefaultCreateAt func() uint32
 	// DefaultEndAt holds the default value on creation for the "end_at" field.
-	DefaultEndAt int64
+	DefaultEndAt uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

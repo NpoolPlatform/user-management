@@ -25,11 +25,11 @@ type UserProvider struct {
 	// UserProviderInfo holds the value of the "user_provider_info" field.
 	UserProviderInfo string `json:"user_provider_info,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
-	CreateAt int64 `json:"create_at,omitempty"`
+	CreateAt uint32 `json:"create_at,omitempty"`
 	// UpdateAt holds the value of the "update_at" field.
-	UpdateAt int64 `json:"update_at,omitempty"`
+	UpdateAt uint32 `json:"update_at,omitempty"`
 	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt int64 `json:"delete_at,omitempty"`
+	DeleteAt uint32 `json:"delete_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -92,19 +92,19 @@ func (up *UserProvider) assignValues(columns []string, values []interface{}) err
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field create_at", values[i])
 			} else if value.Valid {
-				up.CreateAt = value.Int64
+				up.CreateAt = uint32(value.Int64)
 			}
 		case userprovider.FieldUpdateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field update_at", values[i])
 			} else if value.Valid {
-				up.UpdateAt = value.Int64
+				up.UpdateAt = uint32(value.Int64)
 			}
 		case userprovider.FieldDeleteAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
 			} else if value.Valid {
-				up.DeleteAt = value.Int64
+				up.DeleteAt = uint32(value.Int64)
 			}
 		}
 	}

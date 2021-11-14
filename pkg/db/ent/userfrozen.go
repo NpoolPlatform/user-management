@@ -22,10 +22,10 @@ type UserFrozen struct {
 	FrozenBy uuid.UUID `json:"frozen_by,omitempty"`
 	// FrozenCause holds the value of the "frozen_cause" field.
 	FrozenCause string `json:"frozen_cause,omitempty"`
-	// StartAt holds the value of the "start_at" field.
-	StartAt int64 `json:"start_at,omitempty"`
+	// CreateAt holds the value of the "create_at" field.
+	CreateAt uint32 `json:"create_at,omitempty"`
 	// EndAt holds the value of the "end_at" field.
-	EndAt int64 `json:"end_at,omitempty"`
+	EndAt uint32 `json:"end_at,omitempty"`
 	// Status holds the value of the "status" field.
 	Status string `json:"status,omitempty"`
 	// UnfrozenBy holds the value of the "unfrozen_by" field.
@@ -37,7 +37,7 @@ func (*UserFrozen) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case userfrozen.FieldStartAt, userfrozen.FieldEndAt:
+		case userfrozen.FieldCreateAt, userfrozen.FieldEndAt:
 			values[i] = new(sql.NullInt64)
 		case userfrozen.FieldFrozenCause, userfrozen.FieldStatus:
 			values[i] = new(sql.NullString)
@@ -82,17 +82,17 @@ func (uf *UserFrozen) assignValues(columns []string, values []interface{}) error
 			} else if value.Valid {
 				uf.FrozenCause = value.String
 			}
-		case userfrozen.FieldStartAt:
+		case userfrozen.FieldCreateAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field start_at", values[i])
+				return fmt.Errorf("unexpected type %T for field create_at", values[i])
 			} else if value.Valid {
-				uf.StartAt = value.Int64
+				uf.CreateAt = uint32(value.Int64)
 			}
 		case userfrozen.FieldEndAt:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field end_at", values[i])
 			} else if value.Valid {
-				uf.EndAt = value.Int64
+				uf.EndAt = uint32(value.Int64)
 			}
 		case userfrozen.FieldStatus:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -140,8 +140,8 @@ func (uf *UserFrozen) String() string {
 	builder.WriteString(fmt.Sprintf("%v", uf.FrozenBy))
 	builder.WriteString(", frozen_cause=")
 	builder.WriteString(uf.FrozenCause)
-	builder.WriteString(", start_at=")
-	builder.WriteString(fmt.Sprintf("%v", uf.StartAt))
+	builder.WriteString(", create_at=")
+	builder.WriteString(fmt.Sprintf("%v", uf.CreateAt))
 	builder.WriteString(", end_at=")
 	builder.WriteString(fmt.Sprintf("%v", uf.EndAt))
 	builder.WriteString(", status=")

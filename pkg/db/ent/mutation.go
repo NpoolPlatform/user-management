@@ -42,21 +42,21 @@ type UserMutation struct {
 	display_name   *string
 	phone_number   *string
 	email_address  *string
-	login_times    *int32
-	addlogin_times *int32
+	login_times    *uint32
+	addlogin_times *uint32
 	kyc_verify     *bool
 	ga_verify      *bool
 	signup_method  *string
-	create_at      *int64
-	addcreate_at   *int64
-	update_at      *int64
-	addupdate_at   *int64
-	delete_at      *int64
-	adddelete_at   *int64
+	create_at      *uint32
+	addcreate_at   *uint32
+	update_at      *uint32
+	addupdate_at   *uint32
+	delete_at      *uint32
+	adddelete_at   *uint32
 	avatar         *string
 	region         *string
-	age            *int32
-	addage         *int32
+	age            *uint32
+	addage         *uint32
 	gender         *string
 	birthday       *string
 	country        *string
@@ -397,13 +397,13 @@ func (m *UserMutation) ResetEmailAddress() {
 }
 
 // SetLoginTimes sets the "login_times" field.
-func (m *UserMutation) SetLoginTimes(i int32) {
-	m.login_times = &i
+func (m *UserMutation) SetLoginTimes(u uint32) {
+	m.login_times = &u
 	m.addlogin_times = nil
 }
 
 // LoginTimes returns the value of the "login_times" field in the mutation.
-func (m *UserMutation) LoginTimes() (r int32, exists bool) {
+func (m *UserMutation) LoginTimes() (r uint32, exists bool) {
 	v := m.login_times
 	if v == nil {
 		return
@@ -414,7 +414,7 @@ func (m *UserMutation) LoginTimes() (r int32, exists bool) {
 // OldLoginTimes returns the old "login_times" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldLoginTimes(ctx context.Context) (v int32, err error) {
+func (m *UserMutation) OldLoginTimes(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldLoginTimes is only allowed on UpdateOne operations")
 	}
@@ -428,17 +428,17 @@ func (m *UserMutation) OldLoginTimes(ctx context.Context) (v int32, err error) {
 	return oldValue.LoginTimes, nil
 }
 
-// AddLoginTimes adds i to the "login_times" field.
-func (m *UserMutation) AddLoginTimes(i int32) {
+// AddLoginTimes adds u to the "login_times" field.
+func (m *UserMutation) AddLoginTimes(u uint32) {
 	if m.addlogin_times != nil {
-		*m.addlogin_times += i
+		*m.addlogin_times += u
 	} else {
-		m.addlogin_times = &i
+		m.addlogin_times = &u
 	}
 }
 
 // AddedLoginTimes returns the value that was added to the "login_times" field in this mutation.
-func (m *UserMutation) AddedLoginTimes() (r int32, exists bool) {
+func (m *UserMutation) AddedLoginTimes() (r uint32, exists bool) {
 	v := m.addlogin_times
 	if v == nil {
 		return
@@ -561,13 +561,13 @@ func (m *UserMutation) ResetSignupMethod() {
 }
 
 // SetCreateAt sets the "create_at" field.
-func (m *UserMutation) SetCreateAt(i int64) {
-	m.create_at = &i
+func (m *UserMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
 	m.addcreate_at = nil
 }
 
 // CreateAt returns the value of the "create_at" field in the mutation.
-func (m *UserMutation) CreateAt() (r int64, exists bool) {
+func (m *UserMutation) CreateAt() (r uint32, exists bool) {
 	v := m.create_at
 	if v == nil {
 		return
@@ -578,7 +578,7 @@ func (m *UserMutation) CreateAt() (r int64, exists bool) {
 // OldCreateAt returns the old "create_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldCreateAt(ctx context.Context) (v int64, err error) {
+func (m *UserMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
 	}
@@ -592,17 +592,17 @@ func (m *UserMutation) OldCreateAt(ctx context.Context) (v int64, err error) {
 	return oldValue.CreateAt, nil
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (m *UserMutation) AddCreateAt(i int64) {
+// AddCreateAt adds u to the "create_at" field.
+func (m *UserMutation) AddCreateAt(u uint32) {
 	if m.addcreate_at != nil {
-		*m.addcreate_at += i
+		*m.addcreate_at += u
 	} else {
-		m.addcreate_at = &i
+		m.addcreate_at = &u
 	}
 }
 
 // AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
-func (m *UserMutation) AddedCreateAt() (r int64, exists bool) {
+func (m *UserMutation) AddedCreateAt() (r uint32, exists bool) {
 	v := m.addcreate_at
 	if v == nil {
 		return
@@ -617,13 +617,13 @@ func (m *UserMutation) ResetCreateAt() {
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (m *UserMutation) SetUpdateAt(i int64) {
-	m.update_at = &i
+func (m *UserMutation) SetUpdateAt(u uint32) {
+	m.update_at = &u
 	m.addupdate_at = nil
 }
 
 // UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *UserMutation) UpdateAt() (r int64, exists bool) {
+func (m *UserMutation) UpdateAt() (r uint32, exists bool) {
 	v := m.update_at
 	if v == nil {
 		return
@@ -634,7 +634,7 @@ func (m *UserMutation) UpdateAt() (r int64, exists bool) {
 // OldUpdateAt returns the old "update_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldUpdateAt(ctx context.Context) (v int64, err error) {
+func (m *UserMutation) OldUpdateAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldUpdateAt is only allowed on UpdateOne operations")
 	}
@@ -648,17 +648,17 @@ func (m *UserMutation) OldUpdateAt(ctx context.Context) (v int64, err error) {
 	return oldValue.UpdateAt, nil
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (m *UserMutation) AddUpdateAt(i int64) {
+// AddUpdateAt adds u to the "update_at" field.
+func (m *UserMutation) AddUpdateAt(u uint32) {
 	if m.addupdate_at != nil {
-		*m.addupdate_at += i
+		*m.addupdate_at += u
 	} else {
-		m.addupdate_at = &i
+		m.addupdate_at = &u
 	}
 }
 
 // AddedUpdateAt returns the value that was added to the "update_at" field in this mutation.
-func (m *UserMutation) AddedUpdateAt() (r int64, exists bool) {
+func (m *UserMutation) AddedUpdateAt() (r uint32, exists bool) {
 	v := m.addupdate_at
 	if v == nil {
 		return
@@ -673,13 +673,13 @@ func (m *UserMutation) ResetUpdateAt() {
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (m *UserMutation) SetDeleteAt(i int64) {
-	m.delete_at = &i
+func (m *UserMutation) SetDeleteAt(u uint32) {
+	m.delete_at = &u
 	m.adddelete_at = nil
 }
 
 // DeleteAt returns the value of the "delete_at" field in the mutation.
-func (m *UserMutation) DeleteAt() (r int64, exists bool) {
+func (m *UserMutation) DeleteAt() (r uint32, exists bool) {
 	v := m.delete_at
 	if v == nil {
 		return
@@ -690,7 +690,7 @@ func (m *UserMutation) DeleteAt() (r int64, exists bool) {
 // OldDeleteAt returns the old "delete_at" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldDeleteAt(ctx context.Context) (v int64, err error) {
+func (m *UserMutation) OldDeleteAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldDeleteAt is only allowed on UpdateOne operations")
 	}
@@ -704,17 +704,17 @@ func (m *UserMutation) OldDeleteAt(ctx context.Context) (v int64, err error) {
 	return oldValue.DeleteAt, nil
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (m *UserMutation) AddDeleteAt(i int64) {
+// AddDeleteAt adds u to the "delete_at" field.
+func (m *UserMutation) AddDeleteAt(u uint32) {
 	if m.adddelete_at != nil {
-		*m.adddelete_at += i
+		*m.adddelete_at += u
 	} else {
-		m.adddelete_at = &i
+		m.adddelete_at = &u
 	}
 }
 
 // AddedDeleteAt returns the value that was added to the "delete_at" field in this mutation.
-func (m *UserMutation) AddedDeleteAt() (r int64, exists bool) {
+func (m *UserMutation) AddedDeleteAt() (r uint32, exists bool) {
 	v := m.adddelete_at
 	if v == nil {
 		return
@@ -801,13 +801,13 @@ func (m *UserMutation) ResetRegion() {
 }
 
 // SetAge sets the "age" field.
-func (m *UserMutation) SetAge(i int32) {
-	m.age = &i
+func (m *UserMutation) SetAge(u uint32) {
+	m.age = &u
 	m.addage = nil
 }
 
 // Age returns the value of the "age" field in the mutation.
-func (m *UserMutation) Age() (r int32, exists bool) {
+func (m *UserMutation) Age() (r uint32, exists bool) {
 	v := m.age
 	if v == nil {
 		return
@@ -818,7 +818,7 @@ func (m *UserMutation) Age() (r int32, exists bool) {
 // OldAge returns the old "age" field's value of the User entity.
 // If the User object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldAge(ctx context.Context) (v int32, err error) {
+func (m *UserMutation) OldAge(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldAge is only allowed on UpdateOne operations")
 	}
@@ -832,17 +832,17 @@ func (m *UserMutation) OldAge(ctx context.Context) (v int32, err error) {
 	return oldValue.Age, nil
 }
 
-// AddAge adds i to the "age" field.
-func (m *UserMutation) AddAge(i int32) {
+// AddAge adds u to the "age" field.
+func (m *UserMutation) AddAge(u uint32) {
 	if m.addage != nil {
-		*m.addage += i
+		*m.addage += u
 	} else {
-		m.addage = &i
+		m.addage = &u
 	}
 }
 
 // AddedAge returns the value that was added to the "age" field in this mutation.
-func (m *UserMutation) AddedAge() (r int32, exists bool) {
+func (m *UserMutation) AddedAge() (r uint32, exists bool) {
 	v := m.addage
 	if v == nil {
 		return
@@ -1315,7 +1315,7 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		m.SetEmailAddress(v)
 		return nil
 	case user.FieldLoginTimes:
-		v, ok := value.(int32)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1343,21 +1343,21 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		m.SetSignupMethod(v)
 		return nil
 	case user.FieldCreateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreateAt(v)
 		return nil
 	case user.FieldUpdateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdateAt(v)
 		return nil
 	case user.FieldDeleteAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1378,7 +1378,7 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		m.SetRegion(v)
 		return nil
 	case user.FieldAge:
-		v, ok := value.(int32)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1477,35 +1477,35 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 func (m *UserMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case user.FieldLoginTimes:
-		v, ok := value.(int32)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddLoginTimes(v)
 		return nil
 	case user.FieldCreateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreateAt(v)
 		return nil
 	case user.FieldUpdateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUpdateAt(v)
 		return nil
 	case user.FieldDeleteAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddDeleteAt(v)
 		return nil
 	case user.FieldAge:
-		v, ok := value.(int32)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -1680,10 +1680,10 @@ type UserFrozenMutation struct {
 	user_id       *uuid.UUID
 	frozen_by     *uuid.UUID
 	frozen_cause  *string
-	start_at      *int64
-	addstart_at   *int64
-	end_at        *int64
-	addend_at     *int64
+	create_at     *uint32
+	addcreate_at  *uint32
+	end_at        *uint32
+	addend_at     *uint32
 	status        *string
 	unfrozen_by   *uuid.UUID
 	clearedFields map[string]struct{}
@@ -1885,70 +1885,70 @@ func (m *UserFrozenMutation) ResetFrozenCause() {
 	m.frozen_cause = nil
 }
 
-// SetStartAt sets the "start_at" field.
-func (m *UserFrozenMutation) SetStartAt(i int64) {
-	m.start_at = &i
-	m.addstart_at = nil
+// SetCreateAt sets the "create_at" field.
+func (m *UserFrozenMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
+	m.addcreate_at = nil
 }
 
-// StartAt returns the value of the "start_at" field in the mutation.
-func (m *UserFrozenMutation) StartAt() (r int64, exists bool) {
-	v := m.start_at
+// CreateAt returns the value of the "create_at" field in the mutation.
+func (m *UserFrozenMutation) CreateAt() (r uint32, exists bool) {
+	v := m.create_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldStartAt returns the old "start_at" field's value of the UserFrozen entity.
+// OldCreateAt returns the old "create_at" field's value of the UserFrozen entity.
 // If the UserFrozen object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFrozenMutation) OldStartAt(ctx context.Context) (v int64, err error) {
+func (m *UserFrozenMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldStartAt is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldStartAt requires an ID field in the mutation")
+		return v, fmt.Errorf("OldCreateAt requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldStartAt: %w", err)
+		return v, fmt.Errorf("querying old value for OldCreateAt: %w", err)
 	}
-	return oldValue.StartAt, nil
+	return oldValue.CreateAt, nil
 }
 
-// AddStartAt adds i to the "start_at" field.
-func (m *UserFrozenMutation) AddStartAt(i int64) {
-	if m.addstart_at != nil {
-		*m.addstart_at += i
+// AddCreateAt adds u to the "create_at" field.
+func (m *UserFrozenMutation) AddCreateAt(u uint32) {
+	if m.addcreate_at != nil {
+		*m.addcreate_at += u
 	} else {
-		m.addstart_at = &i
+		m.addcreate_at = &u
 	}
 }
 
-// AddedStartAt returns the value that was added to the "start_at" field in this mutation.
-func (m *UserFrozenMutation) AddedStartAt() (r int64, exists bool) {
-	v := m.addstart_at
+// AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
+func (m *UserFrozenMutation) AddedCreateAt() (r uint32, exists bool) {
+	v := m.addcreate_at
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// ResetStartAt resets all changes to the "start_at" field.
-func (m *UserFrozenMutation) ResetStartAt() {
-	m.start_at = nil
-	m.addstart_at = nil
+// ResetCreateAt resets all changes to the "create_at" field.
+func (m *UserFrozenMutation) ResetCreateAt() {
+	m.create_at = nil
+	m.addcreate_at = nil
 }
 
 // SetEndAt sets the "end_at" field.
-func (m *UserFrozenMutation) SetEndAt(i int64) {
-	m.end_at = &i
+func (m *UserFrozenMutation) SetEndAt(u uint32) {
+	m.end_at = &u
 	m.addend_at = nil
 }
 
 // EndAt returns the value of the "end_at" field in the mutation.
-func (m *UserFrozenMutation) EndAt() (r int64, exists bool) {
+func (m *UserFrozenMutation) EndAt() (r uint32, exists bool) {
 	v := m.end_at
 	if v == nil {
 		return
@@ -1959,7 +1959,7 @@ func (m *UserFrozenMutation) EndAt() (r int64, exists bool) {
 // OldEndAt returns the old "end_at" field's value of the UserFrozen entity.
 // If the UserFrozen object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserFrozenMutation) OldEndAt(ctx context.Context) (v int64, err error) {
+func (m *UserFrozenMutation) OldEndAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldEndAt is only allowed on UpdateOne operations")
 	}
@@ -1973,17 +1973,17 @@ func (m *UserFrozenMutation) OldEndAt(ctx context.Context) (v int64, err error) 
 	return oldValue.EndAt, nil
 }
 
-// AddEndAt adds i to the "end_at" field.
-func (m *UserFrozenMutation) AddEndAt(i int64) {
+// AddEndAt adds u to the "end_at" field.
+func (m *UserFrozenMutation) AddEndAt(u uint32) {
 	if m.addend_at != nil {
-		*m.addend_at += i
+		*m.addend_at += u
 	} else {
-		m.addend_at = &i
+		m.addend_at = &u
 	}
 }
 
 // AddedEndAt returns the value that was added to the "end_at" field in this mutation.
-func (m *UserFrozenMutation) AddedEndAt() (r int64, exists bool) {
+func (m *UserFrozenMutation) AddedEndAt() (r uint32, exists bool) {
 	v := m.addend_at
 	if v == nil {
 		return
@@ -2098,8 +2098,8 @@ func (m *UserFrozenMutation) Fields() []string {
 	if m.frozen_cause != nil {
 		fields = append(fields, userfrozen.FieldFrozenCause)
 	}
-	if m.start_at != nil {
-		fields = append(fields, userfrozen.FieldStartAt)
+	if m.create_at != nil {
+		fields = append(fields, userfrozen.FieldCreateAt)
 	}
 	if m.end_at != nil {
 		fields = append(fields, userfrozen.FieldEndAt)
@@ -2124,8 +2124,8 @@ func (m *UserFrozenMutation) Field(name string) (ent.Value, bool) {
 		return m.FrozenBy()
 	case userfrozen.FieldFrozenCause:
 		return m.FrozenCause()
-	case userfrozen.FieldStartAt:
-		return m.StartAt()
+	case userfrozen.FieldCreateAt:
+		return m.CreateAt()
 	case userfrozen.FieldEndAt:
 		return m.EndAt()
 	case userfrozen.FieldStatus:
@@ -2147,8 +2147,8 @@ func (m *UserFrozenMutation) OldField(ctx context.Context, name string) (ent.Val
 		return m.OldFrozenBy(ctx)
 	case userfrozen.FieldFrozenCause:
 		return m.OldFrozenCause(ctx)
-	case userfrozen.FieldStartAt:
-		return m.OldStartAt(ctx)
+	case userfrozen.FieldCreateAt:
+		return m.OldCreateAt(ctx)
 	case userfrozen.FieldEndAt:
 		return m.OldEndAt(ctx)
 	case userfrozen.FieldStatus:
@@ -2185,15 +2185,15 @@ func (m *UserFrozenMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetFrozenCause(v)
 		return nil
-	case userfrozen.FieldStartAt:
-		v, ok := value.(int64)
+	case userfrozen.FieldCreateAt:
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetStartAt(v)
+		m.SetCreateAt(v)
 		return nil
 	case userfrozen.FieldEndAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2221,8 +2221,8 @@ func (m *UserFrozenMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *UserFrozenMutation) AddedFields() []string {
 	var fields []string
-	if m.addstart_at != nil {
-		fields = append(fields, userfrozen.FieldStartAt)
+	if m.addcreate_at != nil {
+		fields = append(fields, userfrozen.FieldCreateAt)
 	}
 	if m.addend_at != nil {
 		fields = append(fields, userfrozen.FieldEndAt)
@@ -2235,8 +2235,8 @@ func (m *UserFrozenMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *UserFrozenMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case userfrozen.FieldStartAt:
-		return m.AddedStartAt()
+	case userfrozen.FieldCreateAt:
+		return m.AddedCreateAt()
 	case userfrozen.FieldEndAt:
 		return m.AddedEndAt()
 	}
@@ -2248,15 +2248,15 @@ func (m *UserFrozenMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *UserFrozenMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case userfrozen.FieldStartAt:
-		v, ok := value.(int64)
+	case userfrozen.FieldCreateAt:
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.AddStartAt(v)
+		m.AddCreateAt(v)
 		return nil
 	case userfrozen.FieldEndAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2298,8 +2298,8 @@ func (m *UserFrozenMutation) ResetField(name string) error {
 	case userfrozen.FieldFrozenCause:
 		m.ResetFrozenCause()
 		return nil
-	case userfrozen.FieldStartAt:
-		m.ResetStartAt()
+	case userfrozen.FieldCreateAt:
+		m.ResetCreateAt()
 		return nil
 	case userfrozen.FieldEndAt:
 		m.ResetEndAt()
@@ -2372,12 +2372,12 @@ type UserProviderMutation struct {
 	provider_id        *uuid.UUID
 	provider_user_id   *string
 	user_provider_info *string
-	create_at          *int64
-	addcreate_at       *int64
-	update_at          *int64
-	addupdate_at       *int64
-	delete_at          *int64
-	adddelete_at       *int64
+	create_at          *uint32
+	addcreate_at       *uint32
+	update_at          *uint32
+	addupdate_at       *uint32
+	delete_at          *uint32
+	adddelete_at       *uint32
 	clearedFields      map[string]struct{}
 	done               bool
 	oldValue           func(context.Context) (*UserProvider, error)
@@ -2614,13 +2614,13 @@ func (m *UserProviderMutation) ResetUserProviderInfo() {
 }
 
 // SetCreateAt sets the "create_at" field.
-func (m *UserProviderMutation) SetCreateAt(i int64) {
-	m.create_at = &i
+func (m *UserProviderMutation) SetCreateAt(u uint32) {
+	m.create_at = &u
 	m.addcreate_at = nil
 }
 
 // CreateAt returns the value of the "create_at" field in the mutation.
-func (m *UserProviderMutation) CreateAt() (r int64, exists bool) {
+func (m *UserProviderMutation) CreateAt() (r uint32, exists bool) {
 	v := m.create_at
 	if v == nil {
 		return
@@ -2631,7 +2631,7 @@ func (m *UserProviderMutation) CreateAt() (r int64, exists bool) {
 // OldCreateAt returns the old "create_at" field's value of the UserProvider entity.
 // If the UserProvider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserProviderMutation) OldCreateAt(ctx context.Context) (v int64, err error) {
+func (m *UserProviderMutation) OldCreateAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldCreateAt is only allowed on UpdateOne operations")
 	}
@@ -2645,17 +2645,17 @@ func (m *UserProviderMutation) OldCreateAt(ctx context.Context) (v int64, err er
 	return oldValue.CreateAt, nil
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (m *UserProviderMutation) AddCreateAt(i int64) {
+// AddCreateAt adds u to the "create_at" field.
+func (m *UserProviderMutation) AddCreateAt(u uint32) {
 	if m.addcreate_at != nil {
-		*m.addcreate_at += i
+		*m.addcreate_at += u
 	} else {
-		m.addcreate_at = &i
+		m.addcreate_at = &u
 	}
 }
 
 // AddedCreateAt returns the value that was added to the "create_at" field in this mutation.
-func (m *UserProviderMutation) AddedCreateAt() (r int64, exists bool) {
+func (m *UserProviderMutation) AddedCreateAt() (r uint32, exists bool) {
 	v := m.addcreate_at
 	if v == nil {
 		return
@@ -2670,13 +2670,13 @@ func (m *UserProviderMutation) ResetCreateAt() {
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (m *UserProviderMutation) SetUpdateAt(i int64) {
-	m.update_at = &i
+func (m *UserProviderMutation) SetUpdateAt(u uint32) {
+	m.update_at = &u
 	m.addupdate_at = nil
 }
 
 // UpdateAt returns the value of the "update_at" field in the mutation.
-func (m *UserProviderMutation) UpdateAt() (r int64, exists bool) {
+func (m *UserProviderMutation) UpdateAt() (r uint32, exists bool) {
 	v := m.update_at
 	if v == nil {
 		return
@@ -2687,7 +2687,7 @@ func (m *UserProviderMutation) UpdateAt() (r int64, exists bool) {
 // OldUpdateAt returns the old "update_at" field's value of the UserProvider entity.
 // If the UserProvider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserProviderMutation) OldUpdateAt(ctx context.Context) (v int64, err error) {
+func (m *UserProviderMutation) OldUpdateAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldUpdateAt is only allowed on UpdateOne operations")
 	}
@@ -2701,17 +2701,17 @@ func (m *UserProviderMutation) OldUpdateAt(ctx context.Context) (v int64, err er
 	return oldValue.UpdateAt, nil
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (m *UserProviderMutation) AddUpdateAt(i int64) {
+// AddUpdateAt adds u to the "update_at" field.
+func (m *UserProviderMutation) AddUpdateAt(u uint32) {
 	if m.addupdate_at != nil {
-		*m.addupdate_at += i
+		*m.addupdate_at += u
 	} else {
-		m.addupdate_at = &i
+		m.addupdate_at = &u
 	}
 }
 
 // AddedUpdateAt returns the value that was added to the "update_at" field in this mutation.
-func (m *UserProviderMutation) AddedUpdateAt() (r int64, exists bool) {
+func (m *UserProviderMutation) AddedUpdateAt() (r uint32, exists bool) {
 	v := m.addupdate_at
 	if v == nil {
 		return
@@ -2726,13 +2726,13 @@ func (m *UserProviderMutation) ResetUpdateAt() {
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (m *UserProviderMutation) SetDeleteAt(i int64) {
-	m.delete_at = &i
+func (m *UserProviderMutation) SetDeleteAt(u uint32) {
+	m.delete_at = &u
 	m.adddelete_at = nil
 }
 
 // DeleteAt returns the value of the "delete_at" field in the mutation.
-func (m *UserProviderMutation) DeleteAt() (r int64, exists bool) {
+func (m *UserProviderMutation) DeleteAt() (r uint32, exists bool) {
 	v := m.delete_at
 	if v == nil {
 		return
@@ -2743,7 +2743,7 @@ func (m *UserProviderMutation) DeleteAt() (r int64, exists bool) {
 // OldDeleteAt returns the old "delete_at" field's value of the UserProvider entity.
 // If the UserProvider object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserProviderMutation) OldDeleteAt(ctx context.Context) (v int64, err error) {
+func (m *UserProviderMutation) OldDeleteAt(ctx context.Context) (v uint32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, fmt.Errorf("OldDeleteAt is only allowed on UpdateOne operations")
 	}
@@ -2757,17 +2757,17 @@ func (m *UserProviderMutation) OldDeleteAt(ctx context.Context) (v int64, err er
 	return oldValue.DeleteAt, nil
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (m *UserProviderMutation) AddDeleteAt(i int64) {
+// AddDeleteAt adds u to the "delete_at" field.
+func (m *UserProviderMutation) AddDeleteAt(u uint32) {
 	if m.adddelete_at != nil {
-		*m.adddelete_at += i
+		*m.adddelete_at += u
 	} else {
-		m.adddelete_at = &i
+		m.adddelete_at = &u
 	}
 }
 
 // AddedDeleteAt returns the value that was added to the "delete_at" field in this mutation.
-func (m *UserProviderMutation) AddedDeleteAt() (r int64, exists bool) {
+func (m *UserProviderMutation) AddedDeleteAt() (r uint32, exists bool) {
 	v := m.adddelete_at
 	if v == nil {
 		return
@@ -2905,21 +2905,21 @@ func (m *UserProviderMutation) SetField(name string, value ent.Value) error {
 		m.SetUserProviderInfo(v)
 		return nil
 	case userprovider.FieldCreateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCreateAt(v)
 		return nil
 	case userprovider.FieldUpdateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetUpdateAt(v)
 		return nil
 	case userprovider.FieldDeleteAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -2966,21 +2966,21 @@ func (m *UserProviderMutation) AddedField(name string) (ent.Value, bool) {
 func (m *UserProviderMutation) AddField(name string, value ent.Value) error {
 	switch name {
 	case userprovider.FieldCreateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddCreateAt(v)
 		return nil
 	case userprovider.FieldUpdateAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUpdateAt(v)
 		return nil
 	case userprovider.FieldDeleteAt:
-		v, ok := value.(int64)
+		v, ok := value.(uint32)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}

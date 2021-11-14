@@ -45,43 +45,43 @@ func (upc *UserProviderCreate) SetUserProviderInfo(s string) *UserProviderCreate
 }
 
 // SetCreateAt sets the "create_at" field.
-func (upc *UserProviderCreate) SetCreateAt(i int64) *UserProviderCreate {
-	upc.mutation.SetCreateAt(i)
+func (upc *UserProviderCreate) SetCreateAt(u uint32) *UserProviderCreate {
+	upc.mutation.SetCreateAt(u)
 	return upc
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (upc *UserProviderCreate) SetNillableCreateAt(i *int64) *UserProviderCreate {
-	if i != nil {
-		upc.SetCreateAt(*i)
+func (upc *UserProviderCreate) SetNillableCreateAt(u *uint32) *UserProviderCreate {
+	if u != nil {
+		upc.SetCreateAt(*u)
 	}
 	return upc
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (upc *UserProviderCreate) SetUpdateAt(i int64) *UserProviderCreate {
-	upc.mutation.SetUpdateAt(i)
+func (upc *UserProviderCreate) SetUpdateAt(u uint32) *UserProviderCreate {
+	upc.mutation.SetUpdateAt(u)
 	return upc
 }
 
 // SetNillableUpdateAt sets the "update_at" field if the given value is not nil.
-func (upc *UserProviderCreate) SetNillableUpdateAt(i *int64) *UserProviderCreate {
-	if i != nil {
-		upc.SetUpdateAt(*i)
+func (upc *UserProviderCreate) SetNillableUpdateAt(u *uint32) *UserProviderCreate {
+	if u != nil {
+		upc.SetUpdateAt(*u)
 	}
 	return upc
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (upc *UserProviderCreate) SetDeleteAt(i int64) *UserProviderCreate {
-	upc.mutation.SetDeleteAt(i)
+func (upc *UserProviderCreate) SetDeleteAt(u uint32) *UserProviderCreate {
+	upc.mutation.SetDeleteAt(u)
 	return upc
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (upc *UserProviderCreate) SetNillableDeleteAt(i *int64) *UserProviderCreate {
-	if i != nil {
-		upc.SetDeleteAt(*i)
+func (upc *UserProviderCreate) SetNillableDeleteAt(u *uint32) *UserProviderCreate {
+	if u != nil {
+		upc.SetDeleteAt(*u)
 	}
 	return upc
 }
@@ -270,7 +270,7 @@ func (upc *UserProviderCreate) createSpec() (*UserProvider, *sqlgraph.CreateSpec
 	}
 	if value, ok := upc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldCreateAt,
 		})
@@ -278,7 +278,7 @@ func (upc *UserProviderCreate) createSpec() (*UserProvider, *sqlgraph.CreateSpec
 	}
 	if value, ok := upc.mutation.UpdateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldUpdateAt,
 		})
@@ -286,7 +286,7 @@ func (upc *UserProviderCreate) createSpec() (*UserProvider, *sqlgraph.CreateSpec
 	}
 	if value, ok := upc.mutation.DeleteAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userprovider.FieldDeleteAt,
 		})

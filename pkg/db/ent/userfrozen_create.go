@@ -38,30 +38,30 @@ func (ufc *UserFrozenCreate) SetFrozenCause(s string) *UserFrozenCreate {
 	return ufc
 }
 
-// SetStartAt sets the "start_at" field.
-func (ufc *UserFrozenCreate) SetStartAt(i int64) *UserFrozenCreate {
-	ufc.mutation.SetStartAt(i)
+// SetCreateAt sets the "create_at" field.
+func (ufc *UserFrozenCreate) SetCreateAt(u uint32) *UserFrozenCreate {
+	ufc.mutation.SetCreateAt(u)
 	return ufc
 }
 
-// SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (ufc *UserFrozenCreate) SetNillableStartAt(i *int64) *UserFrozenCreate {
-	if i != nil {
-		ufc.SetStartAt(*i)
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (ufc *UserFrozenCreate) SetNillableCreateAt(u *uint32) *UserFrozenCreate {
+	if u != nil {
+		ufc.SetCreateAt(*u)
 	}
 	return ufc
 }
 
 // SetEndAt sets the "end_at" field.
-func (ufc *UserFrozenCreate) SetEndAt(i int64) *UserFrozenCreate {
-	ufc.mutation.SetEndAt(i)
+func (ufc *UserFrozenCreate) SetEndAt(u uint32) *UserFrozenCreate {
+	ufc.mutation.SetEndAt(u)
 	return ufc
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (ufc *UserFrozenCreate) SetNillableEndAt(i *int64) *UserFrozenCreate {
-	if i != nil {
-		ufc.SetEndAt(*i)
+func (ufc *UserFrozenCreate) SetNillableEndAt(u *uint32) *UserFrozenCreate {
+	if u != nil {
+		ufc.SetEndAt(*u)
 	}
 	return ufc
 }
@@ -155,9 +155,9 @@ func (ufc *UserFrozenCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ufc *UserFrozenCreate) defaults() {
-	if _, ok := ufc.mutation.StartAt(); !ok {
-		v := userfrozen.DefaultStartAt()
-		ufc.mutation.SetStartAt(v)
+	if _, ok := ufc.mutation.CreateAt(); !ok {
+		v := userfrozen.DefaultCreateAt()
+		ufc.mutation.SetCreateAt(v)
 	}
 	if _, ok := ufc.mutation.EndAt(); !ok {
 		v := userfrozen.DefaultEndAt
@@ -180,8 +180,8 @@ func (ufc *UserFrozenCreate) check() error {
 	if _, ok := ufc.mutation.FrozenCause(); !ok {
 		return &ValidationError{Name: "frozen_cause", err: errors.New(`ent: missing required field "frozen_cause"`)}
 	}
-	if _, ok := ufc.mutation.StartAt(); !ok {
-		return &ValidationError{Name: "start_at", err: errors.New(`ent: missing required field "start_at"`)}
+	if _, ok := ufc.mutation.CreateAt(); !ok {
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
 	}
 	if _, ok := ufc.mutation.EndAt(); !ok {
 		return &ValidationError{Name: "end_at", err: errors.New(`ent: missing required field "end_at"`)}
@@ -248,17 +248,17 @@ func (ufc *UserFrozenCreate) createSpec() (*UserFrozen, *sqlgraph.CreateSpec) {
 		})
 		_node.FrozenCause = value
 	}
-	if value, ok := ufc.mutation.StartAt(); ok {
+	if value, ok := ufc.mutation.CreateAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
-			Column: userfrozen.FieldStartAt,
+			Column: userfrozen.FieldCreateAt,
 		})
-		_node.StartAt = value
+		_node.CreateAt = value
 	}
 	if value, ok := ufc.mutation.EndAt(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userfrozen.FieldEndAt,
 		})

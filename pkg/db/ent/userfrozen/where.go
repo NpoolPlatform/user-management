@@ -112,15 +112,15 @@ func FrozenCause(v string) predicate.UserFrozen {
 	})
 }
 
-// StartAt applies equality check predicate on the "start_at" field. It's identical to StartAtEQ.
-func StartAt(v int64) predicate.UserFrozen {
+// CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
+func CreateAt(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStartAt), v))
+		s.Where(sql.EQ(s.C(FieldCreateAt), v))
 	})
 }
 
 // EndAt applies equality check predicate on the "end_at" field. It's identical to EndAtEQ.
-func EndAt(v int64) predicate.UserFrozen {
+func EndAt(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldEndAt), v))
 	})
@@ -403,22 +403,22 @@ func FrozenCauseContainsFold(v string) predicate.UserFrozen {
 	})
 }
 
-// StartAtEQ applies the EQ predicate on the "start_at" field.
-func StartAtEQ(v int64) predicate.UserFrozen {
+// CreateAtEQ applies the EQ predicate on the "create_at" field.
+func CreateAtEQ(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldStartAt), v))
+		s.Where(sql.EQ(s.C(FieldCreateAt), v))
 	})
 }
 
-// StartAtNEQ applies the NEQ predicate on the "start_at" field.
-func StartAtNEQ(v int64) predicate.UserFrozen {
+// CreateAtNEQ applies the NEQ predicate on the "create_at" field.
+func CreateAtNEQ(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldStartAt), v))
+		s.Where(sql.NEQ(s.C(FieldCreateAt), v))
 	})
 }
 
-// StartAtIn applies the In predicate on the "start_at" field.
-func StartAtIn(vs ...int64) predicate.UserFrozen {
+// CreateAtIn applies the In predicate on the "create_at" field.
+func CreateAtIn(vs ...uint32) predicate.UserFrozen {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -430,12 +430,12 @@ func StartAtIn(vs ...int64) predicate.UserFrozen {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldStartAt), v...))
+		s.Where(sql.In(s.C(FieldCreateAt), v...))
 	})
 }
 
-// StartAtNotIn applies the NotIn predicate on the "start_at" field.
-func StartAtNotIn(vs ...int64) predicate.UserFrozen {
+// CreateAtNotIn applies the NotIn predicate on the "create_at" field.
+func CreateAtNotIn(vs ...uint32) predicate.UserFrozen {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -447,54 +447,54 @@ func StartAtNotIn(vs ...int64) predicate.UserFrozen {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldStartAt), v...))
+		s.Where(sql.NotIn(s.C(FieldCreateAt), v...))
 	})
 }
 
-// StartAtGT applies the GT predicate on the "start_at" field.
-func StartAtGT(v int64) predicate.UserFrozen {
+// CreateAtGT applies the GT predicate on the "create_at" field.
+func CreateAtGT(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldStartAt), v))
+		s.Where(sql.GT(s.C(FieldCreateAt), v))
 	})
 }
 
-// StartAtGTE applies the GTE predicate on the "start_at" field.
-func StartAtGTE(v int64) predicate.UserFrozen {
+// CreateAtGTE applies the GTE predicate on the "create_at" field.
+func CreateAtGTE(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldStartAt), v))
+		s.Where(sql.GTE(s.C(FieldCreateAt), v))
 	})
 }
 
-// StartAtLT applies the LT predicate on the "start_at" field.
-func StartAtLT(v int64) predicate.UserFrozen {
+// CreateAtLT applies the LT predicate on the "create_at" field.
+func CreateAtLT(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldStartAt), v))
+		s.Where(sql.LT(s.C(FieldCreateAt), v))
 	})
 }
 
-// StartAtLTE applies the LTE predicate on the "start_at" field.
-func StartAtLTE(v int64) predicate.UserFrozen {
+// CreateAtLTE applies the LTE predicate on the "create_at" field.
+func CreateAtLTE(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldStartAt), v))
+		s.Where(sql.LTE(s.C(FieldCreateAt), v))
 	})
 }
 
 // EndAtEQ applies the EQ predicate on the "end_at" field.
-func EndAtEQ(v int64) predicate.UserFrozen {
+func EndAtEQ(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldEndAt), v))
 	})
 }
 
 // EndAtNEQ applies the NEQ predicate on the "end_at" field.
-func EndAtNEQ(v int64) predicate.UserFrozen {
+func EndAtNEQ(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldEndAt), v))
 	})
 }
 
 // EndAtIn applies the In predicate on the "end_at" field.
-func EndAtIn(vs ...int64) predicate.UserFrozen {
+func EndAtIn(vs ...uint32) predicate.UserFrozen {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -511,7 +511,7 @@ func EndAtIn(vs ...int64) predicate.UserFrozen {
 }
 
 // EndAtNotIn applies the NotIn predicate on the "end_at" field.
-func EndAtNotIn(vs ...int64) predicate.UserFrozen {
+func EndAtNotIn(vs ...uint32) predicate.UserFrozen {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -528,28 +528,28 @@ func EndAtNotIn(vs ...int64) predicate.UserFrozen {
 }
 
 // EndAtGT applies the GT predicate on the "end_at" field.
-func EndAtGT(v int64) predicate.UserFrozen {
+func EndAtGT(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldEndAt), v))
 	})
 }
 
 // EndAtGTE applies the GTE predicate on the "end_at" field.
-func EndAtGTE(v int64) predicate.UserFrozen {
+func EndAtGTE(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldEndAt), v))
 	})
 }
 
 // EndAtLT applies the LT predicate on the "end_at" field.
-func EndAtLT(v int64) predicate.UserFrozen {
+func EndAtLT(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldEndAt), v))
 	})
 }
 
 // EndAtLTE applies the LTE predicate on the "end_at" field.
-func EndAtLTE(v int64) predicate.UserFrozen {
+func EndAtLTE(v uint32) predicate.UserFrozen {
 	return predicate.UserFrozen(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldEndAt), v))
 	})

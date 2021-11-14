@@ -100,25 +100,25 @@ var (
 	// DefaultDisplayName holds the default value on creation for the "display_name" field.
 	DefaultDisplayName string
 	// DefaultLoginTimes holds the default value on creation for the "login_times" field.
-	DefaultLoginTimes int32
+	DefaultLoginTimes uint32
 	// DefaultKycVerify holds the default value on creation for the "kyc_verify" field.
 	DefaultKycVerify bool
 	// DefaultGaVerify holds the default value on creation for the "ga_verify" field.
 	DefaultGaVerify bool
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
-	DefaultCreateAt func() int64
+	DefaultCreateAt func() uint32
 	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
-	DefaultUpdateAt func() int64
+	DefaultUpdateAt func() uint32
 	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
-	UpdateDefaultUpdateAt func() int64
+	UpdateDefaultUpdateAt func() uint32
 	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() int64
+	DefaultDeleteAt func() uint32
 	// DefaultAvatar holds the default value on creation for the "avatar" field.
 	DefaultAvatar string
 	// DefaultRegion holds the default value on creation for the "region" field.
 	DefaultRegion string
 	// DefaultAge holds the default value on creation for the "age" field.
-	DefaultAge int32
+	DefaultAge uint32
 	// DefaultGender holds the default value on creation for the "gender" field.
 	DefaultGender string
 	// DefaultBirthday holds the default value on creation for the "birthday" field.

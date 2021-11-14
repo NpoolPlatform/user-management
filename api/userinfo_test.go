@@ -39,7 +39,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			Password:     signupUserInfo.Password,
 			EmailAddress: signupUserInfo.EmailAddress,
 		}).
-		Post("http://localhost:32759/v1/signup")
+		Post("http://localhost:50070/v1/signup")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp1.StatusCode())
 		info := npool.SignupResponse{}
@@ -61,7 +61,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.AddUserRequest{
 			UserInfo: &addUserInfo,
 		}).
-		Post("http://localhost:32759/v1/add/user")
+		Post("http://localhost:50070/v1/add/user")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp2.StatusCode())
 		info := npool.AddUserResponse{}
@@ -78,7 +78,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.GetUserRequest{
 			UserId: signupUserInfo.UserId,
 		}).
-		Post("http://localhost:32759/v1/get/user")
+		Post("http://localhost:50070/v1/get/user")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp3.StatusCode())
 		info := npool.GetUserResponse{}
@@ -92,7 +92,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp4, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUsersRequest{}).
-		Post("http://localhost:32759/v1/get/users")
+		Post("http://localhost:50070/v1/get/users")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp4.StatusCode())
 	}
@@ -102,7 +102,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.UpdateUserInfoRequest{
 			UserInfo: &addUserInfo,
 		}).
-		Post("http://localhost:32759/v1/update/user")
+		Post("http://localhost:50070/v1/update/user")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp5.StatusCode())
 		info := npool.UpdateUserInfoResponse{}
@@ -120,7 +120,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			OldPassword: signupUserInfo.Password,
 			Password:    "987654321",
 		}).
-		Post("http://localhost:32759/v1/change/password")
+		Post("http://localhost:50070/v1/change/password")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp6.StatusCode())
 	}
@@ -131,7 +131,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			PhoneNumber: addUserInfo.PhoneNumber,
 			Password:    "123456789",
 		}).
-		Post("http://localhost:32759/v1/forget/password")
+		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp7.StatusCode())
 	}
@@ -142,7 +142,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			EmailAddress: signupUserInfo.EmailAddress,
 			Password:     "123456789",
 		}).
-		Post("http://localhost:32759/v1/forget/password")
+		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp8.StatusCode())
 	}
@@ -153,7 +153,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			UserId:      addUserInfo.UserId,
 			PhoneNumber: uuid.New().String(),
 		}).
-		Post("http://localhost:32759/v1/bind/phone")
+		Post("http://localhost:50070/v1/bind/phone")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp9.StatusCode())
 	}
@@ -164,7 +164,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 			UserId:       addUserInfo.UserId,
 			EmailAddress: uuid.New().String(),
 		}).
-		Post("http://localhost:32759/v1/bind/email")
+		Post("http://localhost:50070/v1/bind/email")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp10.StatusCode())
 	}
@@ -174,7 +174,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.DeleteUserRequest{
 			DeleteUserIds: []string{signupUserInfo.UserId},
 		}).
-		Post("http://localhost:32759/v1/delete/users")
+		Post("http://localhost:50070/v1/delete/users")
 	fmt.Println(err)
 	if assert.Nil(t, err) {
 		fmt.Println("delete resp is", resp11)

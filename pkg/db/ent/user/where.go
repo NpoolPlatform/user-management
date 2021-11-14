@@ -134,7 +134,7 @@ func EmailAddress(v string) predicate.User {
 }
 
 // LoginTimes applies equality check predicate on the "login_times" field. It's identical to LoginTimesEQ.
-func LoginTimes(v int32) predicate.User {
+func LoginTimes(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldLoginTimes), v))
 	})
@@ -162,21 +162,21 @@ func SignupMethod(v string) predicate.User {
 }
 
 // CreateAt applies equality check predicate on the "create_at" field. It's identical to CreateAtEQ.
-func CreateAt(v int64) predicate.User {
+func CreateAt(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCreateAt), v))
 	})
 }
 
 // UpdateAt applies equality check predicate on the "update_at" field. It's identical to UpdateAtEQ.
-func UpdateAt(v int64) predicate.User {
+func UpdateAt(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldUpdateAt), v))
 	})
 }
 
 // DeleteAt applies equality check predicate on the "delete_at" field. It's identical to DeleteAtEQ.
-func DeleteAt(v int64) predicate.User {
+func DeleteAt(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDeleteAt), v))
 	})
@@ -197,7 +197,7 @@ func Region(v string) predicate.User {
 }
 
 // Age applies equality check predicate on the "age" field. It's identical to AgeEQ.
-func Age(v int32) predicate.User {
+func Age(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAge), v))
 	})
@@ -940,21 +940,21 @@ func EmailAddressContainsFold(v string) predicate.User {
 }
 
 // LoginTimesEQ applies the EQ predicate on the "login_times" field.
-func LoginTimesEQ(v int32) predicate.User {
+func LoginTimesEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldLoginTimes), v))
 	})
 }
 
 // LoginTimesNEQ applies the NEQ predicate on the "login_times" field.
-func LoginTimesNEQ(v int32) predicate.User {
+func LoginTimesNEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldLoginTimes), v))
 	})
 }
 
 // LoginTimesIn applies the In predicate on the "login_times" field.
-func LoginTimesIn(vs ...int32) predicate.User {
+func LoginTimesIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -971,7 +971,7 @@ func LoginTimesIn(vs ...int32) predicate.User {
 }
 
 // LoginTimesNotIn applies the NotIn predicate on the "login_times" field.
-func LoginTimesNotIn(vs ...int32) predicate.User {
+func LoginTimesNotIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -988,28 +988,28 @@ func LoginTimesNotIn(vs ...int32) predicate.User {
 }
 
 // LoginTimesGT applies the GT predicate on the "login_times" field.
-func LoginTimesGT(v int32) predicate.User {
+func LoginTimesGT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldLoginTimes), v))
 	})
 }
 
 // LoginTimesGTE applies the GTE predicate on the "login_times" field.
-func LoginTimesGTE(v int32) predicate.User {
+func LoginTimesGTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldLoginTimes), v))
 	})
 }
 
 // LoginTimesLT applies the LT predicate on the "login_times" field.
-func LoginTimesLT(v int32) predicate.User {
+func LoginTimesLT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldLoginTimes), v))
 	})
 }
 
 // LoginTimesLTE applies the LTE predicate on the "login_times" field.
-func LoginTimesLTE(v int32) predicate.User {
+func LoginTimesLTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldLoginTimes), v))
 	})
@@ -1155,21 +1155,21 @@ func SignupMethodContainsFold(v string) predicate.User {
 }
 
 // CreateAtEQ applies the EQ predicate on the "create_at" field.
-func CreateAtEQ(v int64) predicate.User {
+func CreateAtEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldCreateAt), v))
 	})
 }
 
 // CreateAtNEQ applies the NEQ predicate on the "create_at" field.
-func CreateAtNEQ(v int64) predicate.User {
+func CreateAtNEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldCreateAt), v))
 	})
 }
 
 // CreateAtIn applies the In predicate on the "create_at" field.
-func CreateAtIn(vs ...int64) predicate.User {
+func CreateAtIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1186,7 +1186,7 @@ func CreateAtIn(vs ...int64) predicate.User {
 }
 
 // CreateAtNotIn applies the NotIn predicate on the "create_at" field.
-func CreateAtNotIn(vs ...int64) predicate.User {
+func CreateAtNotIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1203,49 +1203,49 @@ func CreateAtNotIn(vs ...int64) predicate.User {
 }
 
 // CreateAtGT applies the GT predicate on the "create_at" field.
-func CreateAtGT(v int64) predicate.User {
+func CreateAtGT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldCreateAt), v))
 	})
 }
 
 // CreateAtGTE applies the GTE predicate on the "create_at" field.
-func CreateAtGTE(v int64) predicate.User {
+func CreateAtGTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldCreateAt), v))
 	})
 }
 
 // CreateAtLT applies the LT predicate on the "create_at" field.
-func CreateAtLT(v int64) predicate.User {
+func CreateAtLT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldCreateAt), v))
 	})
 }
 
 // CreateAtLTE applies the LTE predicate on the "create_at" field.
-func CreateAtLTE(v int64) predicate.User {
+func CreateAtLTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldCreateAt), v))
 	})
 }
 
 // UpdateAtEQ applies the EQ predicate on the "update_at" field.
-func UpdateAtEQ(v int64) predicate.User {
+func UpdateAtEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldUpdateAt), v))
 	})
 }
 
 // UpdateAtNEQ applies the NEQ predicate on the "update_at" field.
-func UpdateAtNEQ(v int64) predicate.User {
+func UpdateAtNEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldUpdateAt), v))
 	})
 }
 
 // UpdateAtIn applies the In predicate on the "update_at" field.
-func UpdateAtIn(vs ...int64) predicate.User {
+func UpdateAtIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1262,7 +1262,7 @@ func UpdateAtIn(vs ...int64) predicate.User {
 }
 
 // UpdateAtNotIn applies the NotIn predicate on the "update_at" field.
-func UpdateAtNotIn(vs ...int64) predicate.User {
+func UpdateAtNotIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1279,49 +1279,49 @@ func UpdateAtNotIn(vs ...int64) predicate.User {
 }
 
 // UpdateAtGT applies the GT predicate on the "update_at" field.
-func UpdateAtGT(v int64) predicate.User {
+func UpdateAtGT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldUpdateAt), v))
 	})
 }
 
 // UpdateAtGTE applies the GTE predicate on the "update_at" field.
-func UpdateAtGTE(v int64) predicate.User {
+func UpdateAtGTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldUpdateAt), v))
 	})
 }
 
 // UpdateAtLT applies the LT predicate on the "update_at" field.
-func UpdateAtLT(v int64) predicate.User {
+func UpdateAtLT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldUpdateAt), v))
 	})
 }
 
 // UpdateAtLTE applies the LTE predicate on the "update_at" field.
-func UpdateAtLTE(v int64) predicate.User {
+func UpdateAtLTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldUpdateAt), v))
 	})
 }
 
 // DeleteAtEQ applies the EQ predicate on the "delete_at" field.
-func DeleteAtEQ(v int64) predicate.User {
+func DeleteAtEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldDeleteAt), v))
 	})
 }
 
 // DeleteAtNEQ applies the NEQ predicate on the "delete_at" field.
-func DeleteAtNEQ(v int64) predicate.User {
+func DeleteAtNEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldDeleteAt), v))
 	})
 }
 
 // DeleteAtIn applies the In predicate on the "delete_at" field.
-func DeleteAtIn(vs ...int64) predicate.User {
+func DeleteAtIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1338,7 +1338,7 @@ func DeleteAtIn(vs ...int64) predicate.User {
 }
 
 // DeleteAtNotIn applies the NotIn predicate on the "delete_at" field.
-func DeleteAtNotIn(vs ...int64) predicate.User {
+func DeleteAtNotIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1355,28 +1355,28 @@ func DeleteAtNotIn(vs ...int64) predicate.User {
 }
 
 // DeleteAtGT applies the GT predicate on the "delete_at" field.
-func DeleteAtGT(v int64) predicate.User {
+func DeleteAtGT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldDeleteAt), v))
 	})
 }
 
 // DeleteAtGTE applies the GTE predicate on the "delete_at" field.
-func DeleteAtGTE(v int64) predicate.User {
+func DeleteAtGTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldDeleteAt), v))
 	})
 }
 
 // DeleteAtLT applies the LT predicate on the "delete_at" field.
-func DeleteAtLT(v int64) predicate.User {
+func DeleteAtLT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldDeleteAt), v))
 	})
 }
 
 // DeleteAtLTE applies the LTE predicate on the "delete_at" field.
-func DeleteAtLTE(v int64) predicate.User {
+func DeleteAtLTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDeleteAt), v))
 	})
@@ -1605,21 +1605,21 @@ func RegionContainsFold(v string) predicate.User {
 }
 
 // AgeEQ applies the EQ predicate on the "age" field.
-func AgeEQ(v int32) predicate.User {
+func AgeEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldAge), v))
 	})
 }
 
 // AgeNEQ applies the NEQ predicate on the "age" field.
-func AgeNEQ(v int32) predicate.User {
+func AgeNEQ(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldAge), v))
 	})
 }
 
 // AgeIn applies the In predicate on the "age" field.
-func AgeIn(vs ...int32) predicate.User {
+func AgeIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1636,7 +1636,7 @@ func AgeIn(vs ...int32) predicate.User {
 }
 
 // AgeNotIn applies the NotIn predicate on the "age" field.
-func AgeNotIn(vs ...int32) predicate.User {
+func AgeNotIn(vs ...uint32) predicate.User {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -1653,28 +1653,28 @@ func AgeNotIn(vs ...int32) predicate.User {
 }
 
 // AgeGT applies the GT predicate on the "age" field.
-func AgeGT(v int32) predicate.User {
+func AgeGT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GT(s.C(FieldAge), v))
 	})
 }
 
 // AgeGTE applies the GTE predicate on the "age" field.
-func AgeGTE(v int32) predicate.User {
+func AgeGTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.GTE(s.C(FieldAge), v))
 	})
 }
 
 // AgeLT applies the LT predicate on the "age" field.
-func AgeLT(v int32) predicate.User {
+func AgeLT(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LT(s.C(FieldAge), v))
 	})
 }
 
 // AgeLTE applies the LTE predicate on the "age" field.
-func AgeLTE(v int32) predicate.User {
+func AgeLTE(v uint32) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldAge), v))
 	})

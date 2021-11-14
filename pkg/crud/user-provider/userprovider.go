@@ -27,8 +27,8 @@ func dbRowToInfo(row *ent.UserProvider) *npool.UserProvider {
 		ProviderId:       row.ProviderID.String(),
 		ProviderUserId:   row.ProviderUserID,
 		UserProviderInfo: row.UserProviderInfo,
-		CreateAt:         int32(row.CreateAt),
-		UpdateAt:         int32(row.UpdateAt),
+		CreateAt:         row.CreateAt,
+		UpdateAt:         row.UpdateAt,
 	}
 }
 
@@ -122,7 +122,7 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 		UserProvider.
 		UpdateOneID(id).
 		SetProviderUserID("deleted" + providerUserID + time.Now().String()).
-		SetDeleteAt(time.Now().UnixNano()).
+		SetDeleteAt(uint32(time.Now().Unix())).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to unbind user provider: %v", err)

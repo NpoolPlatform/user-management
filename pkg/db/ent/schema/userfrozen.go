@@ -23,11 +23,11 @@ func (UserFrozen) Fields() []ent.Field {
 		field.UUID("user_id", uuid.UUID{}),
 		field.UUID("frozen_by", uuid.UUID{}),
 		field.String("frozen_cause"),
-		field.Int64("start_at").
-			DefaultFunc(func() int64 {
-				return time.Now().Unix()
+		field.Uint32("create_at").
+			DefaultFunc(func() uint32 {
+				return uint32(time.Now().Unix())
 			}),
-		field.Int64("end_at").
+		field.Uint32("end_at").
 			Default(0),
 		field.String("status"),
 		field.UUID("unfrozen_by", uuid.UUID{}),

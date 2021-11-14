@@ -23,8 +23,8 @@ func dbRowToInfo(row *ent.UserFrozen) *npool.FrozenUser {
 		UserId:      row.UserID.String(),
 		FrozenBy:    row.FrozenBy.String(),
 		FrozenCause: row.FrozenCause,
-		StartAt:     int32(row.StartAt),
-		EndAt:       int32(row.EndAt),
+		StartAt:     row.CreateAt,
+		EndAt:       row.EndAt,
 		Status:      row.Status,
 		UnfrozenBy:  row.UnfrozenBy.String(),
 	}
@@ -111,7 +111,7 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 		UserFrozen.UpdateOneID(id).
 		SetUnfrozenBy(unfrozenBy).
 		SetStatus(UnfrozenStatus).
-		SetEndAt(time.Now().UnixNano()).
+		SetEndAt(uint32(time.Now().Unix())).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to update frozen user info: %v", err)

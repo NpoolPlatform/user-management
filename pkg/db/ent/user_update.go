@@ -99,23 +99,23 @@ func (uu *UserUpdate) ClearEmailAddress() *UserUpdate {
 }
 
 // SetLoginTimes sets the "login_times" field.
-func (uu *UserUpdate) SetLoginTimes(i int32) *UserUpdate {
+func (uu *UserUpdate) SetLoginTimes(u uint32) *UserUpdate {
 	uu.mutation.ResetLoginTimes()
-	uu.mutation.SetLoginTimes(i)
+	uu.mutation.SetLoginTimes(u)
 	return uu
 }
 
 // SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableLoginTimes(i *int32) *UserUpdate {
-	if i != nil {
-		uu.SetLoginTimes(*i)
+func (uu *UserUpdate) SetNillableLoginTimes(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetLoginTimes(*u)
 	}
 	return uu
 }
 
-// AddLoginTimes adds i to the "login_times" field.
-func (uu *UserUpdate) AddLoginTimes(i int32) *UserUpdate {
-	uu.mutation.AddLoginTimes(i)
+// AddLoginTimes adds u to the "login_times" field.
+func (uu *UserUpdate) AddLoginTimes(u uint32) *UserUpdate {
+	uu.mutation.AddLoginTimes(u)
 	return uu
 }
 
@@ -154,57 +154,57 @@ func (uu *UserUpdate) SetSignupMethod(s string) *UserUpdate {
 }
 
 // SetCreateAt sets the "create_at" field.
-func (uu *UserUpdate) SetCreateAt(i int64) *UserUpdate {
+func (uu *UserUpdate) SetCreateAt(u uint32) *UserUpdate {
 	uu.mutation.ResetCreateAt()
-	uu.mutation.SetCreateAt(i)
+	uu.mutation.SetCreateAt(u)
 	return uu
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCreateAt(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetCreateAt(*i)
+func (uu *UserUpdate) SetNillableCreateAt(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetCreateAt(*u)
 	}
 	return uu
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (uu *UserUpdate) AddCreateAt(i int64) *UserUpdate {
-	uu.mutation.AddCreateAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (uu *UserUpdate) AddCreateAt(u uint32) *UserUpdate {
+	uu.mutation.AddCreateAt(u)
 	return uu
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (uu *UserUpdate) SetUpdateAt(i int64) *UserUpdate {
+func (uu *UserUpdate) SetUpdateAt(u uint32) *UserUpdate {
 	uu.mutation.ResetUpdateAt()
-	uu.mutation.SetUpdateAt(i)
+	uu.mutation.SetUpdateAt(u)
 	return uu
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (uu *UserUpdate) AddUpdateAt(i int64) *UserUpdate {
-	uu.mutation.AddUpdateAt(i)
+// AddUpdateAt adds u to the "update_at" field.
+func (uu *UserUpdate) AddUpdateAt(u uint32) *UserUpdate {
+	uu.mutation.AddUpdateAt(u)
 	return uu
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (uu *UserUpdate) SetDeleteAt(i int64) *UserUpdate {
+func (uu *UserUpdate) SetDeleteAt(u uint32) *UserUpdate {
 	uu.mutation.ResetDeleteAt()
-	uu.mutation.SetDeleteAt(i)
+	uu.mutation.SetDeleteAt(u)
 	return uu
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDeleteAt(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetDeleteAt(*i)
+func (uu *UserUpdate) SetNillableDeleteAt(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetDeleteAt(*u)
 	}
 	return uu
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (uu *UserUpdate) AddDeleteAt(i int64) *UserUpdate {
-	uu.mutation.AddDeleteAt(i)
+// AddDeleteAt adds u to the "delete_at" field.
+func (uu *UserUpdate) AddDeleteAt(u uint32) *UserUpdate {
+	uu.mutation.AddDeleteAt(u)
 	return uu
 }
 
@@ -237,23 +237,23 @@ func (uu *UserUpdate) SetNillableRegion(s *string) *UserUpdate {
 }
 
 // SetAge sets the "age" field.
-func (uu *UserUpdate) SetAge(i int32) *UserUpdate {
+func (uu *UserUpdate) SetAge(u uint32) *UserUpdate {
 	uu.mutation.ResetAge()
-	uu.mutation.SetAge(i)
+	uu.mutation.SetAge(u)
 	return uu
 }
 
 // SetNillableAge sets the "age" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableAge(i *int32) *UserUpdate {
-	if i != nil {
-		uu.SetAge(*i)
+func (uu *UserUpdate) SetNillableAge(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetAge(*u)
 	}
 	return uu
 }
 
-// AddAge adds i to the "age" field.
-func (uu *UserUpdate) AddAge(i int32) *UserUpdate {
-	uu.mutation.AddAge(i)
+// AddAge adds u to the "age" field.
+func (uu *UserUpdate) AddAge(u uint32) *UserUpdate {
+	uu.mutation.AddAge(u)
 	return uu
 }
 
@@ -483,14 +483,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.LoginTimes(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldLoginTimes,
 		})
 	}
 	if value, ok := uu.mutation.AddedLoginTimes(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldLoginTimes,
 		})
@@ -518,42 +518,42 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldCreateAt,
 		})
 	}
 	if value, ok := uu.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldCreateAt,
 		})
 	}
 	if value, ok := uu.mutation.UpdateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldUpdateAt,
 		})
 	}
 	if value, ok := uu.mutation.AddedUpdateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldUpdateAt,
 		})
 	}
 	if value, ok := uu.mutation.DeleteAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldDeleteAt,
 		})
 	}
 	if value, ok := uu.mutation.AddedDeleteAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldDeleteAt,
 		})
@@ -574,14 +574,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Age(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldAge,
 		})
 	}
 	if value, ok := uu.mutation.AddedAge(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldAge,
 		})
@@ -720,23 +720,23 @@ func (uuo *UserUpdateOne) ClearEmailAddress() *UserUpdateOne {
 }
 
 // SetLoginTimes sets the "login_times" field.
-func (uuo *UserUpdateOne) SetLoginTimes(i int32) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetLoginTimes(u uint32) *UserUpdateOne {
 	uuo.mutation.ResetLoginTimes()
-	uuo.mutation.SetLoginTimes(i)
+	uuo.mutation.SetLoginTimes(u)
 	return uuo
 }
 
 // SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableLoginTimes(i *int32) *UserUpdateOne {
-	if i != nil {
-		uuo.SetLoginTimes(*i)
+func (uuo *UserUpdateOne) SetNillableLoginTimes(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetLoginTimes(*u)
 	}
 	return uuo
 }
 
-// AddLoginTimes adds i to the "login_times" field.
-func (uuo *UserUpdateOne) AddLoginTimes(i int32) *UserUpdateOne {
-	uuo.mutation.AddLoginTimes(i)
+// AddLoginTimes adds u to the "login_times" field.
+func (uuo *UserUpdateOne) AddLoginTimes(u uint32) *UserUpdateOne {
+	uuo.mutation.AddLoginTimes(u)
 	return uuo
 }
 
@@ -775,57 +775,57 @@ func (uuo *UserUpdateOne) SetSignupMethod(s string) *UserUpdateOne {
 }
 
 // SetCreateAt sets the "create_at" field.
-func (uuo *UserUpdateOne) SetCreateAt(i int64) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetCreateAt(u uint32) *UserUpdateOne {
 	uuo.mutation.ResetCreateAt()
-	uuo.mutation.SetCreateAt(i)
+	uuo.mutation.SetCreateAt(u)
 	return uuo
 }
 
 // SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCreateAt(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetCreateAt(*i)
+func (uuo *UserUpdateOne) SetNillableCreateAt(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetCreateAt(*u)
 	}
 	return uuo
 }
 
-// AddCreateAt adds i to the "create_at" field.
-func (uuo *UserUpdateOne) AddCreateAt(i int64) *UserUpdateOne {
-	uuo.mutation.AddCreateAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (uuo *UserUpdateOne) AddCreateAt(u uint32) *UserUpdateOne {
+	uuo.mutation.AddCreateAt(u)
 	return uuo
 }
 
 // SetUpdateAt sets the "update_at" field.
-func (uuo *UserUpdateOne) SetUpdateAt(i int64) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetUpdateAt(u uint32) *UserUpdateOne {
 	uuo.mutation.ResetUpdateAt()
-	uuo.mutation.SetUpdateAt(i)
+	uuo.mutation.SetUpdateAt(u)
 	return uuo
 }
 
-// AddUpdateAt adds i to the "update_at" field.
-func (uuo *UserUpdateOne) AddUpdateAt(i int64) *UserUpdateOne {
-	uuo.mutation.AddUpdateAt(i)
+// AddUpdateAt adds u to the "update_at" field.
+func (uuo *UserUpdateOne) AddUpdateAt(u uint32) *UserUpdateOne {
+	uuo.mutation.AddUpdateAt(u)
 	return uuo
 }
 
 // SetDeleteAt sets the "delete_at" field.
-func (uuo *UserUpdateOne) SetDeleteAt(i int64) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetDeleteAt(u uint32) *UserUpdateOne {
 	uuo.mutation.ResetDeleteAt()
-	uuo.mutation.SetDeleteAt(i)
+	uuo.mutation.SetDeleteAt(u)
 	return uuo
 }
 
 // SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDeleteAt(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetDeleteAt(*i)
+func (uuo *UserUpdateOne) SetNillableDeleteAt(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetDeleteAt(*u)
 	}
 	return uuo
 }
 
-// AddDeleteAt adds i to the "delete_at" field.
-func (uuo *UserUpdateOne) AddDeleteAt(i int64) *UserUpdateOne {
-	uuo.mutation.AddDeleteAt(i)
+// AddDeleteAt adds u to the "delete_at" field.
+func (uuo *UserUpdateOne) AddDeleteAt(u uint32) *UserUpdateOne {
+	uuo.mutation.AddDeleteAt(u)
 	return uuo
 }
 
@@ -858,23 +858,23 @@ func (uuo *UserUpdateOne) SetNillableRegion(s *string) *UserUpdateOne {
 }
 
 // SetAge sets the "age" field.
-func (uuo *UserUpdateOne) SetAge(i int32) *UserUpdateOne {
+func (uuo *UserUpdateOne) SetAge(u uint32) *UserUpdateOne {
 	uuo.mutation.ResetAge()
-	uuo.mutation.SetAge(i)
+	uuo.mutation.SetAge(u)
 	return uuo
 }
 
 // SetNillableAge sets the "age" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableAge(i *int32) *UserUpdateOne {
-	if i != nil {
-		uuo.SetAge(*i)
+func (uuo *UserUpdateOne) SetNillableAge(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetAge(*u)
 	}
 	return uuo
 }
 
-// AddAge adds i to the "age" field.
-func (uuo *UserUpdateOne) AddAge(i int32) *UserUpdateOne {
-	uuo.mutation.AddAge(i)
+// AddAge adds u to the "age" field.
+func (uuo *UserUpdateOne) AddAge(u uint32) *UserUpdateOne {
+	uuo.mutation.AddAge(u)
 	return uuo
 }
 
@@ -1128,14 +1128,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.LoginTimes(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldLoginTimes,
 		})
 	}
 	if value, ok := uuo.mutation.AddedLoginTimes(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldLoginTimes,
 		})
@@ -1163,42 +1163,42 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldCreateAt,
 		})
 	}
 	if value, ok := uuo.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldCreateAt,
 		})
 	}
 	if value, ok := uuo.mutation.UpdateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldUpdateAt,
 		})
 	}
 	if value, ok := uuo.mutation.AddedUpdateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldUpdateAt,
 		})
 	}
 	if value, ok := uuo.mutation.DeleteAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldDeleteAt,
 		})
 	}
 	if value, ok := uuo.mutation.AddedDeleteAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldDeleteAt,
 		})
@@ -1219,14 +1219,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Age(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldAge,
 		})
 	}
 	if value, ok := uuo.mutation.AddedAge(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt32,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: user.FieldAge,
 		})

@@ -32,7 +32,7 @@ func TestFrozenUserAPI(t *testing.T) {
 			Password:     createUser.Password,
 			EmailAddress: createUser.EmailAddress,
 		}).
-		Post("http://localhost:32759/v1/signup")
+		Post("http://localhost:50070/v1/signup")
 	fmt.Println("sign up error", err)
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp1.StatusCode())
@@ -58,7 +58,7 @@ func TestFrozenUserAPI(t *testing.T) {
 			FrozenBy:    frozenUserInfo.FrozenBy,
 			FrozenCause: frozenUserInfo.FrozenCause,
 		}).
-		Post("http://localhost:32759/v1/frozen/user")
+		Post("http://localhost:50070/v1/frozen/user")
 	if assert.Nil(t, err) {
 		fmt.Println("resp2 is", resp2)
 		assert.Equal(t, 200, resp2.StatusCode())
@@ -80,7 +80,7 @@ func TestFrozenUserAPI(t *testing.T) {
 			UserId:     frozenUserInfo.UserId,
 			UnfrozenBy: frozenUserInfo.FrozenBy,
 		}).
-		Post("http://localhost:32759/v1/unfrozen/user")
+		Post("http://localhost:50070/v1/unfrozen/user")
 	if assert.Nil(t, err) {
 		fmt.Println("resp3 is", resp3)
 		assert.Equal(t, 200, resp3.StatusCode())
@@ -98,7 +98,7 @@ func TestFrozenUserAPI(t *testing.T) {
 	resp4, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetFrozenUsersRequest{}).
-		Post("http://localhost:32759/v1/get/frozen/user")
+		Post("http://localhost:50070/v1/get/frozen/user")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp4.StatusCode())
 	}

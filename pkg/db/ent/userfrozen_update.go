@@ -45,45 +45,45 @@ func (ufu *UserFrozenUpdate) SetFrozenCause(s string) *UserFrozenUpdate {
 	return ufu
 }
 
-// SetStartAt sets the "start_at" field.
-func (ufu *UserFrozenUpdate) SetStartAt(i int64) *UserFrozenUpdate {
-	ufu.mutation.ResetStartAt()
-	ufu.mutation.SetStartAt(i)
+// SetCreateAt sets the "create_at" field.
+func (ufu *UserFrozenUpdate) SetCreateAt(u uint32) *UserFrozenUpdate {
+	ufu.mutation.ResetCreateAt()
+	ufu.mutation.SetCreateAt(u)
 	return ufu
 }
 
-// SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (ufu *UserFrozenUpdate) SetNillableStartAt(i *int64) *UserFrozenUpdate {
-	if i != nil {
-		ufu.SetStartAt(*i)
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (ufu *UserFrozenUpdate) SetNillableCreateAt(u *uint32) *UserFrozenUpdate {
+	if u != nil {
+		ufu.SetCreateAt(*u)
 	}
 	return ufu
 }
 
-// AddStartAt adds i to the "start_at" field.
-func (ufu *UserFrozenUpdate) AddStartAt(i int64) *UserFrozenUpdate {
-	ufu.mutation.AddStartAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (ufu *UserFrozenUpdate) AddCreateAt(u uint32) *UserFrozenUpdate {
+	ufu.mutation.AddCreateAt(u)
 	return ufu
 }
 
 // SetEndAt sets the "end_at" field.
-func (ufu *UserFrozenUpdate) SetEndAt(i int64) *UserFrozenUpdate {
+func (ufu *UserFrozenUpdate) SetEndAt(u uint32) *UserFrozenUpdate {
 	ufu.mutation.ResetEndAt()
-	ufu.mutation.SetEndAt(i)
+	ufu.mutation.SetEndAt(u)
 	return ufu
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (ufu *UserFrozenUpdate) SetNillableEndAt(i *int64) *UserFrozenUpdate {
-	if i != nil {
-		ufu.SetEndAt(*i)
+func (ufu *UserFrozenUpdate) SetNillableEndAt(u *uint32) *UserFrozenUpdate {
+	if u != nil {
+		ufu.SetEndAt(*u)
 	}
 	return ufu
 }
 
-// AddEndAt adds i to the "end_at" field.
-func (ufu *UserFrozenUpdate) AddEndAt(i int64) *UserFrozenUpdate {
-	ufu.mutation.AddEndAt(i)
+// AddEndAt adds u to the "end_at" field.
+func (ufu *UserFrozenUpdate) AddEndAt(u uint32) *UserFrozenUpdate {
+	ufu.mutation.AddEndAt(u)
 	return ufu
 }
 
@@ -197,30 +197,30 @@ func (ufu *UserFrozenUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: userfrozen.FieldFrozenCause,
 		})
 	}
-	if value, ok := ufu.mutation.StartAt(); ok {
+	if value, ok := ufu.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
-			Column: userfrozen.FieldStartAt,
+			Column: userfrozen.FieldCreateAt,
 		})
 	}
-	if value, ok := ufu.mutation.AddedStartAt(); ok {
+	if value, ok := ufu.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
-			Column: userfrozen.FieldStartAt,
+			Column: userfrozen.FieldCreateAt,
 		})
 	}
 	if value, ok := ufu.mutation.EndAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userfrozen.FieldEndAt,
 		})
 	}
 	if value, ok := ufu.mutation.AddedEndAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userfrozen.FieldEndAt,
 		})
@@ -276,45 +276,45 @@ func (ufuo *UserFrozenUpdateOne) SetFrozenCause(s string) *UserFrozenUpdateOne {
 	return ufuo
 }
 
-// SetStartAt sets the "start_at" field.
-func (ufuo *UserFrozenUpdateOne) SetStartAt(i int64) *UserFrozenUpdateOne {
-	ufuo.mutation.ResetStartAt()
-	ufuo.mutation.SetStartAt(i)
+// SetCreateAt sets the "create_at" field.
+func (ufuo *UserFrozenUpdateOne) SetCreateAt(u uint32) *UserFrozenUpdateOne {
+	ufuo.mutation.ResetCreateAt()
+	ufuo.mutation.SetCreateAt(u)
 	return ufuo
 }
 
-// SetNillableStartAt sets the "start_at" field if the given value is not nil.
-func (ufuo *UserFrozenUpdateOne) SetNillableStartAt(i *int64) *UserFrozenUpdateOne {
-	if i != nil {
-		ufuo.SetStartAt(*i)
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (ufuo *UserFrozenUpdateOne) SetNillableCreateAt(u *uint32) *UserFrozenUpdateOne {
+	if u != nil {
+		ufuo.SetCreateAt(*u)
 	}
 	return ufuo
 }
 
-// AddStartAt adds i to the "start_at" field.
-func (ufuo *UserFrozenUpdateOne) AddStartAt(i int64) *UserFrozenUpdateOne {
-	ufuo.mutation.AddStartAt(i)
+// AddCreateAt adds u to the "create_at" field.
+func (ufuo *UserFrozenUpdateOne) AddCreateAt(u uint32) *UserFrozenUpdateOne {
+	ufuo.mutation.AddCreateAt(u)
 	return ufuo
 }
 
 // SetEndAt sets the "end_at" field.
-func (ufuo *UserFrozenUpdateOne) SetEndAt(i int64) *UserFrozenUpdateOne {
+func (ufuo *UserFrozenUpdateOne) SetEndAt(u uint32) *UserFrozenUpdateOne {
 	ufuo.mutation.ResetEndAt()
-	ufuo.mutation.SetEndAt(i)
+	ufuo.mutation.SetEndAt(u)
 	return ufuo
 }
 
 // SetNillableEndAt sets the "end_at" field if the given value is not nil.
-func (ufuo *UserFrozenUpdateOne) SetNillableEndAt(i *int64) *UserFrozenUpdateOne {
-	if i != nil {
-		ufuo.SetEndAt(*i)
+func (ufuo *UserFrozenUpdateOne) SetNillableEndAt(u *uint32) *UserFrozenUpdateOne {
+	if u != nil {
+		ufuo.SetEndAt(*u)
 	}
 	return ufuo
 }
 
-// AddEndAt adds i to the "end_at" field.
-func (ufuo *UserFrozenUpdateOne) AddEndAt(i int64) *UserFrozenUpdateOne {
-	ufuo.mutation.AddEndAt(i)
+// AddEndAt adds u to the "end_at" field.
+func (ufuo *UserFrozenUpdateOne) AddEndAt(u uint32) *UserFrozenUpdateOne {
+	ufuo.mutation.AddEndAt(u)
 	return ufuo
 }
 
@@ -452,30 +452,30 @@ func (ufuo *UserFrozenUpdateOne) sqlSave(ctx context.Context) (_node *UserFrozen
 			Column: userfrozen.FieldFrozenCause,
 		})
 	}
-	if value, ok := ufuo.mutation.StartAt(); ok {
+	if value, ok := ufuo.mutation.CreateAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
-			Column: userfrozen.FieldStartAt,
+			Column: userfrozen.FieldCreateAt,
 		})
 	}
-	if value, ok := ufuo.mutation.AddedStartAt(); ok {
+	if value, ok := ufuo.mutation.AddedCreateAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
-			Column: userfrozen.FieldStartAt,
+			Column: userfrozen.FieldCreateAt,
 		})
 	}
 	if value, ok := ufuo.mutation.EndAt(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userfrozen.FieldEndAt,
 		})
 	}
 	if value, ok := ufuo.mutation.AddedEndAt(); ok {
 		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeInt64,
+			Type:   field.TypeUint32,
 			Value:  value,
 			Column: userfrozen.FieldEndAt,
 		})

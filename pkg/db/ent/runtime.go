@@ -23,7 +23,7 @@ func init() {
 	// userDescLoginTimes is the schema descriptor for login_times field.
 	userDescLoginTimes := userFields[7].Descriptor()
 	// user.DefaultLoginTimes holds the default value on creation for the login_times field.
-	user.DefaultLoginTimes = userDescLoginTimes.Default.(int32)
+	user.DefaultLoginTimes = userDescLoginTimes.Default.(uint32)
 	// userDescKycVerify is the schema descriptor for kyc_verify field.
 	userDescKycVerify := userFields[8].Descriptor()
 	// user.DefaultKycVerify holds the default value on creation for the kyc_verify field.
@@ -35,17 +35,17 @@ func init() {
 	// userDescCreateAt is the schema descriptor for create_at field.
 	userDescCreateAt := userFields[11].Descriptor()
 	// user.DefaultCreateAt holds the default value on creation for the create_at field.
-	user.DefaultCreateAt = userDescCreateAt.Default.(func() int64)
+	user.DefaultCreateAt = userDescCreateAt.Default.(func() uint32)
 	// userDescUpdateAt is the schema descriptor for update_at field.
 	userDescUpdateAt := userFields[12].Descriptor()
 	// user.DefaultUpdateAt holds the default value on creation for the update_at field.
-	user.DefaultUpdateAt = userDescUpdateAt.Default.(func() int64)
+	user.DefaultUpdateAt = userDescUpdateAt.Default.(func() uint32)
 	// user.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	user.UpdateDefaultUpdateAt = userDescUpdateAt.UpdateDefault.(func() int64)
+	user.UpdateDefaultUpdateAt = userDescUpdateAt.UpdateDefault.(func() uint32)
 	// userDescDeleteAt is the schema descriptor for delete_at field.
 	userDescDeleteAt := userFields[13].Descriptor()
 	// user.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	user.DefaultDeleteAt = userDescDeleteAt.Default.(func() int64)
+	user.DefaultDeleteAt = userDescDeleteAt.Default.(func() uint32)
 	// userDescAvatar is the schema descriptor for avatar field.
 	userDescAvatar := userFields[14].Descriptor()
 	// user.DefaultAvatar holds the default value on creation for the avatar field.
@@ -57,7 +57,7 @@ func init() {
 	// userDescAge is the schema descriptor for age field.
 	userDescAge := userFields[16].Descriptor()
 	// user.DefaultAge holds the default value on creation for the age field.
-	user.DefaultAge = userDescAge.Default.(int32)
+	user.DefaultAge = userDescAge.Default.(uint32)
 	// userDescGender is the schema descriptor for gender field.
 	userDescGender := userFields[17].Descriptor()
 	// user.DefaultGender holds the default value on creation for the gender field.
@@ -88,14 +88,14 @@ func init() {
 	user.DefaultID = userDescID.Default.(func() uuid.UUID)
 	userfrozenFields := schema.UserFrozen{}.Fields()
 	_ = userfrozenFields
-	// userfrozenDescStartAt is the schema descriptor for start_at field.
-	userfrozenDescStartAt := userfrozenFields[4].Descriptor()
-	// userfrozen.DefaultStartAt holds the default value on creation for the start_at field.
-	userfrozen.DefaultStartAt = userfrozenDescStartAt.Default.(func() int64)
+	// userfrozenDescCreateAt is the schema descriptor for create_at field.
+	userfrozenDescCreateAt := userfrozenFields[4].Descriptor()
+	// userfrozen.DefaultCreateAt holds the default value on creation for the create_at field.
+	userfrozen.DefaultCreateAt = userfrozenDescCreateAt.Default.(func() uint32)
 	// userfrozenDescEndAt is the schema descriptor for end_at field.
 	userfrozenDescEndAt := userfrozenFields[5].Descriptor()
 	// userfrozen.DefaultEndAt holds the default value on creation for the end_at field.
-	userfrozen.DefaultEndAt = userfrozenDescEndAt.Default.(int64)
+	userfrozen.DefaultEndAt = userfrozenDescEndAt.Default.(uint32)
 	// userfrozenDescID is the schema descriptor for id field.
 	userfrozenDescID := userfrozenFields[0].Descriptor()
 	// userfrozen.DefaultID holds the default value on creation for the id field.
@@ -105,17 +105,17 @@ func init() {
 	// userproviderDescCreateAt is the schema descriptor for create_at field.
 	userproviderDescCreateAt := userproviderFields[5].Descriptor()
 	// userprovider.DefaultCreateAt holds the default value on creation for the create_at field.
-	userprovider.DefaultCreateAt = userproviderDescCreateAt.Default.(func() int64)
+	userprovider.DefaultCreateAt = userproviderDescCreateAt.Default.(func() uint32)
 	// userproviderDescUpdateAt is the schema descriptor for update_at field.
 	userproviderDescUpdateAt := userproviderFields[6].Descriptor()
 	// userprovider.DefaultUpdateAt holds the default value on creation for the update_at field.
-	userprovider.DefaultUpdateAt = userproviderDescUpdateAt.Default.(func() int64)
+	userprovider.DefaultUpdateAt = userproviderDescUpdateAt.Default.(func() uint32)
 	// userprovider.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
-	userprovider.UpdateDefaultUpdateAt = userproviderDescUpdateAt.UpdateDefault.(func() int64)
+	userprovider.UpdateDefaultUpdateAt = userproviderDescUpdateAt.UpdateDefault.(func() uint32)
 	// userproviderDescDeleteAt is the schema descriptor for delete_at field.
 	userproviderDescDeleteAt := userproviderFields[7].Descriptor()
 	// userprovider.DefaultDeleteAt holds the default value on creation for the delete_at field.
-	userprovider.DefaultDeleteAt = userproviderDescDeleteAt.Default.(func() int64)
+	userprovider.DefaultDeleteAt = userproviderDescDeleteAt.Default.(func() uint32)
 	// userproviderDescID is the schema descriptor for id field.
 	userproviderDescID := userproviderFields[0].Descriptor()
 	// userprovider.DefaultID holds the default value on creation for the id field.

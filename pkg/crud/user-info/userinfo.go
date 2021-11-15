@@ -375,19 +375,21 @@ func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npoo
 		return nil, xerrors.Errorf("fail to query user: %v", err)
 	}
 
-	salt, err := GetUserSalt(ctx, info.ID.String())
-	if err != nil {
-		return nil, xerrors.Errorf("fail to get user's salt: %v", err)
-	}
+	if in.Password != "" {
+		salt, err := GetUserSalt(ctx, info.ID.String())
+		if err != nil {
+			return nil, xerrors.Errorf("fail to get user's salt: %v", err)
+		}
 
-	dbPassword, err := GetUserPassword(ctx, info.ID.String())
-	if err != nil {
-		return nil, xerrors.Errorf("fail to get user's password: %v", err)
-	}
+		dbPassword, err := GetUserPassword(ctx, info.ID.String())
+		if err != nil {
+			return nil, xerrors.Errorf("fail to get user's password: %v", err)
+		}
 
-	err = encryption.VerifyUserPassword(in.Password, dbPassword, salt)
-	if err != nil {
-		return nil, xerrors.Errorf("user password not equal: %v", err)
+		err = encryption.VerifyUserPassword(in.Password, dbPassword, salt)
+		if err != nil {
+			return nil, xerrors.Errorf("user password not equal: %v", err)
+		}
 	}
 	return &npool.QueryUserExistResponse{
 		Info: dbRowToInfo(info),

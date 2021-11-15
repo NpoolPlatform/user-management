@@ -56,6 +56,17 @@ func TestUserProviderMiddleware(t *testing.T) { // nolint
 		userProvider.ID = resp1.Info.ID
 	}
 
+	resp4, err := QueryUserByUserProviderID(context.Background(), &npool.QueryUserByUserProviderIDRequest{
+		ProviderID:     userProvider.ProviderId,
+		ProviderUserID: userProvider.ProviderUserId,
+	})
+	if assert.Nil(t, err) {
+		if assert.NotNil(t, resp4) {
+			assert.NotNil(t, resp4.Info.UserBasicInfo)
+			assert.NotNil(t, resp4.Info.UserProviderInfo)
+		}
+	}
+
 	resp2, err := GetUserProviders(context.Background(), &npool.GetUserProvidersRequest{
 		UserId: userProvider.UserId,
 	})

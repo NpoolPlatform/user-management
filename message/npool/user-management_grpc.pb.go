@@ -88,6 +88,7 @@ type UserClient interface {
 	//Get user providers info.
 	GetUserProviders(ctx context.Context, in *GetUserProvidersRequest, opts ...grpc.CallOption) (*GetUserProvidersResponse, error)
 	QueryUserExist(ctx context.Context, in *QueryUserExistRequest, opts ...grpc.CallOption) (*QueryUserExistResponse, error)
+	QueryUserByUserProviderID(ctx context.Context, in *QueryUserByUserProviderIDRequest, opts ...grpc.CallOption) (*QueryUserByUserProviderIDResponse, error)
 }
 
 type userClient struct {
@@ -278,6 +279,15 @@ func (c *userClient) QueryUserExist(ctx context.Context, in *QueryUserExistReque
 	return out, nil
 }
 
+func (c *userClient) QueryUserByUserProviderID(ctx context.Context, in *QueryUserByUserProviderIDRequest, opts ...grpc.CallOption) (*QueryUserByUserProviderIDResponse, error) {
+	out := new(QueryUserByUserProviderIDResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/QueryUserByUserProviderID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServer is the server API for User service.
 // All implementations must embed UnimplementedUserServer
 // for forward compatibility
@@ -351,6 +361,7 @@ type UserServer interface {
 	//Get user providers info.
 	GetUserProviders(context.Context, *GetUserProvidersRequest) (*GetUserProvidersResponse, error)
 	QueryUserExist(context.Context, *QueryUserExistRequest) (*QueryUserExistResponse, error)
+	QueryUserByUserProviderID(context.Context, *QueryUserByUserProviderIDRequest) (*QueryUserByUserProviderIDResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
 
@@ -417,6 +428,9 @@ func (UnimplementedUserServer) GetUserProviders(context.Context, *GetUserProvide
 }
 func (UnimplementedUserServer) QueryUserExist(context.Context, *QueryUserExistRequest) (*QueryUserExistResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method QueryUserExist not implemented")
+}
+func (UnimplementedUserServer) QueryUserByUserProviderID(context.Context, *QueryUserByUserProviderIDRequest) (*QueryUserByUserProviderIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryUserByUserProviderID not implemented")
 }
 func (UnimplementedUserServer) mustEmbedUnimplementedUserServer() {}
 
@@ -791,6 +805,24 @@ func _User_QueryUserExist_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_QueryUserByUserProviderID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryUserByUserProviderIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).QueryUserByUserProviderID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/QueryUserByUserProviderID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).QueryUserByUserProviderID(ctx, req.(*QueryUserByUserProviderIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // User_ServiceDesc is the grpc.ServiceDesc for User service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -877,6 +909,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "QueryUserExist",
 			Handler:    _User_QueryUserExist_Handler,
+		},
+		{
+			MethodName: "QueryUserByUserProviderID",
+			Handler:    _User_QueryUserByUserProviderID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

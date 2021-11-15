@@ -36,3 +36,12 @@ func (s *Server) GetUserProviders(ctx context.Context, in *npool.GetUserProvider
 	}
 	return resp, nil
 }
+
+func (s *Server) QueryUserByUserProviderID(ctx context.Context, in *npool.QueryUserByUserProviderIDRequest) (*npool.QueryUserByUserProviderIDResponse, error) {
+	resp, err := middleware.QueryUserByUserProviderID(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorf("fail to get user by user provider id: %v", err)
+		return &npool.QueryUserByUserProviderIDResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+	return resp, nil
+}

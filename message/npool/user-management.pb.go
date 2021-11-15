@@ -2871,6 +2871,163 @@ func (x *QueryUserExistResponse) GetInfo() *UserBasicInfo {
 	return nil
 }
 
+type QueryProviderUserInfo struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	UserProviderInfo *UserProvider  `protobuf:"bytes,1,opt,name=UserProviderInfo,proto3" json:"UserProviderInfo,omitempty"`
+	UserBasicInfo    *UserBasicInfo `protobuf:"bytes,2,opt,name=UserBasicInfo,proto3" json:"UserBasicInfo,omitempty"`
+}
+
+func (x *QueryProviderUserInfo) Reset() {
+	*x = QueryProviderUserInfo{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_user_management_proto_msgTypes[49]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryProviderUserInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryProviderUserInfo) ProtoMessage() {}
+
+func (x *QueryProviderUserInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_user_management_proto_msgTypes[49]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryProviderUserInfo.ProtoReflect.Descriptor instead.
+func (*QueryProviderUserInfo) Descriptor() ([]byte, []int) {
+	return file_npool_user_management_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *QueryProviderUserInfo) GetUserProviderInfo() *UserProvider {
+	if x != nil {
+		return x.UserProviderInfo
+	}
+	return nil
+}
+
+func (x *QueryProviderUserInfo) GetUserBasicInfo() *UserBasicInfo {
+	if x != nil {
+		return x.UserBasicInfo
+	}
+	return nil
+}
+
+type QueryUserByUserProviderIDRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ProviderID     string `protobuf:"bytes,1,opt,name=ProviderID,proto3" json:"ProviderID,omitempty"`
+	ProviderUserID string `protobuf:"bytes,2,opt,name=ProviderUserID,proto3" json:"ProviderUserID,omitempty"`
+}
+
+func (x *QueryUserByUserProviderIDRequest) Reset() {
+	*x = QueryUserByUserProviderIDRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_user_management_proto_msgTypes[50]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryUserByUserProviderIDRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryUserByUserProviderIDRequest) ProtoMessage() {}
+
+func (x *QueryUserByUserProviderIDRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_user_management_proto_msgTypes[50]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryUserByUserProviderIDRequest.ProtoReflect.Descriptor instead.
+func (*QueryUserByUserProviderIDRequest) Descriptor() ([]byte, []int) {
+	return file_npool_user_management_proto_rawDescGZIP(), []int{50}
+}
+
+func (x *QueryUserByUserProviderIDRequest) GetProviderID() string {
+	if x != nil {
+		return x.ProviderID
+	}
+	return ""
+}
+
+func (x *QueryUserByUserProviderIDRequest) GetProviderUserID() string {
+	if x != nil {
+		return x.ProviderUserID
+	}
+	return ""
+}
+
+type QueryUserByUserProviderIDResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Info *QueryProviderUserInfo `protobuf:"bytes,1,opt,name=Info,proto3" json:"Info,omitempty"`
+}
+
+func (x *QueryUserByUserProviderIDResponse) Reset() {
+	*x = QueryUserByUserProviderIDResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_npool_user_management_proto_msgTypes[51]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryUserByUserProviderIDResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryUserByUserProviderIDResponse) ProtoMessage() {}
+
+func (x *QueryUserByUserProviderIDResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_npool_user_management_proto_msgTypes[51]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryUserByUserProviderIDResponse.ProtoReflect.Descriptor instead.
+func (*QueryUserByUserProviderIDResponse) Descriptor() ([]byte, []int) {
+	return file_npool_user_management_proto_rawDescGZIP(), []int{51}
+}
+
+func (x *QueryUserByUserProviderIDResponse) GetInfo() *QueryProviderUserInfo {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
 var File_npool_user_management_proto protoreflect.FileDescriptor
 
 var file_npool_user_management_proto_rawDesc = []byte{
@@ -3163,8 +3320,30 @@ var file_npool_user_management_proto_rawDesc = []byte{
 	0x79, 0x55, 0x73, 0x65, 0x72, 0x45, 0x78, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
 	0x73, 0x65, 0x12, 0x2a, 0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
 	0x32, 0x16, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65, 0x72, 0x42,
-	0x61, 0x73, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x32, 0xd3,
-	0x10, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x50, 0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69,
+	0x61, 0x73, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x98,
+	0x01, 0x0a, 0x15, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x41, 0x0a, 0x10, 0x55, 0x73, 0x65, 0x72,
+	0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x15, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65,
+	0x72, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x52, 0x10, 0x55, 0x73, 0x65, 0x72, 0x50,
+	0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x3c, 0x0a, 0x0d, 0x55,
+	0x73, 0x65, 0x72, 0x42, 0x61, 0x73, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x16, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x73, 0x65,
+	0x72, 0x42, 0x61, 0x73, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x0d, 0x55, 0x73, 0x65, 0x72,
+	0x42, 0x61, 0x73, 0x69, 0x63, 0x49, 0x6e, 0x66, 0x6f, 0x22, 0x6a, 0x0a, 0x20, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x55, 0x73, 0x65, 0x72, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x76,
+	0x69, 0x64, 0x65, 0x72, 0x49, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a,
+	0x0a, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x49, 0x44, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x0a, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x49, 0x44, 0x12, 0x26, 0x0a,
+	0x0e, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x55, 0x73, 0x65, 0x72, 0x49, 0x44, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0e, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x55,
+	0x73, 0x65, 0x72, 0x49, 0x44, 0x22, 0x57, 0x0a, 0x21, 0x51, 0x75, 0x65, 0x72, 0x79, 0x55, 0x73,
+	0x65, 0x72, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x49, 0x44, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x32, 0x0a, 0x04, 0x49, 0x6e,
+	0x66, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1e, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e,
+	0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x55, 0x73, 0x65, 0x72, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x32, 0xf5,
+	0x11, 0x0a, 0x04, 0x55, 0x73, 0x65, 0x72, 0x12, 0x50, 0x0a, 0x07, 0x56, 0x65, 0x72, 0x73, 0x69,
 	0x6f, 0x6e, 0x12, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74,
 	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x1a, 0x18, 0x2e, 0x75, 0x73, 0x65,
 	0x72, 0x2e, 0x76, 0x31, 0x2e, 0x56, 0x65, 0x72, 0x73, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70,
@@ -3297,11 +3476,21 @@ var file_npool_user_management_proto_rawDesc = []byte{
 	0x72, 0x79, 0x55, 0x73, 0x65, 0x72, 0x45, 0x78, 0x69, 0x73, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x22, 0x1f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x19, 0x22, 0x14, 0x2f, 0x76, 0x31,
 	0x2f, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x2f, 0x65, 0x78, 0x69, 0x73,
-	0x74, 0x3a, 0x01, 0x2a, 0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63,
-	0x6f, 0x6d, 0x2f, 0x4e, 0x70, 0x6f, 0x6f, 0x6c, 0x50, 0x6c, 0x61, 0x74, 0x66, 0x6f, 0x72, 0x6d,
-	0x2f, 0x75, 0x73, 0x65, 0x72, 0x2d, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65, 0x6e, 0x74,
-	0x2f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2f, 0x6e, 0x70, 0x6f, 0x6f, 0x6c, 0x62, 0x06,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x3a, 0x01, 0x2a, 0x12, 0x9f, 0x01, 0x0a, 0x19, 0x51, 0x75, 0x65, 0x72, 0x79, 0x55, 0x73,
+	0x65, 0x72, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72,
+	0x49, 0x44, 0x12, 0x29, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x55, 0x73, 0x65, 0x72, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x76,
+	0x69, 0x64, 0x65, 0x72, 0x49, 0x44, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x2a, 0x2e,
+	0x75, 0x73, 0x65, 0x72, 0x2e, 0x76, 0x31, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x55, 0x73, 0x65,
+	0x72, 0x42, 0x79, 0x55, 0x73, 0x65, 0x72, 0x50, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65, 0x72, 0x49,
+	0x44, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2b, 0x82, 0xd3, 0xe4, 0x93, 0x02,
+	0x25, 0x22, 0x20, 0x2f, 0x76, 0x31, 0x2f, 0x71, 0x75, 0x65, 0x72, 0x79, 0x2f, 0x75, 0x73, 0x65,
+	0x72, 0x2f, 0x62, 0x79, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x70, 0x72, 0x6f, 0x76, 0x69, 0x64, 0x65,
+	0x72, 0x69, 0x64, 0x3a, 0x01, 0x2a, 0x42, 0x38, 0x5a, 0x36, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
+	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x4e, 0x70, 0x6f, 0x6f, 0x6c, 0x50, 0x6c, 0x61, 0x74, 0x66, 0x6f,
+	0x72, 0x6d, 0x2f, 0x75, 0x73, 0x65, 0x72, 0x2d, 0x6d, 0x61, 0x6e, 0x61, 0x67, 0x65, 0x6d, 0x65,
+	0x6e, 0x74, 0x2f, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2f, 0x6e, 0x70, 0x6f, 0x6f, 0x6c,
+	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -3316,58 +3505,61 @@ func file_npool_user_management_proto_rawDescGZIP() []byte {
 	return file_npool_user_management_proto_rawDescData
 }
 
-var file_npool_user_management_proto_msgTypes = make([]protoimpl.MessageInfo, 49)
+var file_npool_user_management_proto_msgTypes = make([]protoimpl.MessageInfo, 52)
 var file_npool_user_management_proto_goTypes = []interface{}{
-	(*VersionResponse)(nil),            // 0: user.v1.VersionResponse
-	(*PageInfo)(nil),                   // 1: user.v1.PageInfo
-	(*UserBasicInfo)(nil),              // 2: user.v1.UserBasicInfo
-	(*SignupRequest)(nil),              // 3: user.v1.SignupRequest
-	(*SignupResponse)(nil),             // 4: user.v1.SignupResponse
-	(*GetUserRequest)(nil),             // 5: user.v1.GetUserRequest
-	(*GetUserResponse)(nil),            // 6: user.v1.GetUserResponse
-	(*GetUsersRequest)(nil),            // 7: user.v1.GetUsersRequest
-	(*GetUsersResponse)(nil),           // 8: user.v1.GetUsersResponse
-	(*UpdateUserInfoRequest)(nil),      // 9: user.v1.UpdateUserInfoRequest
-	(*UpdateUserInfoResponse)(nil),     // 10: user.v1.UpdateUserInfoResponse
-	(*BindUserPhoneRequest)(nil),       // 11: user.v1.BindUserPhoneRequest
-	(*BindUserPhoneResponse)(nil),      // 12: user.v1.BindUserPhoneResponse
-	(*BindUserEmailRequest)(nil),       // 13: user.v1.BindUserEmailRequest
-	(*BindUserEmailResponse)(nil),      // 14: user.v1.BindUserEmailResponse
-	(*UnbindUserPhoneRequest)(nil),     // 15: user.v1.UnbindUserPhoneRequest
-	(*UnbindUserPhoneResponse)(nil),    // 16: user.v1.UnbindUserPhoneResponse
-	(*UnbindUserEmailRequest)(nil),     // 17: user.v1.UnbindUserEmailRequest
-	(*UnbindUserEmailResponse)(nil),    // 18: user.v1.UnbindUserEmailResponse
-	(*UserProvider)(nil),               // 19: user.v1.UserProvider
-	(*BindThirdPartyRequest)(nil),      // 20: user.v1.BindThirdPartyRequest
-	(*BindThirdPartyResponse)(nil),     // 21: user.v1.BindThirdPartyResponse
-	(*UnbindThirdPartyRequest)(nil),    // 22: user.v1.UnbindThirdPartyRequest
-	(*UnbindThirdPartyResponse)(nil),   // 23: user.v1.UnbindThirdPartyResponse
-	(*ChangeUserPasswordRequest)(nil),  // 24: user.v1.ChangeUserPasswordRequest
-	(*ChangeUserPasswordResponse)(nil), // 25: user.v1.ChangeUserPasswordResponse
-	(*CertificateKycRequest)(nil),      // 26: user.v1.CertificateKycRequest
-	(*CertificateKycResponse)(nil),     // 27: user.v1.CertificateKycResponse
-	(*GetGaQRCodeRequest)(nil),         // 28: user.v1.GetGaQRCodeRequest
-	(*GetGaQRCodeResponse)(nil),        // 29: user.v1.GetGaQRCodeResponse
-	(*VerifyGaRequest)(nil),            // 30: user.v1.VerifyGaRequest
-	(*VerifyGaResponse)(nil),           // 31: user.v1.VerifyGaResponse
-	(*ForgetPasswordRequest)(nil),      // 32: user.v1.ForgetPasswordRequest
-	(*ForgetPasswordResponse)(nil),     // 33: user.v1.ForgetPasswordResponse
-	(*DeleteUserRequest)(nil),          // 34: user.v1.DeleteUserRequest
-	(*DeleteUserResponse)(nil),         // 35: user.v1.DeleteUserResponse
-	(*AddUserRequest)(nil),             // 36: user.v1.AddUserRequest
-	(*AddUserResponse)(nil),            // 37: user.v1.AddUserResponse
-	(*FrozenUser)(nil),                 // 38: user.v1.FrozenUser
-	(*FrozenUserRequest)(nil),          // 39: user.v1.FrozenUserRequest
-	(*FrozenUserResponse)(nil),         // 40: user.v1.FrozenUserResponse
-	(*UnfrozenUserRequest)(nil),        // 41: user.v1.UnfrozenUserRequest
-	(*UnfrozenUserResponse)(nil),       // 42: user.v1.UnfrozenUserResponse
-	(*GetFrozenUsersRequest)(nil),      // 43: user.v1.GetFrozenUsersRequest
-	(*GetFrozenUsersResponse)(nil),     // 44: user.v1.GetFrozenUsersResponse
-	(*GetUserProvidersRequest)(nil),    // 45: user.v1.GetUserProvidersRequest
-	(*GetUserProvidersResponse)(nil),   // 46: user.v1.GetUserProvidersResponse
-	(*QueryUserExistRequest)(nil),      // 47: user.v1.QueryUserExistRequest
-	(*QueryUserExistResponse)(nil),     // 48: user.v1.QueryUserExistResponse
-	(*emptypb.Empty)(nil),              // 49: google.protobuf.Empty
+	(*VersionResponse)(nil),                   // 0: user.v1.VersionResponse
+	(*PageInfo)(nil),                          // 1: user.v1.PageInfo
+	(*UserBasicInfo)(nil),                     // 2: user.v1.UserBasicInfo
+	(*SignupRequest)(nil),                     // 3: user.v1.SignupRequest
+	(*SignupResponse)(nil),                    // 4: user.v1.SignupResponse
+	(*GetUserRequest)(nil),                    // 5: user.v1.GetUserRequest
+	(*GetUserResponse)(nil),                   // 6: user.v1.GetUserResponse
+	(*GetUsersRequest)(nil),                   // 7: user.v1.GetUsersRequest
+	(*GetUsersResponse)(nil),                  // 8: user.v1.GetUsersResponse
+	(*UpdateUserInfoRequest)(nil),             // 9: user.v1.UpdateUserInfoRequest
+	(*UpdateUserInfoResponse)(nil),            // 10: user.v1.UpdateUserInfoResponse
+	(*BindUserPhoneRequest)(nil),              // 11: user.v1.BindUserPhoneRequest
+	(*BindUserPhoneResponse)(nil),             // 12: user.v1.BindUserPhoneResponse
+	(*BindUserEmailRequest)(nil),              // 13: user.v1.BindUserEmailRequest
+	(*BindUserEmailResponse)(nil),             // 14: user.v1.BindUserEmailResponse
+	(*UnbindUserPhoneRequest)(nil),            // 15: user.v1.UnbindUserPhoneRequest
+	(*UnbindUserPhoneResponse)(nil),           // 16: user.v1.UnbindUserPhoneResponse
+	(*UnbindUserEmailRequest)(nil),            // 17: user.v1.UnbindUserEmailRequest
+	(*UnbindUserEmailResponse)(nil),           // 18: user.v1.UnbindUserEmailResponse
+	(*UserProvider)(nil),                      // 19: user.v1.UserProvider
+	(*BindThirdPartyRequest)(nil),             // 20: user.v1.BindThirdPartyRequest
+	(*BindThirdPartyResponse)(nil),            // 21: user.v1.BindThirdPartyResponse
+	(*UnbindThirdPartyRequest)(nil),           // 22: user.v1.UnbindThirdPartyRequest
+	(*UnbindThirdPartyResponse)(nil),          // 23: user.v1.UnbindThirdPartyResponse
+	(*ChangeUserPasswordRequest)(nil),         // 24: user.v1.ChangeUserPasswordRequest
+	(*ChangeUserPasswordResponse)(nil),        // 25: user.v1.ChangeUserPasswordResponse
+	(*CertificateKycRequest)(nil),             // 26: user.v1.CertificateKycRequest
+	(*CertificateKycResponse)(nil),            // 27: user.v1.CertificateKycResponse
+	(*GetGaQRCodeRequest)(nil),                // 28: user.v1.GetGaQRCodeRequest
+	(*GetGaQRCodeResponse)(nil),               // 29: user.v1.GetGaQRCodeResponse
+	(*VerifyGaRequest)(nil),                   // 30: user.v1.VerifyGaRequest
+	(*VerifyGaResponse)(nil),                  // 31: user.v1.VerifyGaResponse
+	(*ForgetPasswordRequest)(nil),             // 32: user.v1.ForgetPasswordRequest
+	(*ForgetPasswordResponse)(nil),            // 33: user.v1.ForgetPasswordResponse
+	(*DeleteUserRequest)(nil),                 // 34: user.v1.DeleteUserRequest
+	(*DeleteUserResponse)(nil),                // 35: user.v1.DeleteUserResponse
+	(*AddUserRequest)(nil),                    // 36: user.v1.AddUserRequest
+	(*AddUserResponse)(nil),                   // 37: user.v1.AddUserResponse
+	(*FrozenUser)(nil),                        // 38: user.v1.FrozenUser
+	(*FrozenUserRequest)(nil),                 // 39: user.v1.FrozenUserRequest
+	(*FrozenUserResponse)(nil),                // 40: user.v1.FrozenUserResponse
+	(*UnfrozenUserRequest)(nil),               // 41: user.v1.UnfrozenUserRequest
+	(*UnfrozenUserResponse)(nil),              // 42: user.v1.UnfrozenUserResponse
+	(*GetFrozenUsersRequest)(nil),             // 43: user.v1.GetFrozenUsersRequest
+	(*GetFrozenUsersResponse)(nil),            // 44: user.v1.GetFrozenUsersResponse
+	(*GetUserProvidersRequest)(nil),           // 45: user.v1.GetUserProvidersRequest
+	(*GetUserProvidersResponse)(nil),          // 46: user.v1.GetUserProvidersResponse
+	(*QueryUserExistRequest)(nil),             // 47: user.v1.QueryUserExistRequest
+	(*QueryUserExistResponse)(nil),            // 48: user.v1.QueryUserExistResponse
+	(*QueryProviderUserInfo)(nil),             // 49: user.v1.QueryProviderUserInfo
+	(*QueryUserByUserProviderIDRequest)(nil),  // 50: user.v1.QueryUserByUserProviderIDRequest
+	(*QueryUserByUserProviderIDResponse)(nil), // 51: user.v1.QueryUserByUserProviderIDResponse
+	(*emptypb.Empty)(nil),                     // 52: google.protobuf.Empty
 }
 var file_npool_user_management_proto_depIdxs = []int32{
 	2,  // 0: user.v1.SignupResponse.Info:type_name -> user.v1.UserBasicInfo
@@ -3386,51 +3578,56 @@ var file_npool_user_management_proto_depIdxs = []int32{
 	38, // 13: user.v1.GetFrozenUsersResponse.Infos:type_name -> user.v1.FrozenUser
 	19, // 14: user.v1.GetUserProvidersResponse.Infos:type_name -> user.v1.UserProvider
 	2,  // 15: user.v1.QueryUserExistResponse.Info:type_name -> user.v1.UserBasicInfo
-	49, // 16: user.v1.User.Version:input_type -> google.protobuf.Empty
-	3,  // 17: user.v1.User.SignUp:input_type -> user.v1.SignupRequest
-	5,  // 18: user.v1.User.GetUser:input_type -> user.v1.GetUserRequest
-	7,  // 19: user.v1.User.GetUsers:input_type -> user.v1.GetUsersRequest
-	9,  // 20: user.v1.User.UpdateUserInfo:input_type -> user.v1.UpdateUserInfoRequest
-	11, // 21: user.v1.User.BindUserPhone:input_type -> user.v1.BindUserPhoneRequest
-	13, // 22: user.v1.User.BindUserEmail:input_type -> user.v1.BindUserEmailRequest
-	15, // 23: user.v1.User.UnbindUserPhone:input_type -> user.v1.UnbindUserPhoneRequest
-	17, // 24: user.v1.User.UnbindUserEmail:input_type -> user.v1.UnbindUserEmailRequest
-	20, // 25: user.v1.User.BindThirdParty:input_type -> user.v1.BindThirdPartyRequest
-	22, // 26: user.v1.User.UnbindThirdParty:input_type -> user.v1.UnbindThirdPartyRequest
-	24, // 27: user.v1.User.ChangeUserPassword:input_type -> user.v1.ChangeUserPasswordRequest
-	32, // 28: user.v1.User.ForgetPassword:input_type -> user.v1.ForgetPasswordRequest
-	36, // 29: user.v1.User.AddUser:input_type -> user.v1.AddUserRequest
-	34, // 30: user.v1.User.DeleteUser:input_type -> user.v1.DeleteUserRequest
-	39, // 31: user.v1.User.FrozenUser:input_type -> user.v1.FrozenUserRequest
-	41, // 32: user.v1.User.UnfrozenUser:input_type -> user.v1.UnfrozenUserRequest
-	43, // 33: user.v1.User.GetFrozenUsers:input_type -> user.v1.GetFrozenUsersRequest
-	45, // 34: user.v1.User.GetUserProviders:input_type -> user.v1.GetUserProvidersRequest
-	47, // 35: user.v1.User.QueryUserExist:input_type -> user.v1.QueryUserExistRequest
-	0,  // 36: user.v1.User.Version:output_type -> user.v1.VersionResponse
-	4,  // 37: user.v1.User.SignUp:output_type -> user.v1.SignupResponse
-	6,  // 38: user.v1.User.GetUser:output_type -> user.v1.GetUserResponse
-	8,  // 39: user.v1.User.GetUsers:output_type -> user.v1.GetUsersResponse
-	10, // 40: user.v1.User.UpdateUserInfo:output_type -> user.v1.UpdateUserInfoResponse
-	12, // 41: user.v1.User.BindUserPhone:output_type -> user.v1.BindUserPhoneResponse
-	14, // 42: user.v1.User.BindUserEmail:output_type -> user.v1.BindUserEmailResponse
-	16, // 43: user.v1.User.UnbindUserPhone:output_type -> user.v1.UnbindUserPhoneResponse
-	18, // 44: user.v1.User.UnbindUserEmail:output_type -> user.v1.UnbindUserEmailResponse
-	21, // 45: user.v1.User.BindThirdParty:output_type -> user.v1.BindThirdPartyResponse
-	23, // 46: user.v1.User.UnbindThirdParty:output_type -> user.v1.UnbindThirdPartyResponse
-	25, // 47: user.v1.User.ChangeUserPassword:output_type -> user.v1.ChangeUserPasswordResponse
-	33, // 48: user.v1.User.ForgetPassword:output_type -> user.v1.ForgetPasswordResponse
-	37, // 49: user.v1.User.AddUser:output_type -> user.v1.AddUserResponse
-	35, // 50: user.v1.User.DeleteUser:output_type -> user.v1.DeleteUserResponse
-	40, // 51: user.v1.User.FrozenUser:output_type -> user.v1.FrozenUserResponse
-	42, // 52: user.v1.User.UnfrozenUser:output_type -> user.v1.UnfrozenUserResponse
-	44, // 53: user.v1.User.GetFrozenUsers:output_type -> user.v1.GetFrozenUsersResponse
-	46, // 54: user.v1.User.GetUserProviders:output_type -> user.v1.GetUserProvidersResponse
-	48, // 55: user.v1.User.QueryUserExist:output_type -> user.v1.QueryUserExistResponse
-	36, // [36:56] is the sub-list for method output_type
-	16, // [16:36] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	19, // 16: user.v1.QueryProviderUserInfo.UserProviderInfo:type_name -> user.v1.UserProvider
+	2,  // 17: user.v1.QueryProviderUserInfo.UserBasicInfo:type_name -> user.v1.UserBasicInfo
+	49, // 18: user.v1.QueryUserByUserProviderIDResponse.Info:type_name -> user.v1.QueryProviderUserInfo
+	52, // 19: user.v1.User.Version:input_type -> google.protobuf.Empty
+	3,  // 20: user.v1.User.SignUp:input_type -> user.v1.SignupRequest
+	5,  // 21: user.v1.User.GetUser:input_type -> user.v1.GetUserRequest
+	7,  // 22: user.v1.User.GetUsers:input_type -> user.v1.GetUsersRequest
+	9,  // 23: user.v1.User.UpdateUserInfo:input_type -> user.v1.UpdateUserInfoRequest
+	11, // 24: user.v1.User.BindUserPhone:input_type -> user.v1.BindUserPhoneRequest
+	13, // 25: user.v1.User.BindUserEmail:input_type -> user.v1.BindUserEmailRequest
+	15, // 26: user.v1.User.UnbindUserPhone:input_type -> user.v1.UnbindUserPhoneRequest
+	17, // 27: user.v1.User.UnbindUserEmail:input_type -> user.v1.UnbindUserEmailRequest
+	20, // 28: user.v1.User.BindThirdParty:input_type -> user.v1.BindThirdPartyRequest
+	22, // 29: user.v1.User.UnbindThirdParty:input_type -> user.v1.UnbindThirdPartyRequest
+	24, // 30: user.v1.User.ChangeUserPassword:input_type -> user.v1.ChangeUserPasswordRequest
+	32, // 31: user.v1.User.ForgetPassword:input_type -> user.v1.ForgetPasswordRequest
+	36, // 32: user.v1.User.AddUser:input_type -> user.v1.AddUserRequest
+	34, // 33: user.v1.User.DeleteUser:input_type -> user.v1.DeleteUserRequest
+	39, // 34: user.v1.User.FrozenUser:input_type -> user.v1.FrozenUserRequest
+	41, // 35: user.v1.User.UnfrozenUser:input_type -> user.v1.UnfrozenUserRequest
+	43, // 36: user.v1.User.GetFrozenUsers:input_type -> user.v1.GetFrozenUsersRequest
+	45, // 37: user.v1.User.GetUserProviders:input_type -> user.v1.GetUserProvidersRequest
+	47, // 38: user.v1.User.QueryUserExist:input_type -> user.v1.QueryUserExistRequest
+	50, // 39: user.v1.User.QueryUserByUserProviderID:input_type -> user.v1.QueryUserByUserProviderIDRequest
+	0,  // 40: user.v1.User.Version:output_type -> user.v1.VersionResponse
+	4,  // 41: user.v1.User.SignUp:output_type -> user.v1.SignupResponse
+	6,  // 42: user.v1.User.GetUser:output_type -> user.v1.GetUserResponse
+	8,  // 43: user.v1.User.GetUsers:output_type -> user.v1.GetUsersResponse
+	10, // 44: user.v1.User.UpdateUserInfo:output_type -> user.v1.UpdateUserInfoResponse
+	12, // 45: user.v1.User.BindUserPhone:output_type -> user.v1.BindUserPhoneResponse
+	14, // 46: user.v1.User.BindUserEmail:output_type -> user.v1.BindUserEmailResponse
+	16, // 47: user.v1.User.UnbindUserPhone:output_type -> user.v1.UnbindUserPhoneResponse
+	18, // 48: user.v1.User.UnbindUserEmail:output_type -> user.v1.UnbindUserEmailResponse
+	21, // 49: user.v1.User.BindThirdParty:output_type -> user.v1.BindThirdPartyResponse
+	23, // 50: user.v1.User.UnbindThirdParty:output_type -> user.v1.UnbindThirdPartyResponse
+	25, // 51: user.v1.User.ChangeUserPassword:output_type -> user.v1.ChangeUserPasswordResponse
+	33, // 52: user.v1.User.ForgetPassword:output_type -> user.v1.ForgetPasswordResponse
+	37, // 53: user.v1.User.AddUser:output_type -> user.v1.AddUserResponse
+	35, // 54: user.v1.User.DeleteUser:output_type -> user.v1.DeleteUserResponse
+	40, // 55: user.v1.User.FrozenUser:output_type -> user.v1.FrozenUserResponse
+	42, // 56: user.v1.User.UnfrozenUser:output_type -> user.v1.UnfrozenUserResponse
+	44, // 57: user.v1.User.GetFrozenUsers:output_type -> user.v1.GetFrozenUsersResponse
+	46, // 58: user.v1.User.GetUserProviders:output_type -> user.v1.GetUserProvidersResponse
+	48, // 59: user.v1.User.QueryUserExist:output_type -> user.v1.QueryUserExistResponse
+	51, // 60: user.v1.User.QueryUserByUserProviderID:output_type -> user.v1.QueryUserByUserProviderIDResponse
+	40, // [40:61] is the sub-list for method output_type
+	19, // [19:40] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_npool_user_management_proto_init() }
@@ -4027,6 +4224,42 @@ func file_npool_user_management_proto_init() {
 				return nil
 			}
 		}
+		file_npool_user_management_proto_msgTypes[49].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryProviderUserInfo); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_npool_user_management_proto_msgTypes[50].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryUserByUserProviderIDRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_npool_user_management_proto_msgTypes[51].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryUserByUserProviderIDResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -4034,7 +4267,7 @@ func file_npool_user_management_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_npool_user_management_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   49,
+			NumMessages:   52,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -34,6 +34,9 @@
     - [GetUsersRequest](#user.v1.GetUsersRequest)
     - [GetUsersResponse](#user.v1.GetUsersResponse)
     - [PageInfo](#user.v1.PageInfo)
+    - [QueryProviderUserInfo](#user.v1.QueryProviderUserInfo)
+    - [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest)
+    - [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse)
     - [QueryUserExistRequest](#user.v1.QueryUserExistRequest)
     - [QueryUserExistResponse](#user.v1.QueryUserExistResponse)
     - [SignupRequest](#user.v1.SignupRequest)
@@ -548,6 +551,53 @@
 
 
 
+<a name="user.v1.QueryProviderUserInfo"></a>
+
+### QueryProviderUserInfo
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| UserProviderInfo | [UserProvider](#user.v1.UserProvider) |  |  |
+| UserBasicInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+
+
+
+
+
+
+<a name="user.v1.QueryUserByUserProviderIDRequest"></a>
+
+### QueryUserByUserProviderIDRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| ProviderID | [string](#string) |  |  |
+| ProviderUserID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.QueryUserByUserProviderIDResponse"></a>
+
+### QueryUserByUserProviderIDResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [QueryProviderUserInfo](#user.v1.QueryProviderUserInfo) |  |  |
+
+
+
+
+
+
 <a name="user.v1.QueryUserExistRequest"></a>
 
 ### QueryUserExistRequest
@@ -902,6 +952,7 @@ a service of managing users
 | GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
 | GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
 | QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) |  |
+| QueryUserByUserProviderID | [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest) | [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse) |  |
 
  
 

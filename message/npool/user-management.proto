@@ -196,6 +196,12 @@ service User {
             body: "*"
         };
     };
+    rpc QueryUserByUserProviderID (QueryUserByUserProviderIDRequest) returns (QueryUserByUserProviderIDResponse) {
+        option (google.api.http) = {
+            post: "/v1/query/user/by/userproviderid"
+            body: "*"
+        };
+    };
 }
 
 // request body and response
@@ -469,4 +475,18 @@ message QueryUserExistRequest {
 
 message QueryUserExistResponse {
     UserBasicInfo Info = 1;
+}
+
+message QueryProviderUserInfo {
+    UserProvider UserProviderInfo = 1;
+    UserBasicInfo UserBasicInfo = 2;
+}
+
+message QueryUserByUserProviderIDRequest {
+    string ProviderID = 1;
+    string ProviderUserID = 2;
+}
+
+message QueryUserByUserProviderIDResponse {
+    QueryProviderUserInfo Info = 1;
 }

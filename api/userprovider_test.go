@@ -73,6 +73,17 @@ func TestUserProviderAPI(t *testing.T) {
 		}
 	}
 
+	resp5, err := cli.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(&npool.QueryUserByUserProviderIDRequest{
+			ProviderID:     userProvider.ProviderId,
+			ProviderUserID: userProvider.ProviderUserId,
+		}).Post("http://localhost:50070/v1/query/user/by/userproviderid")
+	if assert.Nil(t, err) {
+		assert.Equal(t, 200, resp5.StatusCode())
+		fmt.Printf("query user by user provider id is: %v", resp5)
+	}
+
 	resp3, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUserProvidersRequest{

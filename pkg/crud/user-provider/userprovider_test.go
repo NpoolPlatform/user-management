@@ -59,6 +59,16 @@ func TestUserProviderCRUD(t *testing.T) {
 		assert.Equal(t, resp.Info.UserProviderInfo, userProvider.UserProviderInfo)
 	}
 
+	resp3, err := QueryUserProviderInfoByProviderUserID(context.Background(), &npool.QueryUserByUserProviderIDRequest{
+		ProviderID:     userProvider.ProviderId,
+		ProviderUserID: userProvider.ProviderUserId,
+	})
+	if assert.Nil(t, err) {
+		if assert.NotNil(t, resp3) {
+			assert.NotNil(t, resp3.Info.UserProviderInfo)
+		}
+	}
+
 	resp1, err := Get(context.Background(), &npool.GetUserProvidersRequest{
 		UserId: userProvider.UserId,
 	})

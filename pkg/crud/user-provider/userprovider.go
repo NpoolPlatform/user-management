@@ -151,3 +151,28 @@ func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, provi
 	}
 	return info[0].ID, info[0].ProviderUserID, nil
 }
+
+func QueryUserProviderInfoByProviderUserID(ctx context.Context, in *npool.QueryUserByUserProviderIDRequest) (*npool.QueryUserByUserProviderIDResponse, error) {
+	providerID, err := uuid.Parse(in.ProviderID)
+	if err != nil {
+		return nil, xerrors.Errorf("invalid provider id: %v", err)
+	}
+	info, err := db.Client().
+		UserProvider.
+		Query().
+		Where(
+			userprovider.And(
+				userprovider.ProviderUserID(in.ProviderUserID),
+				userprovider.ProviderID(providerID),
+				userprovider.DeleteAt(0),
+			),
+		).Only(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to get user provider info by user provider id: %v", err)
+	}
+	return &npool.QueryUserByUserProviderIDResponse{
+		Info: &npool.QueryProviderUserInfo{
+			UserProviderInfo: dbRowToInfo(info),
+		},
+	}, nil
+}

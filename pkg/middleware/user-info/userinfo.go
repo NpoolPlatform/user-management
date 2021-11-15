@@ -52,6 +52,11 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, err
 	}
 
+	err = grpc.AddUserToApplication(resp.Info.UserId, in.AppId)
+	if err != nil {
+		return nil, err
+	}
+
 	return &npool.SignupResponse{
 		Info: resp.Info,
 	}, nil

@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	entgo.io/ent v0.9.1
+	github.com/NpoolPlatform/application-management v0.0.0-20211114130519-bcb592a33694 // indirect
 	github.com/NpoolPlatform/go-service-framework v0.0.0-20211110113912-c4859934a03c
 	github.com/NpoolPlatform/verification-door v0.0.0-20211115014754-0a08eaafd7b3
 	github.com/go-resty/resty/v2 v2.7.0

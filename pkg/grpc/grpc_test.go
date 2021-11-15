@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	testinit "github.com/NpoolPlatform/user-management/pkg/test-init"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,5 +33,10 @@ func TestGrpc(t *testing.T) { // nolint
 	email := "crazyzplzpl@163.com"
 
 	err = VerifyCode(email, "12345")
+	assert.NotNil(t, err)
+
+	userID := uuid.New().String()
+	appID := uuid.New().String()
+	err = AddUserToApplication(userID, appID)
 	assert.NotNil(t, err)
 }

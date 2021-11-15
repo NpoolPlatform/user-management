@@ -20,31 +20,30 @@ func TestFrozenUserAPI(t *testing.T) {
 
 	cli := resty.New()
 
-	createUser := npool.UserBasicInfo{
-		Username:     "test-frozen" + uuid.New().String(),
-		Password:     "123456789",
-		EmailAddress: uuid.New().String() + ".com",
+	addUserInfo := npool.UserBasicInfo{
+		Username:    "test-add" + uuid.New().String(),
+		Password:    "123456789",
+		PhoneNumber: uuid.New().String(),
 	}
 	resp1, err := cli.R().
 		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.SignupRequest{
-			Username: createUser.Username,
-			Password: createUser.Password,
+		SetBody(&npool.AddUserRequest{
+			UserInfo: &addUserInfo,
 		}).
-		Post("http://localhost:50070/v1/signup")
+		Post("http://localhost:50070/v1/add/user")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp1.StatusCode())
-		info := npool.SignupResponse{}
+		info := npool.AddUserResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
 		if assert.Nil(t, err) {
 			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
-			assertUserInfo(t, info.Info, &createUser)
-			createUser.UserId = info.Info.UserId
+			assertUserInfo(t, info.Info, &addUserInfo)
+			addUserInfo.UserId = info.Info.UserId
 		}
 	}
 
 	frozenUserInfo := npool.FrozenUser{
-		UserId:      createUser.UserId,
+		UserId:      addUserInfo.UserId,
 		FrozenBy:    uuid.New().String(),
 		FrozenCause: "user has done some illegal operations",
 	}

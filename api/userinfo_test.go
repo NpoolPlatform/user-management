@@ -26,46 +26,6 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 
 	cli := resty.New()
 
-	signupUserInfo := npool.UserBasicInfo{
-		Username:     "test-signup" + uuid.New().String(),
-		Password:     "123456789",
-		EmailAddress: uuid.New().String() + ".com",
-	}
-
-	resp1, err := cli.R().
-		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.SignupRequest{
-			Username: signupUserInfo.Username,
-			Password: signupUserInfo.Password,
-		}).
-		Post("http://localhost:50070/v1/signup")
-	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp1.StatusCode())
-		info := npool.SignupResponse{}
-		err := json.Unmarshal(resp1.Body(), &info)
-		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
-			assertUserInfo(t, info.Info, &signupUserInfo)
-			signupUserInfo.UserId = info.Info.UserId
-		}
-	}
-
-	respp, err := cli.R().
-		SetHeader("Content-Type", "application/json").
-		SetBody(&npool.QueryUserExistRequest{
-			Username: signupUserInfo.Username,
-			Password: signupUserInfo.Password,
-		}).
-		Post("http://localhost:50070/v1/query/user/exist")
-	if assert.Nil(t, err) {
-		assert.Equal(t, 200, respp.StatusCode())
-		response := npool.QueryUserExistResponse{}
-		err := json.Unmarshal(respp.Body(), &response)
-		if assert.Nil(t, err) {
-			assert.NotNil(t, response.Info)
-		}
-	}
-
 	addUserInfo := npool.UserBasicInfo{
 		Username:    "test-add" + uuid.New().String(),
 		Password:    "123456789",
@@ -88,10 +48,43 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}
 	}
 
+	signupUserInfo := npool.UserBasicInfo{
+		Username:     "test-signup" + uuid.New().String(),
+		Password:     "123456789",
+		EmailAddress: uuid.New().String() + ".com",
+	}
+
+	resp1, err := cli.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(&npool.SignupRequest{
+			Username: signupUserInfo.Username,
+			Password: signupUserInfo.Password,
+		}).
+		Post("http://localhost:50070/v1/signup")
+	if assert.Nil(t, err) {
+		assert.NotEqual(t, 200, resp1.StatusCode())
+	}
+
+	respp, err := cli.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(&npool.QueryUserExistRequest{
+			Username: addUserInfo.Username,
+			Password: addUserInfo.Password,
+		}).
+		Post("http://localhost:50070/v1/query/user/exist")
+	if assert.Nil(t, err) {
+		assert.Equal(t, 200, respp.StatusCode())
+		response := npool.QueryUserExistResponse{}
+		err := json.Unmarshal(respp.Body(), &response)
+		if assert.Nil(t, err) {
+			assert.NotNil(t, response.Info)
+		}
+	}
+
 	resp3, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUserRequest{
-			UserId: signupUserInfo.UserId,
+			UserId: addUserInfo.UserId,
 		}).
 		Post("http://localhost:50070/v1/get/user")
 	if assert.Nil(t, err) {
@@ -100,7 +93,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		err := json.Unmarshal(resp3.Body(), &info)
 		if assert.Nil(t, err) {
 			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
-			assertUserInfo(t, info.Info, &signupUserInfo)
+			assertUserInfo(t, info.Info, &addUserInfo)
 		}
 	}
 
@@ -131,8 +124,8 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp6, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ChangeUserPasswordRequest{
-			UserId:      signupUserInfo.UserId,
-			OldPassword: signupUserInfo.Password,
+			UserId:      addUserInfo.UserId,
+			OldPassword: addUserInfo.Password,
 			Password:    "987654321",
 		}).
 		Post("http://localhost:50070/v1/change/password")
@@ -148,18 +141,18 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
-		assert.NotEqual(t, 200, resp7.StatusCode())
+		assert.Equal(t, 200, resp7.StatusCode())
 	}
 
 	resp8, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ForgetPasswordRequest{
-			EmailAddress: signupUserInfo.EmailAddress,
+			EmailAddress: addUserInfo.EmailAddress,
 			Password:     "123456789",
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp8.StatusCode())
+		assert.NotEqual(t, 200, resp8.StatusCode())
 	}
 
 	resp9, err := cli.R().
@@ -187,7 +180,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp11, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.DeleteUserRequest{
-			DeleteUserIds: []string{signupUserInfo.UserId},
+			DeleteUserIds: []string{addUserInfo.UserId},
 		}).
 		Post("http://localhost:50070/v1/delete/users")
 	fmt.Println(err)

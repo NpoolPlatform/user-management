@@ -145,6 +145,7 @@
 | ----- | ---- | ----- | ----------- |
 | UserId | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  |  |
+| Code | [string](#string) |  |  |
 
 
 
@@ -310,6 +311,7 @@
 | PhoneNumber | [string](#string) |  | Optional |
 | EmailAddress | [string](#string) |  | Optional |
 | Password | [string](#string) |  |  |
+| Code | [string](#string) |  |  |
 
 
 
@@ -641,6 +643,7 @@
 | Password | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  | optional |
 | PhoneNumber | [string](#string) |  | optional |
+| Code | [string](#string) |  |  |
 | AppId | [string](#string) |  |  |
 
 

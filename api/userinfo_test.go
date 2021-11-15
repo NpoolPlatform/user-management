@@ -35,9 +35,8 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp1, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.SignupRequest{
-			Username:     signupUserInfo.Username,
-			Password:     signupUserInfo.Password,
-			EmailAddress: signupUserInfo.EmailAddress,
+			Username: signupUserInfo.Username,
+			Password: signupUserInfo.Password,
 		}).
 		Post("http://localhost:50070/v1/signup")
 	if assert.Nil(t, err) {
@@ -149,7 +148,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp7.StatusCode())
+		assert.NotEqual(t, 200, resp7.StatusCode())
 	}
 
 	resp8, err := cli.R().
@@ -182,7 +181,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/bind/email")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp10.StatusCode())
+		assert.NotEqual(t, 200, resp10.StatusCode())
 	}
 
 	resp11, err := cli.R().

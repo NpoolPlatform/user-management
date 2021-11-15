@@ -28,17 +28,15 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	}
 
 	SignupUserInfo := &npool.SignupRequest{
-		Username:     "test-signup" + uuid.New().String(),
-		Password:     "123456789",
-		EmailAddress: "test-signup" + uuid.New().String() + ".com",
-		PhoneNumber:  "test-signup" + uuid.New().String(),
+		Username:    "test-signup" + uuid.New().String(),
+		Password:    "123456789",
+		PhoneNumber: "test-signup" + uuid.New().String(),
 	}
 	CreateUserInfo := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
-			Username:     "test-add" + uuid.NewString(),
-			Password:     "123456789",
-			EmailAddress: "test-add" + uuid.New().String() + ".com",
-			PhoneNumber:  "test-add" + uuid.New().String(),
+			Username:    "test-add" + uuid.NewString(),
+			Password:    "123456789",
+			PhoneNumber: "test-add" + uuid.New().String(),
 		},
 	}
 	resp1, err := Signup(context.Background(), SignupUserInfo)
@@ -74,5 +72,5 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 		UserId:       resp2.Info.UserId,
 		EmailAddress: "test-bind" + uuid.New().String(),
 	})
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 }

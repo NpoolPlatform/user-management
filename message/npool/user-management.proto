@@ -246,6 +246,7 @@ message SignupRequest {
     string EmailAddress = 4;
     // optional
     string PhoneNumber = 6;
+    string Code = 7;
     string AppId = 8;
 }
 
@@ -290,6 +291,7 @@ message BindUserPhoneResponse {
 message BindUserEmailRequest {
     string UserId = 1;
     string EmailAddress = 2;
+    string Code = 3;
 }
 
 message BindUserEmailResponse {
@@ -397,6 +399,7 @@ message ForgetPasswordRequest {
     // Optional
     string EmailAddress = 3;
     string Password = 5;
+    string Code = 6;
 }
 
 message ForgetPasswordResponse {

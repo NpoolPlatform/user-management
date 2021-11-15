@@ -28,9 +28,8 @@ func TestFrozenUserAPI(t *testing.T) {
 	resp1, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.SignupRequest{
-			Username:     createUser.Username,
-			Password:     createUser.Password,
-			EmailAddress: createUser.EmailAddress,
+			Username: createUser.Username,
+			Password: createUser.Password,
 		}).
 		Post("http://localhost:50070/v1/signup")
 	if assert.Nil(t, err) {

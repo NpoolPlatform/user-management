@@ -2,11 +2,11 @@ package userinfo
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/NpoolPlatform/user-management/message/npool"
 	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
+	"github.com/NpoolPlatform/user-management/pkg/grpc"
 	"golang.org/x/xerrors"
 )
 
@@ -16,9 +16,17 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, xerrors.Errorf("user exists")
 	}
 	if in.EmailAddress != "" {
+		if in.Code == "" {
+			return nil, xerrors.Errorf("must have code to verify email")
+		}
 		_, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
 		if err == nil {
 			return nil, xerrors.Errorf("email has been used")
+		}
+
+		err = grpc.VerifyCode(in.EmailAddress, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("input code is wrong")
 		}
 	}
 
@@ -88,7 +96,6 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("salt is: %v; user id is: %v", salt, in.UserId)
 	err = encryption.VerifyUserPassword(in.OldPassword, dbPassword, salt)
 	if err != nil {
 		return nil, err
@@ -106,9 +113,16 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npool.ForgetPasswordResponse, error) {
 	var userID string
 	if in.PhoneNumber == "" && in.EmailAddress != "" {
+		if in.Code == "" {
+			return nil, xerrors.Errorf("input code is empty")
+		}
 		userInfo, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
 		if err != nil {
 			return nil, err
+		}
+		err = grpc.VerifyCode(in.EmailAddress, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
 		userID = userInfo.UserId
 	} else if in.EmailAddress == "" && in.PhoneNumber != "" {
@@ -147,6 +161,20 @@ func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.
 }
 
 func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.BindUserEmailResponse, error) {
+	if in.Code == "" {
+		return nil, xerrors.Errorf("input code is empty")
+	}
+
+	_, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
+	if err != xerrors.Errorf("user doesn't exist") {
+		return nil, xerrors.Errorf("email has been used: %v", err)
+	}
+
+	err = grpc.VerifyCode(in.EmailAddress, in.Code)
+	if err != nil {
+		return nil, xerrors.Errorf("bind user email error: %v", err)
+	}
+
 	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserId)
 	if err != nil {
 		return nil, err

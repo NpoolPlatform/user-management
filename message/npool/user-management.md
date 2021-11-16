@@ -39,6 +39,8 @@
     - [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse)
     - [QueryUserExistRequest](#user.v1.QueryUserExistRequest)
     - [QueryUserExistResponse](#user.v1.QueryUserExistResponse)
+    - [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest)
+    - [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse)
     - [SignupRequest](#user.v1.SignupRequest)
     - [SignupResponse](#user.v1.SignupResponse)
     - [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest)
@@ -631,6 +633,36 @@
 
 
 
+<a name="user.v1.QueryUserFrozenRequest"></a>
+
+### QueryUserFrozenRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| UserID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.QueryUserFrozenResponse"></a>
+
+### QueryUserFrozenResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [FrozenUser](#user.v1.FrozenUser) |  |  |
+
+
+
+
+
+
 <a name="user.v1.SignupRequest"></a>
 
 ### SignupRequest
@@ -952,6 +984,7 @@ a service of managing users
 | DeleteUser | [DeleteUserRequest](#user.v1.DeleteUserRequest) | [DeleteUserResponse](#user.v1.DeleteUserResponse) | Delete users. This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service. |
 | FrozenUser | [FrozenUserRequest](#user.v1.FrozenUserRequest) | [FrozenUserResponse](#user.v1.FrozenUserResponse) | Frozen user. |
 | UnfrozenUser | [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest) | [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse) | Unfrozen user. |
+| QueryUserFrozen | [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest) | [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse) |  |
 | GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
 | GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
 | QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) |  |

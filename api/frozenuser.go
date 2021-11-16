@@ -29,8 +29,17 @@ func (s *Server) UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest
 	return resp, nil
 }
 
+func (s *Server) QueryUserFrozen(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUserFrozenResponse, error) {
+	resp, err := crud.Get(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorf("fail to get user frozen info: %v", err)
+		return &npool.QueryUserFrozenResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+	return resp, nil
+}
+
 func (s *Server) GetFrozenUsers(ctx context.Context, in *npool.GetFrozenUsersRequest) (*npool.GetFrozenUsersResponse, error) {
-	resp, err := crud.Get(ctx)
+	resp, err := crud.GetAll(ctx)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get frozen user list: %v", err)
 		return &npool.GetFrozenUsersResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)

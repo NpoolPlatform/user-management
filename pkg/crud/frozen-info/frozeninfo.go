@@ -122,7 +122,31 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 	}, nil
 }
 
-func Get(ctx context.Context) (*npool.GetFrozenUsersResponse, error) {
+func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUserFrozenResponse, error) {
+	userID, err := uuid.Parse(in.UserID)
+	if err != nil {
+		return nil, xerrors.Errorf("invalid user id: %v", err)
+	}
+
+	info, err := db.Client().
+		UserFrozen.
+		Query().
+		Where(
+			userfrozen.And(
+				userfrozen.UserID(userID),
+				userfrozen.Status(FrozenStatus),
+			),
+		).Only(ctx)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to query user frozen info: %v", err)
+	}
+
+	return &npool.QueryUserFrozenResponse{
+		Info: dbRowToInfo(info),
+	}, nil
+}
+
+func GetAll(ctx context.Context) (*npool.GetFrozenUsersResponse, error) {
 	infos, err := db.Client().
 		UserFrozen.
 		Query().All(ctx)

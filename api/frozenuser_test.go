@@ -57,7 +57,6 @@ func TestFrozenUserAPI(t *testing.T) {
 		}).
 		Post("http://localhost:50070/v1/frozen/user")
 	if assert.Nil(t, err) {
-		fmt.Println("resp2 is", resp2)
 		assert.Equal(t, 200, resp2.StatusCode())
 		info := npool.FrozenUserResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
@@ -67,6 +66,23 @@ func TestFrozenUserAPI(t *testing.T) {
 			assert.Equal(t, info.Info.FrozenBy, frozenUserInfo.FrozenBy)
 			assert.Equal(t, info.Info.FrozenCause, frozenUserInfo.FrozenCause)
 			frozenUserInfo.Id = info.Info.Id
+		}
+	}
+
+	resp5, err := cli.R().
+		SetHeader("Content-Type", "application/json").
+		SetBody(&npool.QueryUserFrozenRequest{
+			UserID: frozenUserInfo.UserId,
+		}).
+		Post("http://localhost:50070/v1/query/user/frozen")
+	if assert.Nil(t, err) {
+		assert.Equal(t, 200, resp5.StatusCode())
+		info := npool.QueryUserFrozenResponse{}
+		err := json.Unmarshal(resp5.Body(), &info)
+		if assert.Nil(t, err) {
+			assert.Equal(t, info.Info.UserId, frozenUserInfo.UserId)
+			assert.Equal(t, info.Info.FrozenBy, frozenUserInfo.FrozenBy)
+			assert.Equal(t, info.Info.FrozenCause, frozenUserInfo.FrozenCause)
 		}
 	}
 

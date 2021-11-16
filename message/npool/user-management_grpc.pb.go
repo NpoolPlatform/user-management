@@ -81,6 +81,7 @@ type UserClient interface {
 	//
 	//Unfrozen user.
 	UnfrozenUser(ctx context.Context, in *UnfrozenUserRequest, opts ...grpc.CallOption) (*UnfrozenUserResponse, error)
+	QueryUserFrozen(ctx context.Context, in *QueryUserFrozenRequest, opts ...grpc.CallOption) (*QueryUserFrozenResponse, error)
 	//
 	//Get frozen user list.
 	GetFrozenUsers(ctx context.Context, in *GetFrozenUsersRequest, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error)
@@ -252,6 +253,15 @@ func (c *userClient) UnfrozenUser(ctx context.Context, in *UnfrozenUserRequest, 
 	return out, nil
 }
 
+func (c *userClient) QueryUserFrozen(ctx context.Context, in *QueryUserFrozenRequest, opts ...grpc.CallOption) (*QueryUserFrozenResponse, error) {
+	out := new(QueryUserFrozenResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/QueryUserFrozen", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) GetFrozenUsers(ctx context.Context, in *GetFrozenUsersRequest, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error) {
 	out := new(GetFrozenUsersResponse)
 	err := c.cc.Invoke(ctx, "/user.v1.User/GetFrozenUsers", in, out, opts...)
@@ -354,6 +364,7 @@ type UserServer interface {
 	//
 	//Unfrozen user.
 	UnfrozenUser(context.Context, *UnfrozenUserRequest) (*UnfrozenUserResponse, error)
+	QueryUserFrozen(context.Context, *QueryUserFrozenRequest) (*QueryUserFrozenResponse, error)
 	//
 	//Get frozen user list.
 	GetFrozenUsers(context.Context, *GetFrozenUsersRequest) (*GetFrozenUsersResponse, error)
@@ -419,6 +430,9 @@ func (UnimplementedUserServer) FrozenUser(context.Context, *FrozenUserRequest) (
 }
 func (UnimplementedUserServer) UnfrozenUser(context.Context, *UnfrozenUserRequest) (*UnfrozenUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UnfrozenUser not implemented")
+}
+func (UnimplementedUserServer) QueryUserFrozen(context.Context, *QueryUserFrozenRequest) (*QueryUserFrozenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method QueryUserFrozen not implemented")
 }
 func (UnimplementedUserServer) GetFrozenUsers(context.Context, *GetFrozenUsersRequest) (*GetFrozenUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFrozenUsers not implemented")
@@ -751,6 +765,24 @@ func _User_UnfrozenUser_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_QueryUserFrozen_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryUserFrozenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).QueryUserFrozen(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/QueryUserFrozen",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).QueryUserFrozen(ctx, req.(*QueryUserFrozenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_GetFrozenUsers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetFrozenUsersRequest)
 	if err := dec(in); err != nil {
@@ -897,6 +929,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UnfrozenUser",
 			Handler:    _User_UnfrozenUser_Handler,
+		},
+		{
+			MethodName: "QueryUserFrozen",
+			Handler:    _User_QueryUserFrozen_Handler,
 		},
 		{
 			MethodName: "GetFrozenUsers",

@@ -172,6 +172,12 @@ service User {
             body: "*"
         };
     };
+    rpc QueryUserFrozen (QueryUserFrozenRequest) returns (QueryUserFrozenResponse) {
+        option (google.api.http) = {
+            post: "/v1/query/user/frozen"
+            body: "*"
+        };
+    };
     /*
     Get frozen user list.
     */
@@ -442,6 +448,14 @@ message FrozenUserRequest {
 }
 
 message FrozenUserResponse {
+    FrozenUser Info = 1;
+}
+
+message QueryUserFrozenRequest {
+    string UserID = 1;
+}
+
+message QueryUserFrozenResponse {
     FrozenUser Info = 1;
 }
 

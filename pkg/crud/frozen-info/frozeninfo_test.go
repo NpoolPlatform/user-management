@@ -58,6 +58,11 @@ func TestFrozenInfoCRUD(t *testing.T) {
 		fmt.Println(err)
 	}
 
+	_, err = Get(context.Background(), &npool.QueryUserFrozenRequest{
+		UserID: frozenInfo.UserId,
+	})
+	assert.Nil(t, err)
+
 	// unfrozen user.
 	frozenInfo.UnfrozenBy = uuid.New().String()
 	frozenInfo.Id = resp.Info.Id
@@ -76,7 +81,7 @@ func TestFrozenInfoCRUD(t *testing.T) {
 	}
 
 	// get user frozen list.
-	resp2, err := Get(context.Background())
+	resp2, err := GetAll(context.Background())
 	assert.Nil(t, err)
 	fmt.Println("get frozen user list response is:", resp2)
 }

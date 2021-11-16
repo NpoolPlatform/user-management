@@ -5,15 +5,19 @@ import (
 	"strings"
 
 	pbApplication "github.com/NpoolPlatform/application-management/message/npool"
+	applicationconst "github.com/NpoolPlatform/application-management/pkg/message/const"
 	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	mygrpc "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	pbVerification "github.com/NpoolPlatform/verification-door/message/npool"
+	verificationconst "github.com/NpoolPlatform/verification-door/pkg/message/const"
 	"google.golang.org/grpc"
 )
 
 const (
-	VerificationService = "verification-door.npool.top"
-	ApplicationService  = "application-management.npool.top"
+	VerificationService     = verificationconst.ServiceName
+	VerificationServicePort = ":50091"
+	ApplicationService      = applicationconst.ServiceName
+	ApplicationServicePort  = ":50081"
 )
 
 func newVerificationGrpcClient() (*grpc.ClientConn, error) {
@@ -24,7 +28,7 @@ func newVerificationGrpcClient() (*grpc.ClientConn, error) {
 
 	myAddress := []string{}
 	for _, address := range strings.Split(serviceAgent.Address, ",") {
-		myAddress = append(myAddress, address+":50091")
+		myAddress = append(myAddress, address+VerificationServicePort)
 	}
 
 	conn, err := mygrpc.GetGRPCConn(strings.Join(myAddress, ","))
@@ -62,7 +66,7 @@ func newApplicationGrpcClient() (*grpc.ClientConn, error) {
 
 	myAddress := []string{}
 	for _, address := range strings.Split(serviceAgent.Address, ",") {
-		myAddress = append(myAddress, address+":50081")
+		myAddress = append(myAddress, address+ApplicationServicePort)
 	}
 
 	conn, err := mygrpc.GetGRPCConn(strings.Join(myAddress, ","))

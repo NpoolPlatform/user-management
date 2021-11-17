@@ -47,4 +47,6 @@ metadata:
 spec:
   ports:
   - name: api
-    port: 8080
+    port: 50070
+    port: 50071
+    port: 50072

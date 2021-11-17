@@ -2,7 +2,8 @@ package grpc
 
 import (
 	"context"
-	"strings"
+	"fmt"
+	"net"
 
 	pbApplication "github.com/NpoolPlatform/application-management/message/npool"
 	applicationconst "github.com/NpoolPlatform/application-management/pkg/message/const"
@@ -21,17 +22,12 @@ const (
 )
 
 func newVerificationGrpcClient() (*grpc.ClientConn, error) {
-	serviceAgent, err := config.PeekService(VerificationService)
+	serviceAgent, err := config.PeekService(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return nil, err
 	}
 
-	myAddress := []string{}
-	for _, address := range strings.Split(serviceAgent.Address, ",") {
-		myAddress = append(myAddress, address+VerificationServicePort)
-	}
-
-	conn, err := mygrpc.GetGRPCConn(strings.Join(myAddress, ","))
+	conn, err := mygrpc.GetGRPCConn(net.JoinHostPort(serviceAgent.Address, fmt.Sprintf("%d", serviceAgent.Port)))
 	if err != nil {
 		return nil, err
 	}
@@ -59,17 +55,12 @@ func VerifyCode(param, code string) error {
 }
 
 func newApplicationGrpcClient() (*grpc.ClientConn, error) {
-	serviceAgent, err := config.PeekService(ApplicationService)
+	serviceAgent, err := config.PeekService(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return nil, err
 	}
 
-	myAddress := []string{}
-	for _, address := range strings.Split(serviceAgent.Address, ",") {
-		myAddress = append(myAddress, address+ApplicationServicePort)
-	}
-
-	conn, err := mygrpc.GetGRPCConn(strings.Join(myAddress, ","))
+	conn, err := mygrpc.GetGRPCConn(net.JoinHostPort(serviceAgent.Address, fmt.Sprintf("%d", serviceAgent.Port)))
 	if err != nil {
 		return nil, err
 	}

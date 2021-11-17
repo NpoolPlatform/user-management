@@ -2,12 +2,9 @@ package grpc
 
 import (
 	"context"
-	"fmt"
-	"net"
 
 	pbApplication "github.com/NpoolPlatform/application-management/message/npool"
 	applicationconst "github.com/NpoolPlatform/application-management/pkg/message/const"
-	"github.com/NpoolPlatform/go-service-framework/pkg/config"
 	mygrpc "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	pbVerification "github.com/NpoolPlatform/verification-door/message/npool"
 	verificationconst "github.com/NpoolPlatform/verification-door/pkg/message/const"
@@ -22,12 +19,7 @@ const (
 )
 
 func newVerificationGrpcClient() (*grpc.ClientConn, error) {
-	serviceAgent, err := config.PeekService(verificationconst.ServiceName, mygrpc.GRPCTAG)
-	if err != nil {
-		return nil, err
-	}
-
-	conn, err := mygrpc.GetGRPCConn(net.JoinHostPort(serviceAgent.Address, fmt.Sprintf("%d", serviceAgent.Port)))
+	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return nil, err
 	}
@@ -41,8 +33,6 @@ func VerifyCode(param, code string) error {
 		return err
 	}
 
-	defer conn.Close()
-
 	client := pbVerification.NewVerificationDoorClient(conn)
 	_, err = client.VerifyCode(context.Background(), &pbVerification.VerifyCodeRequest{
 		Param: param,
@@ -55,12 +45,7 @@ func VerifyCode(param, code string) error {
 }
 
 func newApplicationGrpcClient() (*grpc.ClientConn, error) {
-	serviceAgent, err := config.PeekService(applicationconst.ServiceName, mygrpc.GRPCTAG)
-	if err != nil {
-		return nil, err
-	}
-
-	conn, err := mygrpc.GetGRPCConn(net.JoinHostPort(serviceAgent.Address, fmt.Sprintf("%d", serviceAgent.Port)))
+	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return nil, err
 	}
@@ -73,7 +58,6 @@ func AddUserToApplication(userID, appID string) error {
 	if err != nil {
 		return err
 	}
-	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
 	_, err = client.AddUsersToApplication(context.Background(), &pbApplication.AddUsersToApplicationRequest{

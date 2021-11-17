@@ -30,6 +30,11 @@ func TestGrpc(t *testing.T) { // nolint
 		assert.NotNil(t, client)
 	}
 
+	client, err = newApplicationGrpcClient()
+	if assert.Nil(t, err) {
+		assert.NotNil(t, client)
+	}
+
 	email := "crazyzplzpl@163.com"
 
 	err = VerifyCode(email, "12345")

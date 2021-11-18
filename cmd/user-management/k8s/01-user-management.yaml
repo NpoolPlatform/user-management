@@ -48,5 +48,10 @@ spec:
   ports:
   - name: api
     port: 50070
+    targetPort: 50070
+  - name: grpc
     port: 50071
+    targetPort: 50071
+  - name: prometheus
     port: 50072
+    targetPort: 50072

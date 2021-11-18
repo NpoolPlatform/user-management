@@ -1,39 +1,57 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: user-management-npool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: user-management
-    k8s.kuboard.cn/workload: user-management
+    k8s.kuboard.cn/displayName: user-management-npool
+    k8s.kuboard.cn/workload: user-management-npool
     kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd
+
 spec:
   rules:
-  - host: api.npool.top
-    http:
-      paths:
-      - path: /user-management
-        backend:
-          serviceName: user-management
-          servicePort: http
+    - host: api.npool.top
+      http:
+        paths:
+          - path: /user-management
+            backend:
+              serviceName: user-management
+              servicePort: 50070
 
 ---
 
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: user-management-xpool-top-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: user-management
-    k8s.kuboard.cn/workload: user-management
+    k8s.kuboard.cn/displayName: user-management-xpool
+    k8s.kuboard.cn/workload: user-management-xpool
     kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd
+
 spec:
   rules:
-  - host: api.xpool.top
-    http:
-      paths:
-      - path: /user-management
-        backend:
-          serviceName: user-management
-          servicePort: http
+    - host: api.xpool.top
+      http:
+        paths:
+          - path: /user-management
+            backend:
+              serviceName: user-management
+              servicePort: 50070
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: strip-user-management-prefix
+  namespace: kube-system
+spec:
+  stripPrefix:
+    prefixes:
+      - /user-management

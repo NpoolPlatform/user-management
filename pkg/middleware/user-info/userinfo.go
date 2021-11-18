@@ -11,10 +11,13 @@ import (
 )
 
 func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) {
-	_, err := userinfo.QueryUserByUsername(ctx, in.Username)
-	if err == nil {
-		return nil, xerrors.Errorf("user exists")
+	if in.Username != "" {
+		_, err := userinfo.QueryUserByUsername(ctx, in.Username)
+		if err == nil {
+			return nil, xerrors.Errorf("user exists")
+		}
 	}
+
 	if in.EmailAddress != "" {
 		if in.Code == "" {
 			return nil, xerrors.Errorf("must have code to verify email")
@@ -35,6 +38,10 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		if err == nil {
 			return nil, xerrors.Errorf("phone number has been used")
 		}
+	}
+
+	if in.Username == "" {
+		in.Username = in.EmailAddress
 	}
 
 	request := &npool.AddUserRequest{

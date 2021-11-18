@@ -54,8 +54,6 @@ service User {
     };
     /*
     Bind user's phone number.
-    Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input.
-    Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
     */
     rpc BindUserPhone (BindUserPhoneRequest) returns (BindUserPhoneResponse) {
         option (google.api.http) = {
@@ -65,8 +63,6 @@ service User {
     };
     /*
     Bind user's email address.
-    Before bind a email address to user, it needs to send email verify code and confirm the verify code user input.
-    Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
     */
     rpc BindUserEmail (BindUserEmailRequest) returns (BindUserEmailResponse) {
         option (google.api.http) = {
@@ -76,8 +72,6 @@ service User {
     };
     /*
     Unbind user's phone number.
-    Before unbind user's phone number, it needs to send phone verify code and confirm the verify code user input.
-    Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
     */
     rpc UnbindUserPhone (UnbindUserPhoneRequest) returns (UnbindUserPhoneResponse) {
         option (google.api.http) = {
@@ -87,8 +81,6 @@ service User {
     };
     /*
     Unbind user's email address.
-    Before unbind user's email address, it needs to send email verify code and confirm the verify code user input.
-    Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
     */
     rpc UnbindUserEmail (UnbindUserEmailRequest) returns (UnbindUserEmailResponse) {
         option (google.api.http) = {
@@ -98,8 +90,6 @@ service User {
     };
     /*
     Link to a third-party oauth. save the UserId from third-party into mysql.
-    During Linking, user need to authenticate in third-party and use login-oauth api to get access_token and then get user info from third-party(provider).
-    need api: https://login.npool.top/v1/login/oauth
     */
     rpc BindThirdParty (BindThirdPartyRequest) returns (BindThirdPartyResponse) {
         option (google.api.http) = {
@@ -127,7 +117,6 @@ service User {
     };
     /*
     Forget password. 
-    If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password.
     */
     rpc ForgetPassword (ForgetPasswordRequest) returns (ForgetPasswordResponse) {
         option (google.api.http) = {
@@ -146,7 +135,6 @@ service User {
     };
     /*
     Delete users. 
-    This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
     */
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
         option (google.api.http) = {
@@ -172,6 +160,7 @@ service User {
             body: "*"
         };
     };
+    // query user is frozen or not
     rpc QueryUserFrozen (QueryUserFrozenRequest) returns (QueryUserFrozenResponse) {
         option (google.api.http) = {
             post: "/v1/query/user/frozen"
@@ -196,12 +185,14 @@ service User {
             body: "*"
         };
     };
+    // query user exist in database.
     rpc QueryUserExist (QueryUserExistRequest) returns (QueryUserExistResponse) {
         option (google.api.http) = {
             post: "/v1/query/user/exist"
             body: "*"
         };
     };
+    // query user by provider id and his id in the provider
     rpc QueryUserByUserProviderID (QueryUserByUserProviderIDRequest) returns (QueryUserByUserProviderIDResponse) {
         option (google.api.http) = {
             post: "/v1/query/user/by/userproviderid"

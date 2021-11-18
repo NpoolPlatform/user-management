@@ -35,28 +35,18 @@ type UserClient interface {
 	UpdateUserInfo(ctx context.Context, in *UpdateUserInfoRequest, opts ...grpc.CallOption) (*UpdateUserInfoResponse, error)
 	//
 	//Bind user's phone number.
-	//Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
 	BindUserPhone(ctx context.Context, in *BindUserPhoneRequest, opts ...grpc.CallOption) (*BindUserPhoneResponse, error)
 	//
 	//Bind user's email address.
-	//Before bind a email address to user, it needs to send email verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
 	BindUserEmail(ctx context.Context, in *BindUserEmailRequest, opts ...grpc.CallOption) (*BindUserEmailResponse, error)
 	//
 	//Unbind user's phone number.
-	//Before unbind user's phone number, it needs to send phone verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
 	UnbindUserPhone(ctx context.Context, in *UnbindUserPhoneRequest, opts ...grpc.CallOption) (*UnbindUserPhoneResponse, error)
 	//
 	//Unbind user's email address.
-	//Before unbind user's email address, it needs to send email verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
 	UnbindUserEmail(ctx context.Context, in *UnbindUserEmailRequest, opts ...grpc.CallOption) (*UnbindUserEmailResponse, error)
 	//
 	//Link to a third-party oauth. save the UserId from third-party into mysql.
-	//During Linking, user need to authenticate in third-party and use login-oauth api to get access_token and then get user info from third-party(provider).
-	//need api: https://login.npool.top/v1/login/oauth
 	BindThirdParty(ctx context.Context, in *BindThirdPartyRequest, opts ...grpc.CallOption) (*BindThirdPartyResponse, error)
 	//
 	//Unlink a third-party oauth. Delete the UserId we saved from mysql.
@@ -66,14 +56,12 @@ type UserClient interface {
 	ChangeUserPassword(ctx context.Context, in *ChangeUserPasswordRequest, opts ...grpc.CallOption) (*ChangeUserPasswordResponse, error)
 	//
 	//Forget password.
-	//If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password.
 	ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, opts ...grpc.CallOption) (*ForgetPasswordResponse, error)
 	//
 	//Add user.
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*AddUserResponse, error)
 	//
 	//Delete users.
-	//This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
 	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 	//
 	//Frozen user.
@@ -81,6 +69,7 @@ type UserClient interface {
 	//
 	//Unfrozen user.
 	UnfrozenUser(ctx context.Context, in *UnfrozenUserRequest, opts ...grpc.CallOption) (*UnfrozenUserResponse, error)
+	// query user is frozen or not
 	QueryUserFrozen(ctx context.Context, in *QueryUserFrozenRequest, opts ...grpc.CallOption) (*QueryUserFrozenResponse, error)
 	//
 	//Get frozen user list.
@@ -88,7 +77,9 @@ type UserClient interface {
 	//
 	//Get user providers info.
 	GetUserProviders(ctx context.Context, in *GetUserProvidersRequest, opts ...grpc.CallOption) (*GetUserProvidersResponse, error)
+	// query user exist in database.
 	QueryUserExist(ctx context.Context, in *QueryUserExistRequest, opts ...grpc.CallOption) (*QueryUserExistResponse, error)
+	// query user by provider id and his id in the provider
 	QueryUserByUserProviderID(ctx context.Context, in *QueryUserByUserProviderIDRequest, opts ...grpc.CallOption) (*QueryUserByUserProviderIDResponse, error)
 }
 
@@ -318,28 +309,18 @@ type UserServer interface {
 	UpdateUserInfo(context.Context, *UpdateUserInfoRequest) (*UpdateUserInfoResponse, error)
 	//
 	//Bind user's phone number.
-	//Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
 	BindUserPhone(context.Context, *BindUserPhoneRequest) (*BindUserPhoneResponse, error)
 	//
 	//Bind user's email address.
-	//Before bind a email address to user, it needs to send email verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
 	BindUserEmail(context.Context, *BindUserEmailRequest) (*BindUserEmailResponse, error)
 	//
 	//Unbind user's phone number.
-	//Before unbind user's phone number, it needs to send phone verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code
 	UnbindUserPhone(context.Context, *UnbindUserPhoneRequest) (*UnbindUserPhoneResponse, error)
 	//
 	//Unbind user's email address.
-	//Before unbind user's email address, it needs to send email verify code and confirm the verify code user input.
-	//Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code
 	UnbindUserEmail(context.Context, *UnbindUserEmailRequest) (*UnbindUserEmailResponse, error)
 	//
 	//Link to a third-party oauth. save the UserId from third-party into mysql.
-	//During Linking, user need to authenticate in third-party and use login-oauth api to get access_token and then get user info from third-party(provider).
-	//need api: https://login.npool.top/v1/login/oauth
 	BindThirdParty(context.Context, *BindThirdPartyRequest) (*BindThirdPartyResponse, error)
 	//
 	//Unlink a third-party oauth. Delete the UserId we saved from mysql.
@@ -349,14 +330,12 @@ type UserServer interface {
 	ChangeUserPassword(context.Context, *ChangeUserPasswordRequest) (*ChangeUserPasswordResponse, error)
 	//
 	//Forget password.
-	//If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password.
 	ForgetPassword(context.Context, *ForgetPasswordRequest) (*ForgetPasswordResponse, error)
 	//
 	//Add user.
 	AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error)
 	//
 	//Delete users.
-	//This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service.
 	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	//
 	//Frozen user.
@@ -364,6 +343,7 @@ type UserServer interface {
 	//
 	//Unfrozen user.
 	UnfrozenUser(context.Context, *UnfrozenUserRequest) (*UnfrozenUserResponse, error)
+	// query user is frozen or not
 	QueryUserFrozen(context.Context, *QueryUserFrozenRequest) (*QueryUserFrozenResponse, error)
 	//
 	//Get frozen user list.
@@ -371,7 +351,9 @@ type UserServer interface {
 	//
 	//Get user providers info.
 	GetUserProviders(context.Context, *GetUserProvidersRequest) (*GetUserProvidersResponse, error)
+	// query user exist in database.
 	QueryUserExist(context.Context, *QueryUserExistRequest) (*QueryUserExistResponse, error)
+	// query user by provider id and his id in the provider
 	QueryUserByUserProviderID(context.Context, *QueryUserByUserProviderIDRequest) (*QueryUserByUserProviderIDResponse, error)
 	mustEmbedUnimplementedUserServer()
 }

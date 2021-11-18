@@ -972,23 +972,23 @@ a service of managing users
 | GetUser | [GetUserRequest](#user.v1.GetUserRequest) | [GetUserResponse](#user.v1.GetUserResponse) | Get a user&#39;s info by his(her) id, this api can be request by user self of admin. |
 | GetUsers | [GetUsersRequest](#user.v1.GetUsersRequest) | [GetUsersResponse](#user.v1.GetUsersResponse) | Get all users. |
 | UpdateUserInfo | [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest) | [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse) | Update user&#39;s basic info. |
-| BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. Before bind a phone number to user, it needs to send phone verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code |
-| BindUserEmail | [BindUserEmailRequest](#user.v1.BindUserEmailRequest) | [BindUserEmailResponse](#user.v1.BindUserEmailResponse) | Bind user&#39;s email address. Before bind a email address to user, it needs to send email verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code |
-| UnbindUserPhone | [UnbindUserPhoneRequest](#user.v1.UnbindUserPhoneRequest) | [UnbindUserPhoneResponse](#user.v1.UnbindUserPhoneResponse) | Unbind user&#39;s phone number. Before unbind user&#39;s phone number, it needs to send phone verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/sms, https://user.npool.top/v1/confirm-sms-verify-code |
-| UnbindUserEmail | [UnbindUserEmailRequest](#user.v1.UnbindUserEmailRequest) | [UnbindUserEmailResponse](#user.v1.UnbindUserEmailResponse) | Unbind user&#39;s email address. Before unbind user&#39;s email address, it needs to send email verify code and confirm the verify code user input. Need apis: https://user.npool.top/v1/send/email, https://user.npool.top/v1/confirm-email-verify-code |
-| BindThirdParty | [BindThirdPartyRequest](#user.v1.BindThirdPartyRequest) | [BindThirdPartyResponse](#user.v1.BindThirdPartyResponse) | Link to a third-party oauth. save the UserId from third-party into mysql. During Linking, user need to authenticate in third-party and use login-oauth api to get access_token and then get user info from third-party(provider). need api: https://login.npool.top/v1/login/oauth |
+| BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. |
+| BindUserEmail | [BindUserEmailRequest](#user.v1.BindUserEmailRequest) | [BindUserEmailResponse](#user.v1.BindUserEmailResponse) | Bind user&#39;s email address. |
+| UnbindUserPhone | [UnbindUserPhoneRequest](#user.v1.UnbindUserPhoneRequest) | [UnbindUserPhoneResponse](#user.v1.UnbindUserPhoneResponse) | Unbind user&#39;s phone number. |
+| UnbindUserEmail | [UnbindUserEmailRequest](#user.v1.UnbindUserEmailRequest) | [UnbindUserEmailResponse](#user.v1.UnbindUserEmailResponse) | Unbind user&#39;s email address. |
+| BindThirdParty | [BindThirdPartyRequest](#user.v1.BindThirdPartyRequest) | [BindThirdPartyResponse](#user.v1.BindThirdPartyResponse) | Link to a third-party oauth. save the UserId from third-party into mysql. |
 | UnbindThirdParty | [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest) | [UnbindThirdPartyResponse](#user.v1.UnbindThirdPartyResponse) | Unlink a third-party oauth. Delete the UserId we saved from mysql. |
 | ChangeUserPassword | [ChangeUserPasswordRequest](#user.v1.ChangeUserPasswordRequest) | [ChangeUserPasswordResponse](#user.v1.ChangeUserPasswordResponse) | Change user&#39;s password. Before change users password, system need the user to do an authentication. |
-| ForgetPassword | [ForgetPasswordRequest](#user.v1.ForgetPasswordRequest) | [ForgetPasswordResponse](#user.v1.ForgetPasswordResponse) | Forget password. If user forgets his(her) password, he(she) firstly need to authenticate identity and then reset his(her) password. |
+| ForgetPassword | [ForgetPasswordRequest](#user.v1.ForgetPasswordRequest) | [ForgetPasswordResponse](#user.v1.ForgetPasswordResponse) | Forget password. |
 | AddUser | [AddUserRequest](#user.v1.AddUserRequest) | [AddUserResponse](#user.v1.AddUserResponse) | Add user. |
-| DeleteUser | [DeleteUserRequest](#user.v1.DeleteUserRequest) | [DeleteUserResponse](#user.v1.DeleteUserResponse) | Delete users. This api can only be used by admin. When deleting users, service will not only delete basic user info, but also use other apis to delete connections among other service. |
+| DeleteUser | [DeleteUserRequest](#user.v1.DeleteUserRequest) | [DeleteUserResponse](#user.v1.DeleteUserResponse) | Delete users. |
 | FrozenUser | [FrozenUserRequest](#user.v1.FrozenUserRequest) | [FrozenUserResponse](#user.v1.FrozenUserResponse) | Frozen user. |
 | UnfrozenUser | [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest) | [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse) | Unfrozen user. |
-| QueryUserFrozen | [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest) | [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse) |  |
+| QueryUserFrozen | [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest) | [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse) | query user is frozen or not |
 | GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
 | GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
-| QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) |  |
-| QueryUserByUserProviderID | [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest) | [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse) |  |
+| QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) | query user exist in database. |
+| QueryUserByUserProviderID | [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest) | [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse) | query user by provider id and his id in the provider |
 
  
 

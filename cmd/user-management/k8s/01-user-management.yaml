@@ -55,3 +55,5 @@ spec:
   - name: prometheus
     port: 50072
     targetPort: 50072
+  selector:
+    app: user-management

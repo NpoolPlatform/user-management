@@ -188,7 +188,7 @@ service User {
     */
     rpc GetUserProviders (GetUserProvidersRequest) returns (GetUserProvidersResponse) {
         option (google.api.http) = {
-            post: "/v1/get/user/provIDers"
+            post: "/v1/get/user/providers"
             body: "*"
         };
     };
@@ -202,7 +202,7 @@ service User {
     // query user by provIDer ID and his ID in the provIDer
     rpc QueryUserByUserProviderID (QueryUserByUserProviderIDRequest) returns (QueryUserByUserProviderIDResponse) {
         option (google.api.http) = {
-            post: "/v1/query/user/by/UserProviderID"
+            post: "/v1/query/user/by/userproviderid"
             body: "*"
         };
     };

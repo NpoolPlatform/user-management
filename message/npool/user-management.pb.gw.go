@@ -1286,7 +1286,7 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/GetUserProviders", runtime.WithHTTPPathPattern("/v1/get/user/provIDers"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/GetUserProviders", runtime.WithHTTPPathPattern("/v1/get/user/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1332,7 +1332,7 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/QueryUserByUserProviderID", runtime.WithHTTPPathPattern("/v1/query/user/by/UserProviderID"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/QueryUserByUserProviderID", runtime.WithHTTPPathPattern("/v1/query/user/by/userproviderid"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1794,7 +1794,7 @@ func RegisterUserHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/GetUserProviders", runtime.WithHTTPPathPattern("/v1/get/user/provIDers"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/GetUserProviders", runtime.WithHTTPPathPattern("/v1/get/user/providers"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1834,7 +1834,7 @@ func RegisterUserHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/QueryUserByUserProviderID", runtime.WithHTTPPathPattern("/v1/query/user/by/UserProviderID"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/QueryUserByUserProviderID", runtime.WithHTTPPathPattern("/v1/query/user/by/userproviderid"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -1894,11 +1894,11 @@ var (
 
 	pattern_User_GetFrozenUsers_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "get", "frozen", "user"}, ""))
 
-	pattern_User_GetUserProviders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "get", "user", "provIDers"}, ""))
+	pattern_User_GetUserProviders_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "get", "user", "providers"}, ""))
 
 	pattern_User_QueryUserExist_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "query", "user", "exist"}, ""))
 
-	pattern_User_QueryUserByUserProviderID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"v1", "query", "user", "by", "UserProviderID"}, ""))
+	pattern_User_QueryUserByUserProviderID_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3, 2, 4}, []string{"v1", "query", "user", "by", "userproviderid"}, ""))
 )
 
 var (

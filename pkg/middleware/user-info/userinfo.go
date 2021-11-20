@@ -22,7 +22,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		if in.Code == "" {
 			return nil, xerrors.Errorf("must have code to verify email")
 		}
-		_, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
+		_, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
 		if err == nil {
 			return nil, xerrors.Errorf("email has been used")
 		}
@@ -34,7 +34,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 	}
 
 	if in.PhoneNumber != "" {
-		_, err := userinfo.QueryUserByPhoneNumber(ctx, in.PhoneNumber)
+		_, err := userinfo.QueryUserByUsername(ctx, in.PhoneNumber)
 		if err == nil {
 			return nil, xerrors.Errorf("phone number has been used")
 		}
@@ -59,7 +59,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, err
 	}
 
-	err = grpc.AddUserToApplication(resp.Info.UserId, in.AppId)
+	err = grpc.AddUserToApplication(resp.Info.UserID, in.AppID)
 	if err != nil {
 		return nil, err
 	}
@@ -76,14 +76,14 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 	}
 
 	if in.UserInfo.EmailAddress != "" {
-		_, err := userinfo.QueryUserByEmailAddress(ctx, in.UserInfo.EmailAddress)
+		_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.EmailAddress)
 		if err == nil {
 			return nil, xerrors.Errorf("email has been used")
 		}
 	}
 
 	if in.UserInfo.PhoneNumber != "" {
-		_, err := userinfo.QueryUserByPhoneNumber(ctx, in.UserInfo.PhoneNumber)
+		_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.PhoneNumber)
 		if err == nil {
 			return nil, xerrors.Errorf("phone number has been used")
 		}
@@ -98,13 +98,29 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 	return resp, nil
 }
 
-func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
-	dbPassword, err := userinfo.GetUserPassword(ctx, in.UserId)
+func SetPassword(ctx context.Context, in *npool.SetPasswordRequest) (*npool.SetPasswordResponse, error) {
+	resp, err := userinfo.QueryUserByUsername(ctx, in.Username)
 	if err != nil {
 		return nil, err
 	}
 
-	salt, err := userinfo.GetUserSalt(ctx, in.UserId)
+	err = userinfo.SetPassword(ctx, in.Password, resp.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &npool.SetPasswordResponse{
+		Info: "set password successfully",
+	}, nil
+}
+
+func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
+	dbPassword, err := userinfo.GetUserPassword(ctx, in.UserID)
+	if err != nil {
+		return nil, err
+	}
+
+	salt, err := userinfo.GetUserSalt(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +129,7 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 		return nil, err
 	}
 
-	err = userinfo.SetPassword(ctx, in.Password, in.UserId)
+	err = userinfo.SetPassword(ctx, in.Password, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -128,7 +144,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		if in.Code == "" {
 			return nil, xerrors.Errorf("input code is empty")
 		}
-		userInfo, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
+		userInfo, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
 		if err != nil {
 			return nil, err
 		}
@@ -136,13 +152,13 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
-		userID = userInfo.UserId
+		userID = userInfo.UserID
 	} else if in.EmailAddress == "" && in.PhoneNumber != "" {
-		userInfo, err := userinfo.QueryUserByPhoneNumber(ctx, in.PhoneNumber)
+		userInfo, err := userinfo.QueryUserByUsername(ctx, in.PhoneNumber)
 		if err != nil {
 			return nil, err
 		}
-		userID = userInfo.UserId
+		userID = userInfo.UserID
 	}
 
 	err := userinfo.SetPassword(ctx, in.Password, userID)
@@ -155,7 +171,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 }
 
 func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.BindUserPhoneResponse, error) {
-	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +193,7 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 		return nil, xerrors.Errorf("input code is empty")
 	}
 
-	_, err := userinfo.QueryUserByEmailAddress(ctx, in.EmailAddress)
+	_, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
 	if err != xerrors.Errorf("user doesn't exist") {
 		return nil, xerrors.Errorf("email has been used: %v", err)
 	}
@@ -187,7 +203,7 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 		return nil, xerrors.Errorf("bind user email error: %v", err)
 	}
 
-	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}

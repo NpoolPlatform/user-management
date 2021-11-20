@@ -65,6 +65,15 @@ func (s *Server) UpdateUserInfo(ctx context.Context, in *npool.UpdateUserInfoReq
 	return resp, nil
 }
 
+func (s *Server) SetPassword(ctx context.Context, in *npool.SetPasswordRequest) (*npool.SetPasswordResponse, error) {
+	resp, err := middleware.SetPassword(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorf("fail to set user password: %v", err)
+		return &npool.SetPasswordResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+	return resp, nil
+}
+
 func (s *Server) ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
 	resp, err := middleware.ChangeUserPassword(ctx, in)
 	if err != nil {

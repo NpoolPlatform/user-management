@@ -23,12 +23,6 @@ const (
 	FieldPhoneNumber = "phone_number"
 	// FieldEmailAddress holds the string denoting the email_address field in the database.
 	FieldEmailAddress = "email_address"
-	// FieldLoginTimes holds the string denoting the login_times field in the database.
-	FieldLoginTimes = "login_times"
-	// FieldKycVerify holds the string denoting the kyc_verify field in the database.
-	FieldKycVerify = "kyc_verify"
-	// FieldGaVerify holds the string denoting the ga_verify field in the database.
-	FieldGaVerify = "ga_verify"
 	// FieldSignupMethod holds the string denoting the signup_method field in the database.
 	FieldSignupMethod = "signup_method"
 	// FieldCreateAt holds the string denoting the create_at field in the database.
@@ -68,9 +62,6 @@ var Columns = []string{
 	FieldDisplayName,
 	FieldPhoneNumber,
 	FieldEmailAddress,
-	FieldLoginTimes,
-	FieldKycVerify,
-	FieldGaVerify,
 	FieldSignupMethod,
 	FieldCreateAt,
 	FieldUpdateAt,
@@ -99,12 +90,6 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultDisplayName holds the default value on creation for the "display_name" field.
 	DefaultDisplayName string
-	// DefaultLoginTimes holds the default value on creation for the "login_times" field.
-	DefaultLoginTimes uint32
-	// DefaultKycVerify holds the default value on creation for the "kyc_verify" field.
-	DefaultKycVerify bool
-	// DefaultGaVerify holds the default value on creation for the "ga_verify" field.
-	DefaultGaVerify bool
 	// DefaultCreateAt holds the default value on creation for the "create_at" field.
 	DefaultCreateAt func() uint32
 	// DefaultUpdateAt holds the default value on creation for the "update_at" field.

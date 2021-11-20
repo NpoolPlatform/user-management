@@ -98,55 +98,6 @@ func (uu *UserUpdate) ClearEmailAddress() *UserUpdate {
 	return uu
 }
 
-// SetLoginTimes sets the "login_times" field.
-func (uu *UserUpdate) SetLoginTimes(u uint32) *UserUpdate {
-	uu.mutation.ResetLoginTimes()
-	uu.mutation.SetLoginTimes(u)
-	return uu
-}
-
-// SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableLoginTimes(u *uint32) *UserUpdate {
-	if u != nil {
-		uu.SetLoginTimes(*u)
-	}
-	return uu
-}
-
-// AddLoginTimes adds u to the "login_times" field.
-func (uu *UserUpdate) AddLoginTimes(u uint32) *UserUpdate {
-	uu.mutation.AddLoginTimes(u)
-	return uu
-}
-
-// SetKycVerify sets the "kyc_verify" field.
-func (uu *UserUpdate) SetKycVerify(b bool) *UserUpdate {
-	uu.mutation.SetKycVerify(b)
-	return uu
-}
-
-// SetNillableKycVerify sets the "kyc_verify" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableKycVerify(b *bool) *UserUpdate {
-	if b != nil {
-		uu.SetKycVerify(*b)
-	}
-	return uu
-}
-
-// SetGaVerify sets the "ga_verify" field.
-func (uu *UserUpdate) SetGaVerify(b bool) *UserUpdate {
-	uu.mutation.SetGaVerify(b)
-	return uu
-}
-
-// SetNillableGaVerify sets the "ga_verify" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableGaVerify(b *bool) *UserUpdate {
-	if b != nil {
-		uu.SetGaVerify(*b)
-	}
-	return uu
-}
-
 // SetSignupMethod sets the "signup_method" field.
 func (uu *UserUpdate) SetSignupMethod(s string) *UserUpdate {
 	uu.mutation.SetSignupMethod(s)
@@ -481,34 +432,6 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldEmailAddress,
 		})
 	}
-	if value, ok := uu.mutation.LoginTimes(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldLoginTimes,
-		})
-	}
-	if value, ok := uu.mutation.AddedLoginTimes(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldLoginTimes,
-		})
-	}
-	if value, ok := uu.mutation.KycVerify(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldKycVerify,
-		})
-	}
-	if value, ok := uu.mutation.GaVerify(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldGaVerify,
-		})
-	}
 	if value, ok := uu.mutation.SignupMethod(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -716,55 +639,6 @@ func (uuo *UserUpdateOne) SetNillableEmailAddress(s *string) *UserUpdateOne {
 // ClearEmailAddress clears the value of the "email_address" field.
 func (uuo *UserUpdateOne) ClearEmailAddress() *UserUpdateOne {
 	uuo.mutation.ClearEmailAddress()
-	return uuo
-}
-
-// SetLoginTimes sets the "login_times" field.
-func (uuo *UserUpdateOne) SetLoginTimes(u uint32) *UserUpdateOne {
-	uuo.mutation.ResetLoginTimes()
-	uuo.mutation.SetLoginTimes(u)
-	return uuo
-}
-
-// SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableLoginTimes(u *uint32) *UserUpdateOne {
-	if u != nil {
-		uuo.SetLoginTimes(*u)
-	}
-	return uuo
-}
-
-// AddLoginTimes adds u to the "login_times" field.
-func (uuo *UserUpdateOne) AddLoginTimes(u uint32) *UserUpdateOne {
-	uuo.mutation.AddLoginTimes(u)
-	return uuo
-}
-
-// SetKycVerify sets the "kyc_verify" field.
-func (uuo *UserUpdateOne) SetKycVerify(b bool) *UserUpdateOne {
-	uuo.mutation.SetKycVerify(b)
-	return uuo
-}
-
-// SetNillableKycVerify sets the "kyc_verify" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableKycVerify(b *bool) *UserUpdateOne {
-	if b != nil {
-		uuo.SetKycVerify(*b)
-	}
-	return uuo
-}
-
-// SetGaVerify sets the "ga_verify" field.
-func (uuo *UserUpdateOne) SetGaVerify(b bool) *UserUpdateOne {
-	uuo.mutation.SetGaVerify(b)
-	return uuo
-}
-
-// SetNillableGaVerify sets the "ga_verify" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableGaVerify(b *bool) *UserUpdateOne {
-	if b != nil {
-		uuo.SetGaVerify(*b)
-	}
 	return uuo
 }
 
@@ -1124,34 +998,6 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: user.FieldEmailAddress,
-		})
-	}
-	if value, ok := uuo.mutation.LoginTimes(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldLoginTimes,
-		})
-	}
-	if value, ok := uuo.mutation.AddedLoginTimes(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldLoginTimes,
-		})
-	}
-	if value, ok := uuo.mutation.KycVerify(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldKycVerify,
-		})
-	}
-	if value, ok := uuo.mutation.GaVerify(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldGaVerify,
 		})
 	}
 	if value, ok := uuo.mutation.SignupMethod(); ok {

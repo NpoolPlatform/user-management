@@ -42,9 +42,9 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.AddUserResponse{}
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assert.NotEqual(t, info.Info.UserID, uuid.UUID{})
 			assertUserInfo(t, info.Info, &addUserInfo)
-			addUserInfo.UserId = info.Info.UserId
+			addUserInfo.UserID = info.Info.UserID
 		}
 	}
 
@@ -84,7 +84,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp3, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUserRequest{
-			UserId: addUserInfo.UserId,
+			UserID: addUserInfo.UserID,
 		}).
 		Post("http://localhost:50070/v1/get/user")
 	if assert.Nil(t, err) {
@@ -92,7 +92,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.GetUserResponse{}
 		err := json.Unmarshal(resp3.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assert.NotEqual(t, info.Info.UserID, uuid.UUID{})
 			assertUserInfo(t, info.Info, &addUserInfo)
 		}
 	}
@@ -116,7 +116,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		info := npool.UpdateUserInfoResponse{}
 		err := json.Unmarshal(resp5.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assert.NotEqual(t, info.Info.UserID, uuid.UUID{})
 			assertUserInfo(t, info.Info, &addUserInfo)
 		}
 	}
@@ -124,7 +124,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp6, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ChangeUserPasswordRequest{
-			UserId:      addUserInfo.UserId,
+			UserID:      addUserInfo.UserID,
 			OldPassword: addUserInfo.Password,
 			Password:    "987654321",
 		}).
@@ -158,7 +158,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp9, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.BindUserPhoneRequest{
-			UserId:      addUserInfo.UserId,
+			UserID:      addUserInfo.UserID,
 			PhoneNumber: uuid.New().String(),
 		}).
 		Post("http://localhost:50070/v1/bind/phone")
@@ -169,7 +169,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp10, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.BindUserEmailRequest{
-			UserId:       addUserInfo.UserId,
+			UserID:       addUserInfo.UserID,
 			EmailAddress: uuid.New().String(),
 		}).
 		Post("http://localhost:50070/v1/bind/email")
@@ -180,7 +180,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp11, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.DeleteUserRequest{
-			DeleteUserIds: []string{addUserInfo.UserId},
+			DeleteUserIDs: []string{addUserInfo.UserID},
 		}).
 		Post("http://localhost:50070/v1/delete/users")
 	fmt.Println(err)

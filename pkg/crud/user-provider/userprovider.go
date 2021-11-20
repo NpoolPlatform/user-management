@@ -23,9 +23,9 @@ type ProviderUserInfo struct {
 func dbRowToInfo(row *ent.UserProvider) *npool.UserProvider {
 	return &npool.UserProvider{
 		ID:               row.ID.String(),
-		UserId:           row.UserID.String(),
-		ProviderId:       row.ProviderID.String(),
-		ProviderUserId:   row.ProviderUserID,
+		UserID:           row.UserID.String(),
+		ProviderID:       row.ProviderID.String(),
+		ProviderUserID:   row.ProviderUserID,
 		UserProviderInfo: row.UserProviderInfo,
 		CreateAt:         row.CreateAt,
 		UpdateAt:         row.UpdateAt,
@@ -33,11 +33,11 @@ func dbRowToInfo(row *ent.UserProvider) *npool.UserProvider {
 }
 
 func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindThirdPartyResponse, error) {
-	userID, err := uuid.Parse(in.UserId)
+	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
-	providerID, err := uuid.Parse(in.ProviderId)
+	providerID, err := uuid.Parse(in.ProviderID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
@@ -64,7 +64,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 		Create().
 		SetUserID(userID).
 		SetProviderID(providerID).
-		SetProviderUserID(in.ProviderUserId).
+		SetProviderUserID(in.ProviderUserID).
 		SetUserProviderInfo(in.UserProviderInfo).
 		Save(ctx)
 	if err != nil {
@@ -76,7 +76,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 }
 
 func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUserProvidersResponse, error) {
-	userID, err := uuid.Parse(in.UserId)
+	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -103,12 +103,12 @@ func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUser
 }
 
 func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.UnbindThirdPartyResponse, error) {
-	userID, err := uuid.Parse(in.UserId)
+	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
 
-	providerID, err := uuid.Parse(in.ProviderId)
+	providerID, err := uuid.Parse(in.ProviderID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}

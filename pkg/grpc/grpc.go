@@ -18,6 +18,16 @@ const (
 	ApplicationServicePort  = ":50081"
 )
 
+func newGRPCTestConn(target string) (*grpc.ClientConn, error) {
+	conn, err := grpc.Dial(target, grpc.WithInsecure(),
+		grpc.WithBlock(),
+	)
+	if err != nil {
+		return nil, err
+	}
+	return conn, err
+}
+
 func newVerificationGrpcClient() (*grpc.ClientConn, error) {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
@@ -28,7 +38,7 @@ func newVerificationGrpcClient() (*grpc.ClientConn, error) {
 }
 
 func VerifyCode(param, code string) error {
-	conn, err := newVerificationGrpcClient()
+	conn, err := newGRPCTestConn("localhost:50091")
 	if err != nil {
 		return err
 	}
@@ -54,7 +64,7 @@ func newApplicationGrpcClient() (*grpc.ClientConn, error) {
 }
 
 func AddUserToApplication(userID, appID string) error {
-	conn, err := newApplicationGrpcClient()
+	conn, err := newGRPCTestConn("localhost:50081")
 	if err != nil {
 		return err
 	}

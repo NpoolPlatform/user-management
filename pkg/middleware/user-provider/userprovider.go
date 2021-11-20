@@ -9,7 +9,7 @@ import (
 )
 
 func BindThirdParty(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindThirdPartyResponse, error) {
-	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func BindThirdParty(ctx context.Context, in *npool.BindThirdPartyRequest) (*npoo
 }
 
 func GetUserProviders(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUserProvidersResponse, error) {
-	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -37,7 +37,7 @@ func GetUserProviders(ctx context.Context, in *npool.GetUserProvidersRequest) (*
 }
 
 func UnbindUserProviders(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.UnbindThirdPartyResponse, error) {
-	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func QueryUserByUserProviderID(ctx context.Context, in *npool.QueryUserByUserPro
 		return nil, err
 	}
 
-	userBasicInfo, err := userinfo.QueryUserByUserID(ctx, resp.Info.UserProviderInfo.UserId)
+	userBasicInfo, err := userinfo.QueryUserByUserID(ctx, resp.Info.UserProviderInfo.UserID)
 	if err != nil {
 		return nil, err
 	}

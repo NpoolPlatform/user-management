@@ -41,6 +41,8 @@
     - [QueryUserExistResponse](#user.v1.QueryUserExistResponse)
     - [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest)
     - [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse)
+    - [SetPasswordRequest](#user.v1.SetPasswordRequest)
+    - [SetPasswordResponse](#user.v1.SetPasswordResponse)
     - [SignupRequest](#user.v1.SignupRequest)
     - [SignupResponse](#user.v1.SignupResponse)
     - [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest)
@@ -55,8 +57,6 @@
     - [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse)
     - [UserBasicInfo](#user.v1.UserBasicInfo)
     - [UserProvider](#user.v1.UserProvider)
-    - [VerifyGaRequest](#user.v1.VerifyGaRequest)
-    - [VerifyGaResponse](#user.v1.VerifyGaResponse)
     - [VersionResponse](#user.v1.VersionResponse)
   
     - [User](#user.v1.User)
@@ -80,7 +80,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| AppId | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 | UserInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 
 
@@ -111,10 +111,10 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| AppId | [string](#string) |  |  |
-| ProviderId | [string](#string) |  | third party(provider)&#39;s id |
-| ProviderUserId | [string](#string) |  | UserId in third party(provider) |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
+| ProviderID | [string](#string) |  | third party(provIDer)&#39;s ID |
+| ProviderUserID | [string](#string) |  | UserID in third party(provIDer) |
 | UserProviderInfo | [string](#string) |  |  |
 
 
@@ -145,9 +145,10 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | EmailAddress | [string](#string) |  |  |
 | Code | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -177,8 +178,9 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | PhoneNumber | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -208,15 +210,15 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| AppId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 | FirstName | [string](#string) |  |  |
 | LastName | [string](#string) |  |  |
 | FrontCardImg | [string](#string) |  |  |
 | BackCardImg | [string](#string) |  |  |
 | UserCardImg | [string](#string) |  |  |
 | CardType | [string](#string) |  |  |
-| CardId | [string](#string) |  |  |
+| CardID | [string](#string) |  |  |
 | Region | [string](#string) |  |  |
 
 
@@ -247,8 +249,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| AppId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 | OldPassword | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
 
@@ -280,7 +282,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| DeleteUserIds | [string](#string) | repeated | an array of UserId who are being deleted. |
+| DeleteUserIDs | [string](#string) | repeated | an array of UserID who are being deleted. |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -314,6 +317,7 @@
 | EmailAddress | [string](#string) |  | Optional |
 | Password | [string](#string) |  |  |
 | Code | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -343,8 +347,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Id | [string](#string) |  |  |
-| UserId | [string](#string) |  |  |
+| ID | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | FrozenBy | [string](#string) |  |  |
 | FrozenCause | [string](#string) |  |  |
 | StartAt | [uint32](#uint32) |  |  |
@@ -365,9 +369,10 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | FrozenBy | [string](#string) |  |  |
 | FrozenCause | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -398,6 +403,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [PageInfo](#user.v1.PageInfo) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -427,7 +433,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -457,7 +464,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -487,7 +495,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  | UserId is who is queried. |
+| UserID | [string](#string) |  | UserID is who is queried. |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -518,6 +527,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [PageInfo](#user.v1.PageInfo) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -581,6 +591,7 @@
 | ----- | ---- | ----- | ----------- |
 | ProviderID | [string](#string) |  |  |
 | ProviderUserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -612,6 +623,7 @@
 | ----- | ---- | ----- | ----------- |
 | Username | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -642,6 +654,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -663,6 +676,38 @@
 
 
 
+<a name="user.v1.SetPasswordRequest"></a>
+
+### SetPasswordRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Username | [string](#string) |  |  |
+| Password | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.SetPasswordResponse"></a>
+
+### SetPasswordResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="user.v1.SignupRequest"></a>
 
 ### SignupRequest
@@ -676,7 +721,7 @@
 | EmailAddress | [string](#string) |  | optional |
 | PhoneNumber | [string](#string) |  | optional |
 | Code | [string](#string) |  |  |
-| AppId | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -706,9 +751,9 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| AppId | [string](#string) |  |  |
-| ProviderId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
+| ProviderID | [string](#string) |  |  |
 
 
 
@@ -738,7 +783,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -768,7 +814,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -798,9 +845,10 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| Id | [string](#string) |  |  |
-| UserId | [string](#string) |  |  |
+| ID | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | UnfrozenBy | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -831,6 +879,7 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| AppID | [string](#string) |  |  |
 
 
 
@@ -860,7 +909,7 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 | Username | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
 | Avatar | [string](#string) |  |  |
@@ -878,6 +927,7 @@
 | LoginTimes | [uint32](#uint32) |  |  |
 | KycVerify | [bool](#bool) |  |  |
 | GaVerify | [bool](#bool) |  |  |
+| GaLogin | [bool](#bool) |  |  |
 | SignupMethod | [string](#string) |  |  |
 | Career | [string](#string) |  |  |
 | DisplayName | [string](#string) |  |  |
@@ -896,43 +946,12 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | ID | [string](#string) |  |  |
-| UserId | [string](#string) |  |  |
-| ProviderId | [string](#string) |  |  |
-| ProviderUserId | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| ProviderID | [string](#string) |  |  |
+| ProviderUserID | [string](#string) |  |  |
 | UserProviderInfo | [string](#string) |  |  |
 | CreateAt | [uint32](#uint32) |  |  |
 | UpdateAt | [uint32](#uint32) |  |  |
-
-
-
-
-
-
-<a name="user.v1.VerifyGaRequest"></a>
-
-### VerifyGaRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| UserId | [string](#string) |  |  |
-| GaCode | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.VerifyGaResponse"></a>
-
-### VerifyGaResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
 
 
 
@@ -969,26 +988,27 @@ a service of managing users
 | ----------- | ------------ | ------------- | ------------|
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#user.v1.VersionResponse) | Method Version |
 | SignUp | [SignupRequest](#user.v1.SignupRequest) | [SignupResponse](#user.v1.SignupResponse) | User can choose signup with username, email, phone or only emial or only phone. |
-| GetUser | [GetUserRequest](#user.v1.GetUserRequest) | [GetUserResponse](#user.v1.GetUserResponse) | Get a user&#39;s info by his(her) id, this api can be request by user self of admin. |
+| GetUser | [GetUserRequest](#user.v1.GetUserRequest) | [GetUserResponse](#user.v1.GetUserResponse) | Get a user&#39;s info by his(her) ID, this api can be request by user self of admin. |
 | GetUsers | [GetUsersRequest](#user.v1.GetUsersRequest) | [GetUsersResponse](#user.v1.GetUsersResponse) | Get all users. |
 | UpdateUserInfo | [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest) | [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse) | Update user&#39;s basic info. |
 | BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. |
 | BindUserEmail | [BindUserEmailRequest](#user.v1.BindUserEmailRequest) | [BindUserEmailResponse](#user.v1.BindUserEmailResponse) | Bind user&#39;s email address. |
 | UnbindUserPhone | [UnbindUserPhoneRequest](#user.v1.UnbindUserPhoneRequest) | [UnbindUserPhoneResponse](#user.v1.UnbindUserPhoneResponse) | Unbind user&#39;s phone number. |
 | UnbindUserEmail | [UnbindUserEmailRequest](#user.v1.UnbindUserEmailRequest) | [UnbindUserEmailResponse](#user.v1.UnbindUserEmailResponse) | Unbind user&#39;s email address. |
-| BindThirdParty | [BindThirdPartyRequest](#user.v1.BindThirdPartyRequest) | [BindThirdPartyResponse](#user.v1.BindThirdPartyResponse) | Link to a third-party oauth. save the UserId from third-party into mysql. |
-| UnbindThirdParty | [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest) | [UnbindThirdPartyResponse](#user.v1.UnbindThirdPartyResponse) | Unlink a third-party oauth. Delete the UserId we saved from mysql. |
+| BindThirdParty | [BindThirdPartyRequest](#user.v1.BindThirdPartyRequest) | [BindThirdPartyResponse](#user.v1.BindThirdPartyResponse) | Link to a third-party oauth. save the UserID from third-party into mysql. |
+| UnbindThirdParty | [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest) | [UnbindThirdPartyResponse](#user.v1.UnbindThirdPartyResponse) | Unlink a third-party oauth. Delete the UserID we saved from mysql. |
 | ChangeUserPassword | [ChangeUserPasswordRequest](#user.v1.ChangeUserPasswordRequest) | [ChangeUserPasswordResponse](#user.v1.ChangeUserPasswordResponse) | Change user&#39;s password. Before change users password, system need the user to do an authentication. |
 | ForgetPassword | [ForgetPasswordRequest](#user.v1.ForgetPasswordRequest) | [ForgetPasswordResponse](#user.v1.ForgetPasswordResponse) | Forget password. |
+| SetPassword | [SetPasswordRequest](#user.v1.SetPasswordRequest) | [SetPasswordResponse](#user.v1.SetPasswordResponse) | set password. |
 | AddUser | [AddUserRequest](#user.v1.AddUserRequest) | [AddUserResponse](#user.v1.AddUserResponse) | Add user. |
 | DeleteUser | [DeleteUserRequest](#user.v1.DeleteUserRequest) | [DeleteUserResponse](#user.v1.DeleteUserResponse) | Delete users. |
 | FrozenUser | [FrozenUserRequest](#user.v1.FrozenUserRequest) | [FrozenUserResponse](#user.v1.FrozenUserResponse) | Frozen user. |
 | UnfrozenUser | [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest) | [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse) | Unfrozen user. |
 | QueryUserFrozen | [QueryUserFrozenRequest](#user.v1.QueryUserFrozenRequest) | [QueryUserFrozenResponse](#user.v1.QueryUserFrozenResponse) | query user is frozen or not |
 | GetFrozenUsers | [GetFrozenUsersRequest](#user.v1.GetFrozenUsersRequest) | [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse) | Get frozen user list. |
-| GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user providers info. |
+| GetUserProviders | [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest) | [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse) | Get user provIDers info. |
 | QueryUserExist | [QueryUserExistRequest](#user.v1.QueryUserExistRequest) | [QueryUserExistResponse](#user.v1.QueryUserExistResponse) | query user exist in database. |
-| QueryUserByUserProviderID | [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest) | [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse) | query user by provider id and his id in the provider |
+| QueryUserByUserProviderID | [QueryUserByUserProviderIDRequest](#user.v1.QueryUserByUserProviderIDRequest) | [QueryUserByUserProviderIDResponse](#user.v1.QueryUserByUserProviderIDResponse) | query user by provIDer ID and his ID in the provIDer |
 
  
 

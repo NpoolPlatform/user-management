@@ -36,24 +36,24 @@ func TestUserProviderAPI(t *testing.T) {
 		info := npool.AddUserResponse{}
 		err := json.Unmarshal(resp1.Body(), &info)
 		if assert.Nil(t, err) {
-			assert.NotEqual(t, info.Info.UserId, uuid.UUID{})
+			assert.NotEqual(t, info.Info.UserID, uuid.UUID{})
 			assertUserInfo(t, info.Info, &addUserInfo)
-			addUserInfo.UserId = info.Info.UserId
+			addUserInfo.UserID = info.Info.UserID
 		}
 	}
 
 	userProvider := npool.UserProvider{
-		UserId:         addUserInfo.UserId,
-		ProviderId:     uuid.New().String(),
-		ProviderUserId: uuid.New().String(),
+		UserID:         addUserInfo.UserID,
+		ProviderID:     uuid.New().String(),
+		ProviderUserID: uuid.New().String(),
 	}
 
 	resp2, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.BindThirdPartyRequest{
-			UserId:         userProvider.UserId,
-			ProviderId:     userProvider.ProviderId,
-			ProviderUserId: userProvider.ProviderUserId,
+			UserID:         userProvider.UserID,
+			ProviderID:     userProvider.ProviderID,
+			ProviderUserID: userProvider.ProviderUserID,
 		}).Post("http://localhost:50070/v1/bind/thirdparty")
 	if assert.Nil(t, err) {
 		fmt.Println("resp2 is", resp2)
@@ -62,9 +62,9 @@ func TestUserProviderAPI(t *testing.T) {
 		err := json.Unmarshal(resp2.Body(), &info)
 		if assert.Nil(t, err) {
 			assert.NotEqual(t, info.Info.ID, uuid.UUID{})
-			assert.Equal(t, info.Info.UserId, userProvider.UserId)
-			assert.Equal(t, info.Info.ProviderId, userProvider.ProviderId)
-			assert.Equal(t, info.Info.ProviderUserId, userProvider.ProviderUserId)
+			assert.Equal(t, info.Info.UserID, userProvider.UserID)
+			assert.Equal(t, info.Info.ProviderID, userProvider.ProviderID)
+			assert.Equal(t, info.Info.ProviderUserID, userProvider.ProviderUserID)
 			userProvider.ID = info.Info.ID
 		}
 	}
@@ -72,8 +72,8 @@ func TestUserProviderAPI(t *testing.T) {
 	resp5, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.QueryUserByUserProviderIDRequest{
-			ProviderID:     userProvider.ProviderId,
-			ProviderUserID: userProvider.ProviderUserId,
+			ProviderID:     userProvider.ProviderID,
+			ProviderUserID: userProvider.ProviderUserID,
 		}).Post("http://localhost:50070/v1/query/user/by/userproviderid")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp5.StatusCode())
@@ -83,7 +83,7 @@ func TestUserProviderAPI(t *testing.T) {
 	resp3, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.GetUserProvidersRequest{
-			UserId: userProvider.UserId,
+			UserID: userProvider.UserID,
 		}).Post("http://localhost:50070/v1/get/user/providers")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp3.StatusCode())
@@ -93,8 +93,8 @@ func TestUserProviderAPI(t *testing.T) {
 	resp4, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.UnbindThirdPartyRequest{
-			UserId:     userProvider.UserId,
-			ProviderId: userProvider.ProviderId,
+			UserID:     userProvider.UserID,
+			ProviderID: userProvider.ProviderID,
 		}).Post("http://localhost:50070/v1/unbind/thirdparty")
 	if assert.Nil(t, err) {
 		assert.Equal(t, 200, resp4.StatusCode())
@@ -102,9 +102,9 @@ func TestUserProviderAPI(t *testing.T) {
 		err := json.Unmarshal(resp4.Body(), &info)
 		if assert.Nil(t, err) {
 			assert.NotEqual(t, info.Info.ID, uuid.UUID{})
-			assert.Equal(t, info.Info.UserId, userProvider.UserId)
-			assert.Equal(t, info.Info.ProviderId, userProvider.ProviderId)
-			fmt.Printf("provider user id is: %v\n", info.Info.ProviderUserId)
+			assert.Equal(t, info.Info.UserID, userProvider.UserID)
+			assert.Equal(t, info.Info.ProviderID, userProvider.ProviderID)
+			fmt.Printf("provider user id is: %v\n", info.Info.ProviderUserID)
 		}
 	}
 }

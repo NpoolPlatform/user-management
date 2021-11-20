@@ -80,48 +80,6 @@ func (uc *UserCreate) SetNillableEmailAddress(s *string) *UserCreate {
 	return uc
 }
 
-// SetLoginTimes sets the "login_times" field.
-func (uc *UserCreate) SetLoginTimes(u uint32) *UserCreate {
-	uc.mutation.SetLoginTimes(u)
-	return uc
-}
-
-// SetNillableLoginTimes sets the "login_times" field if the given value is not nil.
-func (uc *UserCreate) SetNillableLoginTimes(u *uint32) *UserCreate {
-	if u != nil {
-		uc.SetLoginTimes(*u)
-	}
-	return uc
-}
-
-// SetKycVerify sets the "kyc_verify" field.
-func (uc *UserCreate) SetKycVerify(b bool) *UserCreate {
-	uc.mutation.SetKycVerify(b)
-	return uc
-}
-
-// SetNillableKycVerify sets the "kyc_verify" field if the given value is not nil.
-func (uc *UserCreate) SetNillableKycVerify(b *bool) *UserCreate {
-	if b != nil {
-		uc.SetKycVerify(*b)
-	}
-	return uc
-}
-
-// SetGaVerify sets the "ga_verify" field.
-func (uc *UserCreate) SetGaVerify(b bool) *UserCreate {
-	uc.mutation.SetGaVerify(b)
-	return uc
-}
-
-// SetNillableGaVerify sets the "ga_verify" field if the given value is not nil.
-func (uc *UserCreate) SetNillableGaVerify(b *bool) *UserCreate {
-	if b != nil {
-		uc.SetGaVerify(*b)
-	}
-	return uc
-}
-
 // SetSignupMethod sets the "signup_method" field.
 func (uc *UserCreate) SetSignupMethod(s string) *UserCreate {
 	uc.mutation.SetSignupMethod(s)
@@ -377,18 +335,6 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultDisplayName
 		uc.mutation.SetDisplayName(v)
 	}
-	if _, ok := uc.mutation.LoginTimes(); !ok {
-		v := user.DefaultLoginTimes
-		uc.mutation.SetLoginTimes(v)
-	}
-	if _, ok := uc.mutation.KycVerify(); !ok {
-		v := user.DefaultKycVerify
-		uc.mutation.SetKycVerify(v)
-	}
-	if _, ok := uc.mutation.GaVerify(); !ok {
-		v := user.DefaultGaVerify
-		uc.mutation.SetGaVerify(v)
-	}
 	if _, ok := uc.mutation.CreateAt(); !ok {
 		v := user.DefaultCreateAt()
 		uc.mutation.SetCreateAt(v)
@@ -456,15 +402,6 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.DisplayName(); !ok {
 		return &ValidationError{Name: "display_name", err: errors.New(`ent: missing required field "display_name"`)}
-	}
-	if _, ok := uc.mutation.LoginTimes(); !ok {
-		return &ValidationError{Name: "login_times", err: errors.New(`ent: missing required field "login_times"`)}
-	}
-	if _, ok := uc.mutation.KycVerify(); !ok {
-		return &ValidationError{Name: "kyc_verify", err: errors.New(`ent: missing required field "kyc_verify"`)}
-	}
-	if _, ok := uc.mutation.GaVerify(); !ok {
-		return &ValidationError{Name: "ga_verify", err: errors.New(`ent: missing required field "ga_verify"`)}
 	}
 	if _, ok := uc.mutation.SignupMethod(); !ok {
 		return &ValidationError{Name: "signup_method", err: errors.New(`ent: missing required field "signup_method"`)}
@@ -584,30 +521,6 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Column: user.FieldEmailAddress,
 		})
 		_node.EmailAddress = value
-	}
-	if value, ok := uc.mutation.LoginTimes(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldLoginTimes,
-		})
-		_node.LoginTimes = value
-	}
-	if value, ok := uc.mutation.KycVerify(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldKycVerify,
-		})
-		_node.KycVerify = value
-	}
-	if value, ok := uc.mutation.GaVerify(); ok {
-		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Value:  value,
-			Column: user.FieldGaVerify,
-		})
-		_node.GaVerify = value
 	}
 	if value, ok := uc.mutation.SignupMethod(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

@@ -20,66 +20,54 @@ func init() {
 	userDescDisplayName := userFields[4].Descriptor()
 	// user.DefaultDisplayName holds the default value on creation for the display_name field.
 	user.DefaultDisplayName = userDescDisplayName.Default.(string)
-	// userDescLoginTimes is the schema descriptor for login_times field.
-	userDescLoginTimes := userFields[7].Descriptor()
-	// user.DefaultLoginTimes holds the default value on creation for the login_times field.
-	user.DefaultLoginTimes = userDescLoginTimes.Default.(uint32)
-	// userDescKycVerify is the schema descriptor for kyc_verify field.
-	userDescKycVerify := userFields[8].Descriptor()
-	// user.DefaultKycVerify holds the default value on creation for the kyc_verify field.
-	user.DefaultKycVerify = userDescKycVerify.Default.(bool)
-	// userDescGaVerify is the schema descriptor for ga_verify field.
-	userDescGaVerify := userFields[9].Descriptor()
-	// user.DefaultGaVerify holds the default value on creation for the ga_verify field.
-	user.DefaultGaVerify = userDescGaVerify.Default.(bool)
 	// userDescCreateAt is the schema descriptor for create_at field.
-	userDescCreateAt := userFields[11].Descriptor()
+	userDescCreateAt := userFields[8].Descriptor()
 	// user.DefaultCreateAt holds the default value on creation for the create_at field.
 	user.DefaultCreateAt = userDescCreateAt.Default.(func() uint32)
 	// userDescUpdateAt is the schema descriptor for update_at field.
-	userDescUpdateAt := userFields[12].Descriptor()
+	userDescUpdateAt := userFields[9].Descriptor()
 	// user.DefaultUpdateAt holds the default value on creation for the update_at field.
 	user.DefaultUpdateAt = userDescUpdateAt.Default.(func() uint32)
 	// user.UpdateDefaultUpdateAt holds the default value on update for the update_at field.
 	user.UpdateDefaultUpdateAt = userDescUpdateAt.UpdateDefault.(func() uint32)
 	// userDescDeleteAt is the schema descriptor for delete_at field.
-	userDescDeleteAt := userFields[13].Descriptor()
+	userDescDeleteAt := userFields[10].Descriptor()
 	// user.DefaultDeleteAt holds the default value on creation for the delete_at field.
 	user.DefaultDeleteAt = userDescDeleteAt.Default.(func() uint32)
 	// userDescAvatar is the schema descriptor for avatar field.
-	userDescAvatar := userFields[14].Descriptor()
+	userDescAvatar := userFields[11].Descriptor()
 	// user.DefaultAvatar holds the default value on creation for the avatar field.
 	user.DefaultAvatar = userDescAvatar.Default.(string)
 	// userDescRegion is the schema descriptor for region field.
-	userDescRegion := userFields[15].Descriptor()
+	userDescRegion := userFields[12].Descriptor()
 	// user.DefaultRegion holds the default value on creation for the region field.
 	user.DefaultRegion = userDescRegion.Default.(string)
 	// userDescAge is the schema descriptor for age field.
-	userDescAge := userFields[16].Descriptor()
+	userDescAge := userFields[13].Descriptor()
 	// user.DefaultAge holds the default value on creation for the age field.
 	user.DefaultAge = userDescAge.Default.(uint32)
 	// userDescGender is the schema descriptor for gender field.
-	userDescGender := userFields[17].Descriptor()
+	userDescGender := userFields[14].Descriptor()
 	// user.DefaultGender holds the default value on creation for the gender field.
 	user.DefaultGender = userDescGender.Default.(string)
 	// userDescBirthday is the schema descriptor for birthday field.
-	userDescBirthday := userFields[18].Descriptor()
+	userDescBirthday := userFields[15].Descriptor()
 	// user.DefaultBirthday holds the default value on creation for the birthday field.
 	user.DefaultBirthday = userDescBirthday.Default.(string)
 	// userDescCountry is the schema descriptor for country field.
-	userDescCountry := userFields[19].Descriptor()
+	userDescCountry := userFields[16].Descriptor()
 	// user.DefaultCountry holds the default value on creation for the country field.
 	user.DefaultCountry = userDescCountry.Default.(string)
 	// userDescProvince is the schema descriptor for province field.
-	userDescProvince := userFields[20].Descriptor()
+	userDescProvince := userFields[17].Descriptor()
 	// user.DefaultProvince holds the default value on creation for the province field.
 	user.DefaultProvince = userDescProvince.Default.(string)
 	// userDescCity is the schema descriptor for city field.
-	userDescCity := userFields[21].Descriptor()
+	userDescCity := userFields[18].Descriptor()
 	// user.DefaultCity holds the default value on creation for the city field.
 	user.DefaultCity = userDescCity.Default.(string)
 	// userDescCareer is the schema descriptor for career field.
-	userDescCareer := userFields[22].Descriptor()
+	userDescCareer := userFields[19].Descriptor()
 	// user.DefaultCareer holds the default value on creation for the career field.
 	user.DefaultCareer = userDescCareer.Default.(string)
 	// userDescID is the schema descriptor for id field.

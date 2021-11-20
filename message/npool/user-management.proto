@@ -26,7 +26,7 @@ service User {
         };
     };
     /*
-    Get a user's info by his(her) id, this api can be request by user self of admin.
+    Get a user's info by his(her) ID, this api can be request by user self of admin.
     */
     rpc GetUser (GetUserRequest) returns (GetUserResponse) {
         option (google.api.http) = {
@@ -89,7 +89,7 @@ service User {
         };
     };
     /*
-    Link to a third-party oauth. save the UserId from third-party into mysql.
+    Link to a third-party oauth. save the UserID from third-party into mysql.
     */
     rpc BindThirdParty (BindThirdPartyRequest) returns (BindThirdPartyResponse) {
         option (google.api.http) = {
@@ -98,7 +98,7 @@ service User {
         };
     };
     /*
-    Unlink a third-party oauth. Delete the UserId we saved from mysql.
+    Unlink a third-party oauth. Delete the UserID we saved from mysql.
     */
     rpc UnbindThirdParty (UnbindThirdPartyRequest) returns (UnbindThirdPartyResponse) {
         option (google.api.http) = {
@@ -121,6 +121,13 @@ service User {
     rpc ForgetPassword (ForgetPasswordRequest) returns (ForgetPasswordResponse) {
         option (google.api.http) = {
             post: "/v1/forget/password"
+            body: "*"
+        };
+    };
+    // set password.
+    rpc SetPassword (SetPasswordRequest) returns (SetPasswordResponse) {
+        option (google.api.http) = {
+            post: "/v1/set/password"
             body: "*"
         };
     };
@@ -177,11 +184,11 @@ service User {
         };
     };
     /*
-    Get user providers info.
+    Get user provIDers info.
     */
     rpc GetUserProviders (GetUserProvidersRequest) returns (GetUserProvidersResponse) {
         option (google.api.http) = {
-            post: "/v1/get/user/providers"
+            post: "/v1/get/user/provIDers"
             body: "*"
         };
     };
@@ -192,10 +199,10 @@ service User {
             body: "*"
         };
     };
-    // query user by provider id and his id in the provider
+    // query user by provIDer ID and his ID in the provIDer
     rpc QueryUserByUserProviderID (QueryUserByUserProviderIDRequest) returns (QueryUserByUserProviderIDResponse) {
         option (google.api.http) = {
-            post: "/v1/query/user/by/userproviderid"
+            post: "/v1/query/user/by/UserProviderID"
             body: "*"
         };
     };
@@ -212,7 +219,7 @@ message PageInfo {
 }
 
 message UserBasicInfo {
-    string UserId = 1;
+    string UserID = 1;
     string Username = 2;
     string Password = 15;
     string Avatar = 3;
@@ -230,6 +237,7 @@ message UserBasicInfo {
     uint32 LoginTimes = 19;
     bool KycVerify = 16;
     bool GaVerify = 17;
+    bool GaLogin = 22;
     string SignupMethod = 18;
     string Career = 20;
     string DisplayName = 21;
@@ -244,7 +252,7 @@ message SignupRequest {
     // optional
     string PhoneNumber = 6;
     string Code = 7;
-    string AppId = 8;
+    string AppID = 8;
 }
 
 message SignupResponse {
@@ -252,8 +260,9 @@ message SignupResponse {
 }
 
 message GetUserRequest {
-    // UserId is who is queried.
-    string UserId = 1;
+    // UserID is who is queried.
+    string UserID = 1;
+    string AppID = 2;
 }
 
 message GetUserResponse {
@@ -262,6 +271,7 @@ message GetUserResponse {
 
 message GetUsersRequest {
     PageInfo Info = 1;
+    string AppID = 2;
 }
 
 message GetUsersResponse {
@@ -270,6 +280,7 @@ message GetUsersResponse {
 
 message UpdateUserInfoRequest {
     UserBasicInfo Info = 1;
+    string AppID = 2;
 }
 
 message UpdateUserInfoResponse {
@@ -277,8 +288,9 @@ message UpdateUserInfoResponse {
 }
 
 message BindUserPhoneRequest {
-    string UserId = 1;
+    string UserID = 1;
     string PhoneNumber = 2;
+    string AppID = 3;
 }
 
 message BindUserPhoneResponse {
@@ -286,9 +298,10 @@ message BindUserPhoneResponse {
 }
 
 message BindUserEmailRequest {
-    string UserId = 1;
+    string UserID = 1;
     string EmailAddress = 2;
     string Code = 3;
+    string AppID = 4;
 }
 
 message BindUserEmailResponse {
@@ -296,7 +309,8 @@ message BindUserEmailResponse {
 }
 
 message UnbindUserPhoneRequest {
-    string UserId = 1;
+    string UserID = 1;
+    string AppID = 2;
 }
 
 message UnbindUserPhoneResponse {
@@ -304,7 +318,8 @@ message UnbindUserPhoneResponse {
 }
 
 message UnbindUserEmailRequest {
-    string UserId = 1;
+    string UserID = 1;
+    string AppID = 2;
 }
 
 message UnbindUserEmailResponse {
@@ -313,21 +328,21 @@ message UnbindUserEmailResponse {
 
 message UserProvider {
     string ID = 1;
-    string UserId = 2;
-    string ProviderId = 3;
-    string ProviderUserId = 4;
+    string UserID = 2;
+    string ProviderID = 3;
+    string ProviderUserID = 4;
     string UserProviderInfo = 5;
     uint32 CreateAt = 6;
     uint32 UpdateAt = 7;
 }
 
 message BindThirdPartyRequest {
-    string UserId = 1;
-    string AppId = 2;
-    // third party(provider)'s id
-    string ProviderId = 3;
-    // UserId in third party(provider)
-    string ProviderUserId = 4;
+    string UserID = 1;
+    string AppID = 2;
+    // third party(provIDer)'s ID
+    string ProviderID = 3;
+    // UserID in third party(provIDer)
+    string ProviderUserID = 4;
     string UserProviderInfo = 5;
 }
 
@@ -336,9 +351,9 @@ message BindThirdPartyResponse {
 }
 
 message UnbindThirdPartyRequest {
-    string UserId = 1;
-    string AppId = 2;
-    string ProviderId = 3;
+    string UserID = 1;
+    string AppID = 2;
+    string ProviderID = 3;
 }
 
 message UnbindThirdPartyResponse {
@@ -346,8 +361,8 @@ message UnbindThirdPartyResponse {
 }
 
 message ChangeUserPasswordRequest {
-    string UserId = 1;
-    string AppId = 2;
+    string UserID = 1;
+    string AppID = 2;
     string OldPassword = 4;
     string Password = 5;
 }
@@ -357,15 +372,15 @@ message ChangeUserPasswordResponse {
 }
 
 message CertificateKycRequest {
-    string UserId = 1;
-    string AppId = 2;
+    string UserID = 1;
+    string AppID = 2;
     string FirstName = 3;
     string LastName = 4;
     string FrontCardImg = 5;
     string BackCardImg = 6;
     string UserCardImg = 7;
     string CardType = 8;
-    string CardId = 9;
+    string CardID = 9;
     string Region = 10;
 }
 
@@ -374,19 +389,11 @@ message CertificateKycResponse {
 }
 
 message GetGaQRCodeRequest {
-    string UserId = 1;
+    string UserID = 1;
+    string AppID = 2;
 }
 
 message GetGaQRCodeResponse {
-    string Info = 1;
-}
-
-message VerifyGaRequest {
-    string UserId = 1;
-    string GaCode = 2;
-}
-
-message VerifyGaResponse {
     string Info = 1;
 }
 
@@ -397,6 +404,7 @@ message ForgetPasswordRequest {
     string EmailAddress = 3;
     string Password = 5;
     string Code = 6;
+    string AppID = 7;
 }
 
 message ForgetPasswordResponse {
@@ -404,8 +412,9 @@ message ForgetPasswordResponse {
 }
 
 message DeleteUserRequest {
-    // an array of UserId who are being deleted.
-    repeated string DeleteUserIds = 1;
+    // an array of UserID who are being deleted.
+    repeated string DeleteUserIDs = 1;
+    string AppID = 2;
 }
 
 message DeleteUserResponse {
@@ -413,7 +422,7 @@ message DeleteUserResponse {
 }
 
 message AddUserRequest {
-    string AppId = 1;
+    string AppID = 1;
     UserBasicInfo UserInfo = 2;
 }
 
@@ -422,8 +431,8 @@ message AddUserResponse {
 }
 
 message FrozenUser {
-    string Id = 1;
-    string UserId = 2;
+    string ID = 1;
+    string UserID = 2;
     string FrozenBy = 3;
     string FrozenCause = 4;
     uint32 StartAt = 5;
@@ -433,9 +442,10 @@ message FrozenUser {
 }
 
 message FrozenUserRequest {
-    string UserId = 1;
+    string UserID = 1;
     string FrozenBy = 2;
     string FrozenCause =3;
+    string AppID = 4;
 }
 
 message FrozenUserResponse {
@@ -444,6 +454,7 @@ message FrozenUserResponse {
 
 message QueryUserFrozenRequest {
     string UserID = 1;
+    string AppID = 2;
 }
 
 message QueryUserFrozenResponse {
@@ -451,9 +462,10 @@ message QueryUserFrozenResponse {
 }
 
 message UnfrozenUserRequest {
-    string Id = 1;
-    string UserId = 2;
+    string ID = 1;
+    string UserID = 2;
     string UnfrozenBy = 3;
+    string AppID = 4;
 }
 
 message UnfrozenUserResponse {
@@ -462,6 +474,7 @@ message UnfrozenUserResponse {
 
 message GetFrozenUsersRequest {
     PageInfo Info = 1;
+    string AppID = 2;
 }
 
 message GetFrozenUsersResponse {
@@ -469,7 +482,8 @@ message GetFrozenUsersResponse {
 }
 
 message GetUserProvidersRequest {
-    string UserId = 1;
+    string UserID = 1;
+    string AppID = 2;
 }
 
 message GetUserProvidersResponse {
@@ -479,6 +493,7 @@ message GetUserProvidersResponse {
 message QueryUserExistRequest {
     string Username = 1;
     string Password = 2;
+    string AppID = 3;
 }
 
 message QueryUserExistResponse {
@@ -493,8 +508,19 @@ message QueryProviderUserInfo {
 message QueryUserByUserProviderIDRequest {
     string ProviderID = 1;
     string ProviderUserID = 2;
+    string AppID = 3;
 }
 
 message QueryUserByUserProviderIDResponse {
     QueryProviderUserInfo Info = 1;
+}
+
+message SetPasswordRequest {
+    string Username = 1;
+    string Password = 2;
+    string AppID = 3;
+}
+
+message SetPasswordResponse {
+    string Info = 1;
 }

@@ -38,33 +38,33 @@ func TestFrozenUserMiddleware(t *testing.T) { // nolint
 	assert.Nil(t, err)
 
 	frozenUserInfo := npool.FrozenUser{
-		UserId:      resp.Info.UserId,
+		UserID:      resp.Info.UserID,
 		FrozenBy:    uuid.New().String(),
 		FrozenCause: "user has some illegal operations",
 	}
 
 	resp1, err := FrozenUser(context.Background(), &npool.FrozenUserRequest{
-		UserId:      frozenUserInfo.UserId,
+		UserID:      frozenUserInfo.UserID,
 		FrozenBy:    frozenUserInfo.FrozenBy,
 		FrozenCause: frozenUserInfo.FrozenCause,
 	})
 	if assert.Nil(t, err) {
-		assert.NotEqual(t, resp1.Info.Id, uuid.UUID{})
-		assert.Equal(t, resp1.Info.UserId, frozenUserInfo.UserId)
+		assert.NotEqual(t, resp1.Info.ID, uuid.UUID{})
+		assert.Equal(t, resp1.Info.UserID, frozenUserInfo.UserID)
 		assert.Equal(t, resp1.Info.FrozenBy, frozenUserInfo.FrozenBy)
 		assert.Equal(t, resp1.Info.FrozenCause, frozenUserInfo.FrozenCause)
-		frozenUserInfo.Id = resp1.Info.Id
+		frozenUserInfo.ID = resp1.Info.ID
 	}
 
 	frozenUserInfo.UnfrozenBy = uuid.New().String()
 	resp2, err := UnfrozenUser(context.Background(), &npool.UnfrozenUserRequest{
-		Id:         frozenUserInfo.Id,
-		UserId:     frozenUserInfo.UserId,
+		ID:         frozenUserInfo.ID,
+		UserID:     frozenUserInfo.UserID,
 		UnfrozenBy: frozenUserInfo.UnfrozenBy,
 	})
 	if assert.Nil(t, err) {
-		assert.Equal(t, resp2.Info.Id, frozenUserInfo.Id)
-		assert.Equal(t, resp2.Info.UserId, frozenUserInfo.UserId)
+		assert.Equal(t, resp2.Info.ID, frozenUserInfo.ID)
+		assert.Equal(t, resp2.Info.UserID, frozenUserInfo.UserID)
 		assert.Equal(t, resp2.Info.FrozenBy, frozenUserInfo.FrozenBy)
 		assert.Equal(t, resp2.Info.FrozenCause, frozenUserInfo.FrozenCause)
 		assert.Equal(t, resp2.Info.UnfrozenBy, frozenUserInfo.UnfrozenBy)

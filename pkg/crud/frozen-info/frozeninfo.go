@@ -19,8 +19,8 @@ const (
 
 func dbRowToInfo(row *ent.UserFrozen) *npool.FrozenUser {
 	return &npool.FrozenUser{
-		Id:          row.ID.String(),
-		UserId:      row.UserID.String(),
+		ID:          row.ID.String(),
+		UserID:      row.UserID.String(),
 		FrozenBy:    row.FrozenBy.String(),
 		FrozenCause: row.FrozenCause,
 		StartAt:     row.CreateAt,
@@ -31,7 +31,7 @@ func dbRowToInfo(row *ent.UserFrozen) *npool.FrozenUser {
 }
 
 func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUserResponse, error) {
-	id, err := uuid.Parse(in.UserId)
+	id, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -80,7 +80,7 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 }
 
 func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.UnfrozenUserResponse, error) {
-	id, err := uuid.Parse(in.Id)
+	id, err := uuid.Parse(in.ID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid id: %v", err)
 	}
@@ -123,7 +123,7 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 }
 
 func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUserFrozenResponse, error) {
-	userID, err := uuid.Parse(in.UserID)
+	UserID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -133,7 +133,7 @@ func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUse
 		Query().
 		Where(
 			userfrozen.And(
-				userfrozen.UserID(userID),
+				userfrozen.UserID(UserID),
 				userfrozen.Status(FrozenStatus),
 			),
 		).Only(ctx)

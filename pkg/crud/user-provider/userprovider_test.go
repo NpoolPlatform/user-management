@@ -40,28 +40,28 @@ func TestUserProviderCRUD(t *testing.T) {
 	assert.Nil(t, err)
 
 	userProvider := npool.UserProvider{
-		UserId:           uuid.New().String(),
-		ProviderId:       uuid.New().String(),
-		ProviderUserId:   userProviderInfo["github"].OauthID,
+		UserID:           uuid.New().String(),
+		ProviderID:       uuid.New().String(),
+		ProviderUserID:   userProviderInfo["github"].OauthID,
 		UserProviderInfo: string(userProviderInfoByte),
 	}
 	resp, err := Create(context.Background(), &npool.BindThirdPartyRequest{
-		UserId:           userProvider.UserId,
-		ProviderId:       userProvider.ProviderId,
-		ProviderUserId:   userProvider.ProviderUserId,
+		UserID:           userProvider.UserID,
+		ProviderID:       userProvider.ProviderID,
+		ProviderUserID:   userProvider.ProviderUserID,
 		UserProviderInfo: userProvider.UserProviderInfo,
 	})
 	if assert.Nil(t, err) {
 		assert.NotEqual(t, resp.Info.ID, uuid.UUID{})
-		assert.Equal(t, resp.Info.UserId, userProvider.UserId)
-		assert.Equal(t, resp.Info.ProviderId, userProvider.ProviderId)
-		assert.Equal(t, resp.Info.ProviderUserId, userProvider.ProviderUserId)
+		assert.Equal(t, resp.Info.UserID, userProvider.UserID)
+		assert.Equal(t, resp.Info.ProviderID, userProvider.ProviderID)
+		assert.Equal(t, resp.Info.ProviderUserID, userProvider.ProviderUserID)
 		assert.Equal(t, resp.Info.UserProviderInfo, userProvider.UserProviderInfo)
 	}
 
 	resp3, err := QueryUserProviderInfoByProviderUserID(context.Background(), &npool.QueryUserByUserProviderIDRequest{
-		ProviderID:     userProvider.ProviderId,
-		ProviderUserID: userProvider.ProviderUserId,
+		ProviderID:     userProvider.ProviderID,
+		ProviderUserID: userProvider.ProviderUserID,
 	})
 	if assert.Nil(t, err) {
 		if assert.NotNil(t, resp3) {
@@ -70,15 +70,15 @@ func TestUserProviderCRUD(t *testing.T) {
 	}
 
 	resp1, err := Get(context.Background(), &npool.GetUserProvidersRequest{
-		UserId: userProvider.UserId,
+		UserID: userProvider.UserID,
 	})
 	if assert.Nil(t, err) {
 		fmt.Println("get user provider info is", resp1)
 	}
 
 	resp2, err := Delete(context.Background(), &npool.UnbindThirdPartyRequest{
-		UserId:     userProvider.UserId,
-		ProviderId: userProvider.ProviderId,
+		UserID:     userProvider.UserID,
+		ProviderID: userProvider.ProviderID,
 	})
 	if assert.Nil(t, err) {
 		fmt.Println("delete user provider info is", resp2)

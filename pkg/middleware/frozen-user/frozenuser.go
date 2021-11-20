@@ -9,7 +9,7 @@ import (
 )
 
 func FrozenUser(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUserResponse, error) {
-	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,7 @@ func FrozenUser(ctx context.Context, in *npool.FrozenUserRequest) (*npool.Frozen
 }
 
 func UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.UnfrozenUserResponse, error) {
-	_, err := userinfo.QueryUserByUserID(ctx, in.UserId)
+	_, err := userinfo.QueryUserByUserID(ctx, in.UserID)
 	if err != nil {
 		return nil, err
 	}

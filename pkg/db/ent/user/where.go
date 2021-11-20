@@ -133,27 +133,6 @@ func EmailAddress(v string) predicate.User {
 	})
 }
 
-// LoginTimes applies equality check predicate on the "login_times" field. It's identical to LoginTimesEQ.
-func LoginTimes(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLoginTimes), v))
-	})
-}
-
-// KycVerify applies equality check predicate on the "kyc_verify" field. It's identical to KycVerifyEQ.
-func KycVerify(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldKycVerify), v))
-	})
-}
-
-// GaVerify applies equality check predicate on the "ga_verify" field. It's identical to GaVerifyEQ.
-func GaVerify(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldGaVerify), v))
-	})
-}
-
 // SignupMethod applies equality check predicate on the "signup_method" field. It's identical to SignupMethodEQ.
 func SignupMethod(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -936,110 +915,6 @@ func EmailAddressEqualFold(v string) predicate.User {
 func EmailAddressContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldEmailAddress), v))
-	})
-}
-
-// LoginTimesEQ applies the EQ predicate on the "login_times" field.
-func LoginTimesEQ(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLoginTimes), v))
-	})
-}
-
-// LoginTimesNEQ applies the NEQ predicate on the "login_times" field.
-func LoginTimesNEQ(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldLoginTimes), v))
-	})
-}
-
-// LoginTimesIn applies the In predicate on the "login_times" field.
-func LoginTimesIn(vs ...uint32) predicate.User {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.User(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.In(s.C(FieldLoginTimes), v...))
-	})
-}
-
-// LoginTimesNotIn applies the NotIn predicate on the "login_times" field.
-func LoginTimesNotIn(vs ...uint32) predicate.User {
-	v := make([]interface{}, len(vs))
-	for i := range v {
-		v[i] = vs[i]
-	}
-	return predicate.User(func(s *sql.Selector) {
-		// if not arguments were provided, append the FALSE constants,
-		// since we can't apply "IN ()". This will make this predicate falsy.
-		if len(v) == 0 {
-			s.Where(sql.False())
-			return
-		}
-		s.Where(sql.NotIn(s.C(FieldLoginTimes), v...))
-	})
-}
-
-// LoginTimesGT applies the GT predicate on the "login_times" field.
-func LoginTimesGT(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldLoginTimes), v))
-	})
-}
-
-// LoginTimesGTE applies the GTE predicate on the "login_times" field.
-func LoginTimesGTE(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldLoginTimes), v))
-	})
-}
-
-// LoginTimesLT applies the LT predicate on the "login_times" field.
-func LoginTimesLT(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldLoginTimes), v))
-	})
-}
-
-// LoginTimesLTE applies the LTE predicate on the "login_times" field.
-func LoginTimesLTE(v uint32) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldLoginTimes), v))
-	})
-}
-
-// KycVerifyEQ applies the EQ predicate on the "kyc_verify" field.
-func KycVerifyEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldKycVerify), v))
-	})
-}
-
-// KycVerifyNEQ applies the NEQ predicate on the "kyc_verify" field.
-func KycVerifyNEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldKycVerify), v))
-	})
-}
-
-// GaVerifyEQ applies the EQ predicate on the "ga_verify" field.
-func GaVerifyEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldGaVerify), v))
-	})
-}
-
-// GaVerifyNEQ applies the NEQ predicate on the "ga_verify" field.
-func GaVerifyNEQ(v bool) predicate.User {
-	return predicate.User(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldGaVerify), v))
 	})
 }
 

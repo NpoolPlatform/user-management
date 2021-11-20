@@ -25,7 +25,7 @@ type UserClient interface {
 	//User can choose signup with username, email, phone or only emial or only phone.
 	SignUp(ctx context.Context, in *SignupRequest, opts ...grpc.CallOption) (*SignupResponse, error)
 	//
-	//Get a user's info by his(her) id, this api can be request by user self of admin.
+	//Get a user's info by his(her) ID, this api can be request by user self of admin.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
 	//
 	//Get all users.
@@ -46,10 +46,10 @@ type UserClient interface {
 	//Unbind user's email address.
 	UnbindUserEmail(ctx context.Context, in *UnbindUserEmailRequest, opts ...grpc.CallOption) (*UnbindUserEmailResponse, error)
 	//
-	//Link to a third-party oauth. save the UserId from third-party into mysql.
+	//Link to a third-party oauth. save the UserID from third-party into mysql.
 	BindThirdParty(ctx context.Context, in *BindThirdPartyRequest, opts ...grpc.CallOption) (*BindThirdPartyResponse, error)
 	//
-	//Unlink a third-party oauth. Delete the UserId we saved from mysql.
+	//Unlink a third-party oauth. Delete the UserID we saved from mysql.
 	UnbindThirdParty(ctx context.Context, in *UnbindThirdPartyRequest, opts ...grpc.CallOption) (*UnbindThirdPartyResponse, error)
 	//
 	//Change user's password. Before change users password, system need the user to do an authentication.
@@ -57,6 +57,8 @@ type UserClient interface {
 	//
 	//Forget password.
 	ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, opts ...grpc.CallOption) (*ForgetPasswordResponse, error)
+	// set password.
+	SetPassword(ctx context.Context, in *SetPasswordRequest, opts ...grpc.CallOption) (*SetPasswordResponse, error)
 	//
 	//Add user.
 	AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*AddUserResponse, error)
@@ -75,11 +77,11 @@ type UserClient interface {
 	//Get frozen user list.
 	GetFrozenUsers(ctx context.Context, in *GetFrozenUsersRequest, opts ...grpc.CallOption) (*GetFrozenUsersResponse, error)
 	//
-	//Get user providers info.
+	//Get user provIDers info.
 	GetUserProviders(ctx context.Context, in *GetUserProvidersRequest, opts ...grpc.CallOption) (*GetUserProvidersResponse, error)
 	// query user exist in database.
 	QueryUserExist(ctx context.Context, in *QueryUserExistRequest, opts ...grpc.CallOption) (*QueryUserExistResponse, error)
-	// query user by provider id and his id in the provider
+	// query user by provIDer ID and his ID in the provIDer
 	QueryUserByUserProviderID(ctx context.Context, in *QueryUserByUserProviderIDRequest, opts ...grpc.CallOption) (*QueryUserByUserProviderIDResponse, error)
 }
 
@@ -208,6 +210,15 @@ func (c *userClient) ForgetPassword(ctx context.Context, in *ForgetPasswordReque
 	return out, nil
 }
 
+func (c *userClient) SetPassword(ctx context.Context, in *SetPasswordRequest, opts ...grpc.CallOption) (*SetPasswordResponse, error) {
+	out := new(SetPasswordResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/SetPassword", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userClient) AddUser(ctx context.Context, in *AddUserRequest, opts ...grpc.CallOption) (*AddUserResponse, error) {
 	out := new(AddUserResponse)
 	err := c.cc.Invoke(ctx, "/user.v1.User/AddUser", in, out, opts...)
@@ -299,7 +310,7 @@ type UserServer interface {
 	//User can choose signup with username, email, phone or only emial or only phone.
 	SignUp(context.Context, *SignupRequest) (*SignupResponse, error)
 	//
-	//Get a user's info by his(her) id, this api can be request by user self of admin.
+	//Get a user's info by his(her) ID, this api can be request by user self of admin.
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
 	//
 	//Get all users.
@@ -320,10 +331,10 @@ type UserServer interface {
 	//Unbind user's email address.
 	UnbindUserEmail(context.Context, *UnbindUserEmailRequest) (*UnbindUserEmailResponse, error)
 	//
-	//Link to a third-party oauth. save the UserId from third-party into mysql.
+	//Link to a third-party oauth. save the UserID from third-party into mysql.
 	BindThirdParty(context.Context, *BindThirdPartyRequest) (*BindThirdPartyResponse, error)
 	//
-	//Unlink a third-party oauth. Delete the UserId we saved from mysql.
+	//Unlink a third-party oauth. Delete the UserID we saved from mysql.
 	UnbindThirdParty(context.Context, *UnbindThirdPartyRequest) (*UnbindThirdPartyResponse, error)
 	//
 	//Change user's password. Before change users password, system need the user to do an authentication.
@@ -331,6 +342,8 @@ type UserServer interface {
 	//
 	//Forget password.
 	ForgetPassword(context.Context, *ForgetPasswordRequest) (*ForgetPasswordResponse, error)
+	// set password.
+	SetPassword(context.Context, *SetPasswordRequest) (*SetPasswordResponse, error)
 	//
 	//Add user.
 	AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error)
@@ -349,11 +362,11 @@ type UserServer interface {
 	//Get frozen user list.
 	GetFrozenUsers(context.Context, *GetFrozenUsersRequest) (*GetFrozenUsersResponse, error)
 	//
-	//Get user providers info.
+	//Get user provIDers info.
 	GetUserProviders(context.Context, *GetUserProvidersRequest) (*GetUserProvidersResponse, error)
 	// query user exist in database.
 	QueryUserExist(context.Context, *QueryUserExistRequest) (*QueryUserExistResponse, error)
-	// query user by provider id and his id in the provider
+	// query user by provIDer ID and his ID in the provIDer
 	QueryUserByUserProviderID(context.Context, *QueryUserByUserProviderIDRequest) (*QueryUserByUserProviderIDResponse, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -400,6 +413,9 @@ func (UnimplementedUserServer) ChangeUserPassword(context.Context, *ChangeUserPa
 }
 func (UnimplementedUserServer) ForgetPassword(context.Context, *ForgetPasswordRequest) (*ForgetPasswordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ForgetPassword not implemented")
+}
+func (UnimplementedUserServer) SetPassword(context.Context, *SetPasswordRequest) (*SetPasswordResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetPassword not implemented")
 }
 func (UnimplementedUserServer) AddUser(context.Context, *AddUserRequest) (*AddUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddUser not implemented")
@@ -675,6 +691,24 @@ func _User_ForgetPassword_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_SetPassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetPasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).SetPassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/SetPassword",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).SetPassword(ctx, req.(*SetPasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_AddUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(AddUserRequest)
 	if err := dec(in); err != nil {
@@ -895,6 +929,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ForgetPassword",
 			Handler:    _User_ForgetPassword_Handler,
+		},
+		{
+			MethodName: "SetPassword",
+			Handler:    _User_SetPassword_Handler,
 		},
 		{
 			MethodName: "AddUser",

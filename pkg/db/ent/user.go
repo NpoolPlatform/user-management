@@ -28,12 +28,6 @@ type User struct {
 	PhoneNumber string `json:"phone_number,omitempty"`
 	// EmailAddress holds the value of the "email_address" field.
 	EmailAddress string `json:"email_address,omitempty"`
-	// LoginTimes holds the value of the "login_times" field.
-	LoginTimes uint32 `json:"login_times,omitempty"`
-	// KycVerify holds the value of the "kyc_verify" field.
-	KycVerify bool `json:"kyc_verify,omitempty"`
-	// GaVerify holds the value of the "ga_verify" field.
-	GaVerify bool `json:"ga_verify,omitempty"`
 	// SignupMethod holds the value of the "signup_method" field.
 	SignupMethod string `json:"signup_method,omitempty"`
 	// CreateAt holds the value of the "create_at" field.
@@ -67,9 +61,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldKycVerify, user.FieldGaVerify:
-			values[i] = new(sql.NullBool)
-		case user.FieldLoginTimes, user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
+		case user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
 			values[i] = new(sql.NullInt64)
 		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer:
 			values[i] = new(sql.NullString)
@@ -131,24 +123,6 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field email_address", values[i])
 			} else if value.Valid {
 				u.EmailAddress = value.String
-			}
-		case user.FieldLoginTimes:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field login_times", values[i])
-			} else if value.Valid {
-				u.LoginTimes = uint32(value.Int64)
-			}
-		case user.FieldKycVerify:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field kyc_verify", values[i])
-			} else if value.Valid {
-				u.KycVerify = value.Bool
-			}
-		case user.FieldGaVerify:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field ga_verify", values[i])
-			} else if value.Valid {
-				u.GaVerify = value.Bool
 			}
 		case user.FieldSignupMethod:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -268,12 +242,6 @@ func (u *User) String() string {
 	builder.WriteString(u.PhoneNumber)
 	builder.WriteString(", email_address=")
 	builder.WriteString(u.EmailAddress)
-	builder.WriteString(", login_times=")
-	builder.WriteString(fmt.Sprintf("%v", u.LoginTimes))
-	builder.WriteString(", kyc_verify=")
-	builder.WriteString(fmt.Sprintf("%v", u.KycVerify))
-	builder.WriteString(", ga_verify=")
-	builder.WriteString(fmt.Sprintf("%v", u.GaVerify))
 	builder.WriteString(", signup_method=")
 	builder.WriteString(u.SignupMethod)
 	builder.WriteString(", create_at=")

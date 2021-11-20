@@ -33,40 +33,36 @@ const (
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *uuid.UUID
-	username       *string
-	password       *string
-	salt           *string
-	display_name   *string
-	phone_number   *string
-	email_address  *string
-	login_times    *uint32
-	addlogin_times *uint32
-	kyc_verify     *bool
-	ga_verify      *bool
-	signup_method  *string
-	create_at      *uint32
-	addcreate_at   *uint32
-	update_at      *uint32
-	addupdate_at   *uint32
-	delete_at      *uint32
-	adddelete_at   *uint32
-	avatar         *string
-	region         *string
-	age            *uint32
-	addage         *uint32
-	gender         *string
-	birthday       *string
-	country        *string
-	province       *string
-	city           *string
-	career         *string
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*User, error)
-	predicates     []predicate.User
+	op            Op
+	typ           string
+	id            *uuid.UUID
+	username      *string
+	password      *string
+	salt          *string
+	display_name  *string
+	phone_number  *string
+	email_address *string
+	signup_method *string
+	create_at     *uint32
+	addcreate_at  *uint32
+	update_at     *uint32
+	addupdate_at  *uint32
+	delete_at     *uint32
+	adddelete_at  *uint32
+	avatar        *string
+	region        *string
+	age           *uint32
+	addage        *uint32
+	gender        *string
+	birthday      *string
+	country       *string
+	province      *string
+	city          *string
+	career        *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*User, error)
+	predicates    []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -394,134 +390,6 @@ func (m *UserMutation) EmailAddressCleared() bool {
 func (m *UserMutation) ResetEmailAddress() {
 	m.email_address = nil
 	delete(m.clearedFields, user.FieldEmailAddress)
-}
-
-// SetLoginTimes sets the "login_times" field.
-func (m *UserMutation) SetLoginTimes(u uint32) {
-	m.login_times = &u
-	m.addlogin_times = nil
-}
-
-// LoginTimes returns the value of the "login_times" field in the mutation.
-func (m *UserMutation) LoginTimes() (r uint32, exists bool) {
-	v := m.login_times
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldLoginTimes returns the old "login_times" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldLoginTimes(ctx context.Context) (v uint32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldLoginTimes is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldLoginTimes requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLoginTimes: %w", err)
-	}
-	return oldValue.LoginTimes, nil
-}
-
-// AddLoginTimes adds u to the "login_times" field.
-func (m *UserMutation) AddLoginTimes(u uint32) {
-	if m.addlogin_times != nil {
-		*m.addlogin_times += u
-	} else {
-		m.addlogin_times = &u
-	}
-}
-
-// AddedLoginTimes returns the value that was added to the "login_times" field in this mutation.
-func (m *UserMutation) AddedLoginTimes() (r uint32, exists bool) {
-	v := m.addlogin_times
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetLoginTimes resets all changes to the "login_times" field.
-func (m *UserMutation) ResetLoginTimes() {
-	m.login_times = nil
-	m.addlogin_times = nil
-}
-
-// SetKycVerify sets the "kyc_verify" field.
-func (m *UserMutation) SetKycVerify(b bool) {
-	m.kyc_verify = &b
-}
-
-// KycVerify returns the value of the "kyc_verify" field in the mutation.
-func (m *UserMutation) KycVerify() (r bool, exists bool) {
-	v := m.kyc_verify
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldKycVerify returns the old "kyc_verify" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldKycVerify(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldKycVerify is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldKycVerify requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldKycVerify: %w", err)
-	}
-	return oldValue.KycVerify, nil
-}
-
-// ResetKycVerify resets all changes to the "kyc_verify" field.
-func (m *UserMutation) ResetKycVerify() {
-	m.kyc_verify = nil
-}
-
-// SetGaVerify sets the "ga_verify" field.
-func (m *UserMutation) SetGaVerify(b bool) {
-	m.ga_verify = &b
-}
-
-// GaVerify returns the value of the "ga_verify" field in the mutation.
-func (m *UserMutation) GaVerify() (r bool, exists bool) {
-	v := m.ga_verify
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldGaVerify returns the old "ga_verify" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldGaVerify(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldGaVerify is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldGaVerify requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldGaVerify: %w", err)
-	}
-	return oldValue.GaVerify, nil
-}
-
-// ResetGaVerify resets all changes to the "ga_verify" field.
-func (m *UserMutation) ResetGaVerify() {
-	m.ga_verify = nil
 }
 
 // SetSignupMethod sets the "signup_method" field.
@@ -1091,7 +959,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 22)
+	fields := make([]string, 0, 19)
 	if m.username != nil {
 		fields = append(fields, user.FieldUsername)
 	}
@@ -1109,15 +977,6 @@ func (m *UserMutation) Fields() []string {
 	}
 	if m.email_address != nil {
 		fields = append(fields, user.FieldEmailAddress)
-	}
-	if m.login_times != nil {
-		fields = append(fields, user.FieldLoginTimes)
-	}
-	if m.kyc_verify != nil {
-		fields = append(fields, user.FieldKycVerify)
-	}
-	if m.ga_verify != nil {
-		fields = append(fields, user.FieldGaVerify)
 	}
 	if m.signup_method != nil {
 		fields = append(fields, user.FieldSignupMethod)
@@ -1178,12 +1037,6 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.PhoneNumber()
 	case user.FieldEmailAddress:
 		return m.EmailAddress()
-	case user.FieldLoginTimes:
-		return m.LoginTimes()
-	case user.FieldKycVerify:
-		return m.KycVerify()
-	case user.FieldGaVerify:
-		return m.GaVerify()
 	case user.FieldSignupMethod:
 		return m.SignupMethod()
 	case user.FieldCreateAt:
@@ -1231,12 +1084,6 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldPhoneNumber(ctx)
 	case user.FieldEmailAddress:
 		return m.OldEmailAddress(ctx)
-	case user.FieldLoginTimes:
-		return m.OldLoginTimes(ctx)
-	case user.FieldKycVerify:
-		return m.OldKycVerify(ctx)
-	case user.FieldGaVerify:
-		return m.OldGaVerify(ctx)
 	case user.FieldSignupMethod:
 		return m.OldSignupMethod(ctx)
 	case user.FieldCreateAt:
@@ -1313,27 +1160,6 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEmailAddress(v)
-		return nil
-	case user.FieldLoginTimes:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetLoginTimes(v)
-		return nil
-	case user.FieldKycVerify:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetKycVerify(v)
-		return nil
-	case user.FieldGaVerify:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetGaVerify(v)
 		return nil
 	case user.FieldSignupMethod:
 		v, ok := value.(string)
@@ -1434,9 +1260,6 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 // this mutation.
 func (m *UserMutation) AddedFields() []string {
 	var fields []string
-	if m.addlogin_times != nil {
-		fields = append(fields, user.FieldLoginTimes)
-	}
 	if m.addcreate_at != nil {
 		fields = append(fields, user.FieldCreateAt)
 	}
@@ -1457,8 +1280,6 @@ func (m *UserMutation) AddedFields() []string {
 // was not set, or was not defined in the schema.
 func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 	switch name {
-	case user.FieldLoginTimes:
-		return m.AddedLoginTimes()
 	case user.FieldCreateAt:
 		return m.AddedCreateAt()
 	case user.FieldUpdateAt:
@@ -1476,13 +1297,6 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 // type.
 func (m *UserMutation) AddField(name string, value ent.Value) error {
 	switch name {
-	case user.FieldLoginTimes:
-		v, ok := value.(uint32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddLoginTimes(v)
-		return nil
 	case user.FieldCreateAt:
 		v, ok := value.(uint32)
 		if !ok {
@@ -1570,15 +1384,6 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldEmailAddress:
 		m.ResetEmailAddress()
-		return nil
-	case user.FieldLoginTimes:
-		m.ResetLoginTimes()
-		return nil
-	case user.FieldKycVerify:
-		m.ResetKycVerify()
-		return nil
-	case user.FieldGaVerify:
-		m.ResetGaVerify()
 		return nil
 	case user.FieldSignupMethod:
 		m.ResetSignupMethod()

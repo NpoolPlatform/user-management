@@ -15,15 +15,12 @@ import (
 
 func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 	return &npool.UserBasicInfo{
-		UserId:       row.ID.String(),
+		UserID:       row.ID.String(),
 		Username:     row.Username,
 		Password:     row.Password,
 		DisplayName:  row.DisplayName,
 		PhoneNumber:  row.PhoneNumber,
 		EmailAddress: row.EmailAddress,
-		LoginTimes:   row.LoginTimes,
-		KycVerify:    row.KycVerify,
-		GaVerify:     row.GaVerify,
 		SignupMethod: row.SignupMethod,
 		CreateAt:     row.CreateAt,
 		UpdateAt:     row.UpdateAt,
@@ -92,6 +89,7 @@ func SetPassword(ctx context.Context, password, userID string) error {
 		User.
 		UpdateOneID(id).
 		SetPassword(hashPassword).
+		SetSalt(salt).
 		Save(ctx)
 	if err != nil {
 		return xerrors.Errorf("fail to set password: %v", err)
@@ -100,7 +98,7 @@ func SetPassword(ctx context.Context, password, userID string) error {
 }
 
 func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.UpdateUserInfoResponse, error) {
-	id, err := uuid.Parse(in.Info.UserId)
+	id, err := uuid.Parse(in.Info.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -134,9 +132,6 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 		SetCareer(in.GetInfo().GetCareer()).
 		SetPhoneNumber(in.GetInfo().GetPhoneNumber()).
 		SetEmailAddress(in.GetInfo().GetEmailAddress()).
-		SetLoginTimes(in.GetInfo().GetLoginTimes()).
-		SetKycVerify(in.GetInfo().GetKycVerify()).
-		SetGaVerify(in.GetInfo().GetGaVerify()).
 		SetDisplayName(in.GetInfo().GetDisplayName()).
 		Save(ctx)
 	if err != nil {
@@ -149,7 +144,7 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 }
 
 func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse, error) {
-	id, err := uuid.Parse(in.UserId)
+	id, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
@@ -199,7 +194,7 @@ func GetAll(ctx context.Context) (*npool.GetUsersResponse, error) {
 }
 
 func Delete(ctx context.Context, in *npool.DeleteUserRequest) (*npool.DeleteUserResponse, error) {
-	for _, id := range in.DeleteUserIds {
+	for _, id := range in.DeleteUserIDs {
 		id, err := uuid.Parse(id)
 		if err != nil {
 			return nil, xerrors.Errorf("invalid user id: %v", err)
@@ -268,25 +263,25 @@ func GetUserSalt(ctx context.Context, userID string) (string, error) {
 	return info[0].Salt, nil
 }
 
-func QueryUserByUsername(ctx context.Context, username string) (*npool.UserBasicInfo, error) {
+func QueryUserByUsername(ctx context.Context, param string) (*npool.UserBasicInfo, error) {
 	info, err := db.Client().
 		User.
 		Query().
 		Where(
+			user.Or(
+				user.Username(param),
+				user.EmailAddress(param),
+				user.PhoneNumber(param),
+			),
 			user.And(
-				user.Username(username),
 				user.DeleteAt(0),
 			),
-		).All(ctx)
+		).Only(ctx)
 	if err != nil {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("fail to get user info by username: %v", err)
+		return &npool.UserBasicInfo{}, xerrors.Errorf("fail to get user info: %v", err)
 	}
 
-	if len(info) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
-	}
-
-	return dbRowToInfo(info[0]), nil
+	return dbRowToInfo(info), nil
 }
 
 func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo, error) {
@@ -301,48 +296,6 @@ func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo
 		Where(
 			user.And(
 				user.ID(id),
-				user.DeleteAt(0),
-			),
-		).All(ctx)
-	if err != nil {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("fail to get user info by username: %v", err)
-	}
-
-	if len(info) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
-	}
-
-	return dbRowToInfo(info[0]), nil
-}
-
-func QueryUserByPhoneNumber(ctx context.Context, phoneNumber string) (*npool.UserBasicInfo, error) {
-	info, err := db.Client().
-		User.
-		Query().
-		Where(
-			user.And(
-				user.PhoneNumber(phoneNumber),
-				user.DeleteAt(0),
-			),
-		).All(ctx)
-	if err != nil {
-		return &npool.UserBasicInfo{}, xerrors.Errorf("fail to get user info by username: %v", err)
-	}
-
-	if len(info) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
-	}
-
-	return dbRowToInfo(info[0]), nil
-}
-
-func QueryUserByEmailAddress(ctx context.Context, emailAddress string) (*npool.UserBasicInfo, error) {
-	info, err := db.Client().
-		User.
-		Query().
-		Where(
-			user.And(
-				user.EmailAddress(emailAddress),
 				user.DeleteAt(0),
 			),
 		).All(ctx)

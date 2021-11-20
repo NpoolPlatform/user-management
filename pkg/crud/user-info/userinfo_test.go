@@ -26,7 +26,7 @@ func init() {
 func assertUserBasicInfo(t *testing.T, err error, userInfo, myUserInfo *npool.UserBasicInfo) {
 	if assert.Nil(t, err) {
 		if assert.Nil(t, err) {
-			assert.Equal(t, userInfo.UserId, myUserInfo.UserId)
+			assert.Equal(t, userInfo.UserID, myUserInfo.UserID)
 			assert.Equal(t, userInfo.Username, myUserInfo.Username)
 			assert.Equal(t, userInfo.Age, myUserInfo.Age)
 			assert.Equal(t, userInfo.Gender, myUserInfo.Gender)
@@ -66,15 +66,15 @@ func TestUserInfoCRUD(t *testing.T) {
 	}
 
 	resp, err := Create(context.Background(), &npool.AddUserRequest{
-		AppId:    "123456789",
+		AppID:    "123456789",
 		UserInfo: &userInfo,
 	})
 	if assert.Nil(t, err) {
-		salt, err := GetUserSalt(context.Background(), resp.Info.UserId)
+		salt, err := GetUserSalt(context.Background(), resp.Info.UserID)
 		if assert.Nil(t, err) {
-			userInfo.UserId = resp.Info.UserId
+			userInfo.UserID = resp.Info.UserID
 			assert.Nil(t, encryption.VerifyUserPassword(userInfo.Password, resp.Info.Password, salt))
-			assert.NotEqual(t, resp.Info.UserId, uuid.UUID{})
+			assert.NotEqual(t, resp.Info.UserID, uuid.UUID{})
 			assert.Equal(t, resp.Info.Username, userInfo.Username)
 			assert.Equal(t, resp.Info.Age, userInfo.Age)
 			assert.Equal(t, resp.Info.Gender, userInfo.Gender)
@@ -105,27 +105,17 @@ func TestUserInfoCRUD(t *testing.T) {
 	})
 	assertUserBasicInfo(t, err, resp1.Info, &userInfo)
 
-	err = SetPassword(context.Background(), userInfo.Password, userInfo.UserId)
+	err = SetPassword(context.Background(), userInfo.Password, userInfo.UserID)
 	assert.Nil(t, err)
 
 	resp2, err := Get(context.Background(), &npool.GetUserRequest{
-		UserId: userInfo.UserId,
+		UserID: userInfo.UserID,
 	})
 	assertUserBasicInfo(t, err, resp2.Info, &userInfo)
 
-	resp4, err := QueryUserByUserID(context.Background(), userInfo.UserId)
+	resp4, err := QueryUserByUserID(context.Background(), userInfo.UserID)
 	if assert.Nil(t, err) {
 		fmt.Println(resp4)
-	}
-
-	resp5, err := QueryUserByEmailAddress(context.Background(), userInfo.EmailAddress)
-	if assert.Nil(t, err) {
-		fmt.Println(resp5)
-	}
-
-	resp6, err := QueryUserByPhoneNumber(context.Background(), userInfo.PhoneNumber)
-	if assert.Nil(t, err) {
-		fmt.Println(resp6)
 	}
 
 	resp7, err := QueryUserByUsername(context.Background(), userInfo.Username)
@@ -138,13 +128,13 @@ func TestUserInfoCRUD(t *testing.T) {
 		fmt.Printf("get all user is: %v\n", resp8)
 	}
 
-	resp9, err := GetUserPassword(context.Background(), userInfo.UserId)
+	resp9, err := GetUserPassword(context.Background(), userInfo.UserID)
 	if assert.Nil(t, err) {
 		fmt.Printf("get user password is: %v\n", resp9)
 	}
 
 	resp3, err := Delete(context.Background(), &npool.DeleteUserRequest{
-		DeleteUserIds: []string{userInfo.UserId},
+		DeleteUserIDs: []string{userInfo.UserID},
 	})
 	assert.Nil(t, err)
 	fmt.Println("delete user response is", resp3)

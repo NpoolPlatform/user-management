@@ -48,7 +48,7 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	}
 
 	_, err = ChangeUserPassword(context.Background(), &npool.ChangeUserPasswordRequest{
-		UserId:      resp2.Info.UserId,
+		UserID:      resp2.Info.UserID,
 		OldPassword: SignupUserInfo.Password,
 		Password:    "987654321",
 	})
@@ -61,13 +61,13 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	assert.Nil(t, err)
 
 	_, err = BindUserPhone(context.Background(), &npool.BindUserPhoneRequest{
-		UserId:      resp2.Info.UserId,
+		UserID:      resp2.Info.UserID,
 		PhoneNumber: "test-bind" + uuid.New().String(),
 	})
 	assert.Nil(t, err)
 
 	_, err = BindUserEmail(context.Background(), &npool.BindUserEmailRequest{
-		UserId:       resp2.Info.UserId,
+		UserID:       resp2.Info.UserID,
 		EmailAddress: "test-bind" + uuid.New().String(),
 	})
 	assert.NotNil(t, err)

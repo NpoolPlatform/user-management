@@ -11,23 +11,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-const (
-	VerificationService     = verificationconst.ServiceName
-	VerificationServicePort = ":50091"
-	ApplicationService      = applicationconst.ServiceName
-	ApplicationServicePort  = ":50081"
-)
-
-func newGRPCTestConn(target string) (*grpc.ClientConn, error) {
-	conn, err := grpc.Dial(target, grpc.WithInsecure(),
-		grpc.WithBlock(),
-	)
-	if err != nil {
-		return nil, err
-	}
-	return conn, err
-}
-
 func newVerificationGrpcClient() (*grpc.ClientConn, error) {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
@@ -38,7 +21,7 @@ func newVerificationGrpcClient() (*grpc.ClientConn, error) {
 }
 
 func VerifyCode(param, code string) error {
-	conn, err := newGRPCTestConn("localhost:50091")
+	conn, err := newVerificationGrpcClient()
 	if err != nil {
 		return err
 	}
@@ -64,7 +47,7 @@ func newApplicationGrpcClient() (*grpc.ClientConn, error) {
 }
 
 func AddUserToApplication(userID, appID string) error {
-	conn, err := newGRPCTestConn("localhost:50081")
+	conn, err := newApplicationGrpcClient()
 	if err != nil {
 		return err
 	}

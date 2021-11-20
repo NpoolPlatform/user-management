@@ -880,6 +880,7 @@
 | ----- | ---- | ----- | ----------- |
 | Info | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
 | AppID | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
 
 
 

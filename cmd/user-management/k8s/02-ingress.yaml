@@ -86,7 +86,7 @@ spec:
               serviceName: user-management
               servicePort: 50070
       - host: api.xpool.top
-        http: *http_rules
+        http: *http_appid_rules
 
 ---
 

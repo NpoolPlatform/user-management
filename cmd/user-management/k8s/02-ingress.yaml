@@ -85,8 +85,8 @@ spec:
             backend:
               serviceName: user-management
               servicePort: 50070
-      - host: api.xpool.top
-        http: *http_appid_rules
+    - host: api.xpool.top
+      http: *http_appid_rules
 
 ---
 

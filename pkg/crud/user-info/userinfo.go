@@ -44,6 +44,7 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 	if err != nil {
 		return nil, err
 	}
+
 	info, err := db.Client().
 		User.
 		Create().
@@ -268,13 +269,11 @@ func QueryUserByUsername(ctx context.Context, param string) (*npool.UserBasicInf
 		User.
 		Query().
 		Where(
+			user.DeleteAt(0),
 			user.Or(
 				user.Username(param),
 				user.EmailAddress(param),
 				user.PhoneNumber(param),
-			),
-			user.And(
-				user.DeleteAt(0),
 			),
 		).Only(ctx)
 	if err != nil {
@@ -315,13 +314,11 @@ func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npoo
 		User.
 		Query().
 		Where(
+			user.DeleteAt(0),
 			user.Or(
 				user.Username(in.Username),
 				user.PhoneNumber(in.Username),
 				user.EmailAddress(in.Username),
-			),
-			user.And(
-				user.DeleteAt(0),
 			),
 		).Only(ctx)
 	if err != nil {

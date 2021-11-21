@@ -99,6 +99,14 @@ func TestUserInfoCRUD(t *testing.T) {
 		assert.NotNil(t, resp10)
 	}
 
+	resp12, err := QueryUserExist(context.Background(), &npool.QueryUserExistRequest{
+		Username: userInfo.EmailAddress,
+		Password: userInfo.Password,
+	})
+	if assert.Nil(t, err) {
+		assert.NotNil(t, resp12)
+	}
+
 	userInfo.DisplayName = "lpzCrazy"
 	resp1, err := Update(context.Background(), &npool.UpdateUserInfoRequest{
 		Info: &userInfo,

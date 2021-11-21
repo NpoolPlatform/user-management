@@ -11,7 +11,7 @@ var (
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeUUID, Unique: true},
-		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "username", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
 		{Name: "salt", Type: field.TypeString},
 		{Name: "display_name", Type: field.TypeString, Default: ""},

@@ -6,7 +6,7 @@ option go_package = "github.com/NpoolPlatform/user-management/message/npool";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "npool/application-management.proto";
+import "asset/application-management.proto";
 
 // a service of managing users
 service User {

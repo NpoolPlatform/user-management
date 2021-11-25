@@ -25,19 +25,9 @@ func TestGrpc(t *testing.T) { // nolint
 		return
 	}
 
-	client, err := newVerificationGrpcClient()
-	if assert.Nil(t, err) {
-		assert.NotNil(t, client)
-	}
-
-	client, err = newApplicationGrpcClient()
-	if assert.Nil(t, err) {
-		assert.NotNil(t, client)
-	}
-
 	email := "crazyzplzpl@163.com"
 
-	err = VerifyCode(email, "12345")
+	err := VerifyCode(email, "12345")
 	assert.NotNil(t, err)
 
 	userID := uuid.New().String()

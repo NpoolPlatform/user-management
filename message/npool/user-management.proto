@@ -6,6 +6,7 @@ option go_package = "github.com/NpoolPlatform/user-management/message/npool";
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "npool/application-management.proto";
 
 // a service of managing users
 service User {
@@ -34,6 +35,13 @@ service User {
             body: "*"
         };
     };
+    // Get user details in an app.
+    rpc GetUserDetails (GetUserDetailsRequest) returns (GetUserDetailsResponse) {
+	option (google.api.http) = {
+	    post: "/v1/get/user/details"
+            body: "*"
+	};
+    }
     /*
     Get all users.
     */
@@ -524,4 +532,18 @@ message SetPasswordRequest {
 
 message SetPasswordResponse {
     string Info = 1;
+}
+
+message GetUserDetailsRequest {
+    string AppID = 1;
+    string UserID = 2;
+}
+
+message UserDetails {
+    UserBasicInfo UserBasicInfo = 1;
+    application.management.v1.ApplicationUserDetail UserAppInfo = 2;
+}
+
+message GetUserDetailsResponse {
+    UserDetails Info = 1;
 }

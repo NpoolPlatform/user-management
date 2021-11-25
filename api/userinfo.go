@@ -118,3 +118,12 @@ func (s *Server) QueryUserExist(ctx context.Context, in *npool.QueryUserExistReq
 	}
 	return resp, nil
 }
+
+func (s *Server) GetUserDetails(ctx context.Context, in *npool.GetUserDetailsRequest) (*npool.GetUserDetailsResponse, error) {
+	resp, err := middleware.GetUserDetails(ctx, in)
+	if err != nil {
+		logger.Sugar().Errorf("fail to get user details: %v", err)
+		return &npool.GetUserDetailsResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+	}
+	return resp, nil
+}

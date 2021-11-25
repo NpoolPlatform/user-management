@@ -27,6 +27,8 @@
     - [GetFrozenUsersResponse](#user.v1.GetFrozenUsersResponse)
     - [GetGaQRCodeRequest](#user.v1.GetGaQRCodeRequest)
     - [GetGaQRCodeResponse](#user.v1.GetGaQRCodeResponse)
+    - [GetUserDetailsRequest](#user.v1.GetUserDetailsRequest)
+    - [GetUserDetailsResponse](#user.v1.GetUserDetailsResponse)
     - [GetUserProvidersRequest](#user.v1.GetUserProvidersRequest)
     - [GetUserProvidersResponse](#user.v1.GetUserProvidersResponse)
     - [GetUserRequest](#user.v1.GetUserRequest)
@@ -56,6 +58,7 @@
     - [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest)
     - [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse)
     - [UserBasicInfo](#user.v1.UserBasicInfo)
+    - [UserDetails](#user.v1.UserDetails)
     - [UserProvider](#user.v1.UserProvider)
     - [VersionResponse](#user.v1.VersionResponse)
   
@@ -450,6 +453,37 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.GetUserDetailsRequest"></a>
+
+### GetUserDetailsRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| AppID | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.GetUserDetailsResponse"></a>
+
+### GetUserDetailsResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [UserDetails](#user.v1.UserDetails) |  |  |
 
 
 
@@ -938,6 +972,22 @@
 
 
 
+<a name="user.v1.UserDetails"></a>
+
+### UserDetails
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| UserBasicInfo | [UserBasicInfo](#user.v1.UserBasicInfo) |  |  |
+| UserAppInfo | [application.management.v1.ApplicationUserDetail](#application.management.v1.ApplicationUserDetail) |  |  |
+
+
+
+
+
+
 <a name="user.v1.UserProvider"></a>
 
 ### UserProvider
@@ -990,6 +1040,7 @@ a service of managing users
 | Version | [.google.protobuf.Empty](#google.protobuf.Empty) | [VersionResponse](#user.v1.VersionResponse) | Method Version |
 | SignUp | [SignupRequest](#user.v1.SignupRequest) | [SignupResponse](#user.v1.SignupResponse) | User can choose signup with username, email, phone or only emial or only phone. |
 | GetUser | [GetUserRequest](#user.v1.GetUserRequest) | [GetUserResponse](#user.v1.GetUserResponse) | Get a user&#39;s info by his(her) ID, this api can be request by user self of admin. |
+| GetUserDetails | [GetUserDetailsRequest](#user.v1.GetUserDetailsRequest) | [GetUserDetailsResponse](#user.v1.GetUserDetailsResponse) | Get user details in an app. |
 | GetUsers | [GetUsersRequest](#user.v1.GetUsersRequest) | [GetUsersResponse](#user.v1.GetUsersResponse) | Get all users. |
 | UpdateUserInfo | [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest) | [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse) | Update user&#39;s basic info. |
 | BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. |

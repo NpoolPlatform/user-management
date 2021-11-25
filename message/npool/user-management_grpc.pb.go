@@ -27,6 +27,8 @@ type UserClient interface {
 	//
 	//Get a user's info by his(her) ID, this api can be request by user self of admin.
 	GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error)
+	// Get user details in an app.
+	GetUserDetails(ctx context.Context, in *GetUserDetailsRequest, opts ...grpc.CallOption) (*GetUserDetailsResponse, error)
 	//
 	//Get all users.
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*GetUsersResponse, error)
@@ -114,6 +116,15 @@ func (c *userClient) SignUp(ctx context.Context, in *SignupRequest, opts ...grpc
 func (c *userClient) GetUser(ctx context.Context, in *GetUserRequest, opts ...grpc.CallOption) (*GetUserResponse, error) {
 	out := new(GetUserResponse)
 	err := c.cc.Invoke(ctx, "/user.v1.User/GetUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) GetUserDetails(ctx context.Context, in *GetUserDetailsRequest, opts ...grpc.CallOption) (*GetUserDetailsResponse, error) {
+	out := new(GetUserDetailsResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/GetUserDetails", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -312,6 +323,8 @@ type UserServer interface {
 	//
 	//Get a user's info by his(her) ID, this api can be request by user self of admin.
 	GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error)
+	// Get user details in an app.
+	GetUserDetails(context.Context, *GetUserDetailsRequest) (*GetUserDetailsResponse, error)
 	//
 	//Get all users.
 	GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error)
@@ -383,6 +396,9 @@ func (UnimplementedUserServer) SignUp(context.Context, *SignupRequest) (*SignupR
 }
 func (UnimplementedUserServer) GetUser(context.Context, *GetUserRequest) (*GetUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUserServer) GetUserDetails(context.Context, *GetUserDetailsRequest) (*GetUserDetailsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserDetails not implemented")
 }
 func (UnimplementedUserServer) GetUsers(context.Context, *GetUsersRequest) (*GetUsersResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
@@ -507,6 +523,24 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UserServer).GetUser(ctx, req.(*GetUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _User_GetUserDetails_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetUserDetailsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).GetUserDetails(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/user.v1.User/GetUserDetails",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).GetUserDetails(ctx, req.(*GetUserDetailsRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -889,6 +923,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _User_GetUser_Handler,
+		},
+		{
+			MethodName: "GetUserDetails",
+			Handler:    _User_GetUserDetails_Handler,
 		},
 		{
 			MethodName: "GetUsers",

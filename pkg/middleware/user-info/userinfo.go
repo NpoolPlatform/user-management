@@ -7,6 +7,7 @@ import (
 	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
 	"github.com/NpoolPlatform/user-management/pkg/grpc"
+	"github.com/google/uuid"
 	"golang.org/x/xerrors"
 )
 
@@ -217,5 +218,33 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 	}
 	return &npool.BindUserEmailResponse{
 		Info: "bind email address successfully",
+	}, nil
+}
+
+func GetUserDetails(ctx context.Context, in *npool.GetUserDetailsRequest) (*npool.GetUserDetailsResponse, error) {
+	if _, err := uuid.Parse(in.UserID); err != nil {
+		return nil, xerrors.Errorf("invalid user id: %v", err)
+	}
+
+	if _, err := uuid.Parse(in.AppID); err != nil {
+		return nil, xerrors.Errorf("invalid app id: %v", err)
+	}
+
+	resp, err := grpc.GetUserApplicationInfo(in.UserID, in.AppID)
+	if err != nil {
+		return nil, xerrors.Errorf("grpc applciation error: %v", err)
+	}
+
+	respUser, err := userinfo.Get(ctx, &npool.GetUserRequest{
+		UserID: in.UserID,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &npool.GetUserDetailsResponse{
+		Info: &npool.UserDetails{
+			UserBasicInfo: respUser.Info,
+			UserAppInfo:   resp,
+		},
 	}, nil
 }

@@ -51,6 +51,10 @@ func (User) Fields() []ent.Field {
 		field.String("province").Default(""),
 		field.String("city").Default(""),
 		field.String("career").Default(""),
+		field.String("first_name").Default(""),
+		field.String("last_name").Default(""),
+		field.String("street_address1").Default(""),
+		field.String("street_address2").Default(""),
 	}
 }
 

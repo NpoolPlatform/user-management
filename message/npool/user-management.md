@@ -966,6 +966,10 @@
 | SignupMethod | [string](#string) |  |  |
 | Career | [string](#string) |  |  |
 | DisplayName | [string](#string) |  |  |
+| FirstName | [string](#string) |  |  |
+| LastName | [string](#string) |  |  |
+| StreetAddress1 | [string](#string) |  |  |
+| StreetAddress2 | [string](#string) |  |  |
 
 
 

@@ -254,6 +254,62 @@ func (uc *UserCreate) SetNillableCareer(s *string) *UserCreate {
 	return uc
 }
 
+// SetFirstName sets the "first_name" field.
+func (uc *UserCreate) SetFirstName(s string) *UserCreate {
+	uc.mutation.SetFirstName(s)
+	return uc
+}
+
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableFirstName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetFirstName(*s)
+	}
+	return uc
+}
+
+// SetLastName sets the "last_name" field.
+func (uc *UserCreate) SetLastName(s string) *UserCreate {
+	uc.mutation.SetLastName(s)
+	return uc
+}
+
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
+func (uc *UserCreate) SetNillableLastName(s *string) *UserCreate {
+	if s != nil {
+		uc.SetLastName(*s)
+	}
+	return uc
+}
+
+// SetStreetAddress1 sets the "street_address1" field.
+func (uc *UserCreate) SetStreetAddress1(s string) *UserCreate {
+	uc.mutation.SetStreetAddress1(s)
+	return uc
+}
+
+// SetNillableStreetAddress1 sets the "street_address1" field if the given value is not nil.
+func (uc *UserCreate) SetNillableStreetAddress1(s *string) *UserCreate {
+	if s != nil {
+		uc.SetStreetAddress1(*s)
+	}
+	return uc
+}
+
+// SetStreetAddress2 sets the "street_address2" field.
+func (uc *UserCreate) SetStreetAddress2(s string) *UserCreate {
+	uc.mutation.SetStreetAddress2(s)
+	return uc
+}
+
+// SetNillableStreetAddress2 sets the "street_address2" field if the given value is not nil.
+func (uc *UserCreate) SetNillableStreetAddress2(s *string) *UserCreate {
+	if s != nil {
+		uc.SetStreetAddress2(*s)
+	}
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(u uuid.UUID) *UserCreate {
 	uc.mutation.SetID(u)
@@ -383,6 +439,22 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultCareer
 		uc.mutation.SetCareer(v)
 	}
+	if _, ok := uc.mutation.FirstName(); !ok {
+		v := user.DefaultFirstName
+		uc.mutation.SetFirstName(v)
+	}
+	if _, ok := uc.mutation.LastName(); !ok {
+		v := user.DefaultLastName
+		uc.mutation.SetLastName(v)
+	}
+	if _, ok := uc.mutation.StreetAddress1(); !ok {
+		v := user.DefaultStreetAddress1
+		uc.mutation.SetStreetAddress1(v)
+	}
+	if _, ok := uc.mutation.StreetAddress2(); !ok {
+		v := user.DefaultStreetAddress2
+		uc.mutation.SetStreetAddress2(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -441,6 +513,18 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Career(); !ok {
 		return &ValidationError{Name: "career", err: errors.New(`ent: missing required field "career"`)}
+	}
+	if _, ok := uc.mutation.FirstName(); !ok {
+		return &ValidationError{Name: "first_name", err: errors.New(`ent: missing required field "first_name"`)}
+	}
+	if _, ok := uc.mutation.LastName(); !ok {
+		return &ValidationError{Name: "last_name", err: errors.New(`ent: missing required field "last_name"`)}
+	}
+	if _, ok := uc.mutation.StreetAddress1(); !ok {
+		return &ValidationError{Name: "street_address1", err: errors.New(`ent: missing required field "street_address1"`)}
+	}
+	if _, ok := uc.mutation.StreetAddress2(); !ok {
+		return &ValidationError{Name: "street_address2", err: errors.New(`ent: missing required field "street_address2"`)}
 	}
 	return nil
 }
@@ -625,6 +709,38 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Column: user.FieldCareer,
 		})
 		_node.Career = value
+	}
+	if value, ok := uc.mutation.FirstName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldFirstName,
+		})
+		_node.FirstName = value
+	}
+	if value, ok := uc.mutation.LastName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldLastName,
+		})
+		_node.LastName = value
+	}
+	if value, ok := uc.mutation.StreetAddress1(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress1,
+		})
+		_node.StreetAddress1 = value
+	}
+	if value, ok := uc.mutation.StreetAddress2(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress2,
+		})
+		_node.StreetAddress2 = value
 	}
 	return _node, _spec
 }

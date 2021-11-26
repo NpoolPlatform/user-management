@@ -15,24 +15,28 @@ import (
 
 func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 	return &npool.UserBasicInfo{
-		UserID:       row.ID.String(),
-		Username:     row.Username,
-		Password:     row.Password,
-		DisplayName:  row.DisplayName,
-		PhoneNumber:  row.PhoneNumber,
-		EmailAddress: row.EmailAddress,
-		SignupMethod: row.SignupMethod,
-		CreateAt:     row.CreateAt,
-		UpdateAt:     row.UpdateAt,
-		Avatar:       row.Avatar,
-		Region:       row.Region,
-		Age:          row.Age,
-		Gender:       row.Gender,
-		Birthday:     row.Birthday,
-		Country:      row.Country,
-		Province:     row.Province,
-		City:         row.City,
-		Career:       row.Career,
+		UserID:         row.ID.String(),
+		Username:       row.Username,
+		Password:       row.Password,
+		DisplayName:    row.DisplayName,
+		PhoneNumber:    row.PhoneNumber,
+		EmailAddress:   row.EmailAddress,
+		SignupMethod:   row.SignupMethod,
+		CreateAt:       row.CreateAt,
+		UpdateAt:       row.UpdateAt,
+		Avatar:         row.Avatar,
+		Region:         row.Region,
+		Age:            row.Age,
+		Gender:         row.Gender,
+		Birthday:       row.Birthday,
+		Country:        row.Country,
+		Province:       row.Province,
+		City:           row.City,
+		Career:         row.Career,
+		FirstName:      row.FirstName,
+		LastName:       row.LastName,
+		StreetAddress1: row.StreetAddress1,
+		StreetAddress2: row.StreetAddress2,
 	}
 }
 
@@ -64,6 +68,10 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 		SetProvince(in.UserInfo.Province).
 		SetCity(in.UserInfo.City).
 		SetCareer(in.UserInfo.Career).
+		SetFirstName(in.UserInfo.FirstName).
+		SetLastName(in.UserInfo.LastName).
+		SetStreetAddress1(in.UserInfo.StreetAddress1).
+		SetStreetAddress2(in.UserInfo.StreetAddress2).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to create user: %v", err)
@@ -134,6 +142,10 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 		SetPhoneNumber(in.GetInfo().GetPhoneNumber()).
 		SetEmailAddress(in.GetInfo().GetEmailAddress()).
 		SetDisplayName(in.GetInfo().GetDisplayName()).
+		SetFirstName(in.Info.FirstName).
+		SetLastName(in.Info.LastName).
+		SetStreetAddress1(in.Info.StreetAddress1).
+		SetStreetAddress2(in.Info.StreetAddress2).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to update user info: %v", err)

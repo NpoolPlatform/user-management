@@ -49,6 +49,14 @@ const (
 	FieldCity = "city"
 	// FieldCareer holds the string denoting the career field in the database.
 	FieldCareer = "career"
+	// FieldFirstName holds the string denoting the first_name field in the database.
+	FieldFirstName = "first_name"
+	// FieldLastName holds the string denoting the last_name field in the database.
+	FieldLastName = "last_name"
+	// FieldStreetAddress1 holds the string denoting the street_address1 field in the database.
+	FieldStreetAddress1 = "street_address1"
+	// FieldStreetAddress2 holds the string denoting the street_address2 field in the database.
+	FieldStreetAddress2 = "street_address2"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -75,6 +83,10 @@ var Columns = []string{
 	FieldProvince,
 	FieldCity,
 	FieldCareer,
+	FieldFirstName,
+	FieldLastName,
+	FieldStreetAddress1,
+	FieldStreetAddress2,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -116,6 +128,14 @@ var (
 	DefaultCity string
 	// DefaultCareer holds the default value on creation for the "career" field.
 	DefaultCareer string
+	// DefaultFirstName holds the default value on creation for the "first_name" field.
+	DefaultFirstName string
+	// DefaultLastName holds the default value on creation for the "last_name" field.
+	DefaultLastName string
+	// DefaultStreetAddress1 holds the default value on creation for the "street_address1" field.
+	DefaultStreetAddress1 string
+	// DefaultStreetAddress2 holds the default value on creation for the "street_address2" field.
+	DefaultStreetAddress2 string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

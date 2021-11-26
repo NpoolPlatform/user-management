@@ -54,6 +54,14 @@ type User struct {
 	City string `json:"city,omitempty"`
 	// Career holds the value of the "career" field.
 	Career string `json:"career,omitempty"`
+	// FirstName holds the value of the "first_name" field.
+	FirstName string `json:"first_name,omitempty"`
+	// LastName holds the value of the "last_name" field.
+	LastName string `json:"last_name,omitempty"`
+	// StreetAddress1 holds the value of the "street_address1" field.
+	StreetAddress1 string `json:"street_address1,omitempty"`
+	// StreetAddress2 holds the value of the "street_address2" field.
+	StreetAddress2 string `json:"street_address2,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -63,7 +71,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer:
+		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2:
 			values[i] = new(sql.NullString)
 		case user.FieldID:
 			values[i] = new(uuid.UUID)
@@ -202,6 +210,30 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.Career = value.String
 			}
+		case user.FieldFirstName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field first_name", values[i])
+			} else if value.Valid {
+				u.FirstName = value.String
+			}
+		case user.FieldLastName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field last_name", values[i])
+			} else if value.Valid {
+				u.LastName = value.String
+			}
+		case user.FieldStreetAddress1:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field street_address1", values[i])
+			} else if value.Valid {
+				u.StreetAddress1 = value.String
+			}
+		case user.FieldStreetAddress2:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field street_address2", values[i])
+			} else if value.Valid {
+				u.StreetAddress2 = value.String
+			}
 		}
 	}
 	return nil
@@ -268,6 +300,14 @@ func (u *User) String() string {
 	builder.WriteString(u.City)
 	builder.WriteString(", career=")
 	builder.WriteString(u.Career)
+	builder.WriteString(", first_name=")
+	builder.WriteString(u.FirstName)
+	builder.WriteString(", last_name=")
+	builder.WriteString(u.LastName)
+	builder.WriteString(", street_address1=")
+	builder.WriteString(u.StreetAddress1)
+	builder.WriteString(", street_address2=")
+	builder.WriteString(u.StreetAddress2)
 	builder.WriteByte(')')
 	return builder.String()
 }

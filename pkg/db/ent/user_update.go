@@ -292,6 +292,62 @@ func (uu *UserUpdate) SetNillableCareer(s *string) *UserUpdate {
 	return uu
 }
 
+// SetFirstName sets the "first_name" field.
+func (uu *UserUpdate) SetFirstName(s string) *UserUpdate {
+	uu.mutation.SetFirstName(s)
+	return uu
+}
+
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableFirstName(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetFirstName(*s)
+	}
+	return uu
+}
+
+// SetLastName sets the "last_name" field.
+func (uu *UserUpdate) SetLastName(s string) *UserUpdate {
+	uu.mutation.SetLastName(s)
+	return uu
+}
+
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableLastName(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetLastName(*s)
+	}
+	return uu
+}
+
+// SetStreetAddress1 sets the "street_address1" field.
+func (uu *UserUpdate) SetStreetAddress1(s string) *UserUpdate {
+	uu.mutation.SetStreetAddress1(s)
+	return uu
+}
+
+// SetNillableStreetAddress1 sets the "street_address1" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableStreetAddress1(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetStreetAddress1(*s)
+	}
+	return uu
+}
+
+// SetStreetAddress2 sets the "street_address2" field.
+func (uu *UserUpdate) SetStreetAddress2(s string) *UserUpdate {
+	uu.mutation.SetStreetAddress2(s)
+	return uu
+}
+
+// SetNillableStreetAddress2 sets the "street_address2" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableStreetAddress2(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetStreetAddress2(*s)
+	}
+	return uu
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -549,6 +605,34 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldCareer,
+		})
+	}
+	if value, ok := uu.mutation.FirstName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldFirstName,
+		})
+	}
+	if value, ok := uu.mutation.LastName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldLastName,
+		})
+	}
+	if value, ok := uu.mutation.StreetAddress1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress1,
+		})
+	}
+	if value, ok := uu.mutation.StreetAddress2(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress2,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -836,6 +920,62 @@ func (uuo *UserUpdateOne) SetNillableCareer(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetFirstName sets the "first_name" field.
+func (uuo *UserUpdateOne) SetFirstName(s string) *UserUpdateOne {
+	uuo.mutation.SetFirstName(s)
+	return uuo
+}
+
+// SetNillableFirstName sets the "first_name" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableFirstName(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetFirstName(*s)
+	}
+	return uuo
+}
+
+// SetLastName sets the "last_name" field.
+func (uuo *UserUpdateOne) SetLastName(s string) *UserUpdateOne {
+	uuo.mutation.SetLastName(s)
+	return uuo
+}
+
+// SetNillableLastName sets the "last_name" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableLastName(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetLastName(*s)
+	}
+	return uuo
+}
+
+// SetStreetAddress1 sets the "street_address1" field.
+func (uuo *UserUpdateOne) SetStreetAddress1(s string) *UserUpdateOne {
+	uuo.mutation.SetStreetAddress1(s)
+	return uuo
+}
+
+// SetNillableStreetAddress1 sets the "street_address1" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableStreetAddress1(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetStreetAddress1(*s)
+	}
+	return uuo
+}
+
+// SetStreetAddress2 sets the "street_address2" field.
+func (uuo *UserUpdateOne) SetStreetAddress2(s string) *UserUpdateOne {
+	uuo.mutation.SetStreetAddress2(s)
+	return uuo
+}
+
+// SetNillableStreetAddress2 sets the "street_address2" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableStreetAddress2(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetStreetAddress2(*s)
+	}
+	return uuo
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -1117,6 +1257,34 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldCareer,
+		})
+	}
+	if value, ok := uuo.mutation.FirstName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldFirstName,
+		})
+	}
+	if value, ok := uuo.mutation.LastName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldLastName,
+		})
+	}
+	if value, ok := uuo.mutation.StreetAddress1(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress1,
+		})
+	}
+	if value, ok := uuo.mutation.StreetAddress2(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldStreetAddress2,
 		})
 	}
 	_node = &User{config: uuo.config}

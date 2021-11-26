@@ -30,6 +30,10 @@ var (
 		{Name: "province", Type: field.TypeString, Default: ""},
 		{Name: "city", Type: field.TypeString, Default: ""},
 		{Name: "career", Type: field.TypeString, Default: ""},
+		{Name: "first_name", Type: field.TypeString, Default: ""},
+		{Name: "last_name", Type: field.TypeString, Default: ""},
+		{Name: "street_address1", Type: field.TypeString, Default: ""},
+		{Name: "street_address2", Type: field.TypeString, Default: ""},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

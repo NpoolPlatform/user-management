@@ -70,6 +70,22 @@ func init() {
 	userDescCareer := userFields[19].Descriptor()
 	// user.DefaultCareer holds the default value on creation for the career field.
 	user.DefaultCareer = userDescCareer.Default.(string)
+	// userDescFirstName is the schema descriptor for first_name field.
+	userDescFirstName := userFields[20].Descriptor()
+	// user.DefaultFirstName holds the default value on creation for the first_name field.
+	user.DefaultFirstName = userDescFirstName.Default.(string)
+	// userDescLastName is the schema descriptor for last_name field.
+	userDescLastName := userFields[21].Descriptor()
+	// user.DefaultLastName holds the default value on creation for the last_name field.
+	user.DefaultLastName = userDescLastName.Default.(string)
+	// userDescStreetAddress1 is the schema descriptor for street_address1 field.
+	userDescStreetAddress1 := userFields[22].Descriptor()
+	// user.DefaultStreetAddress1 holds the default value on creation for the street_address1 field.
+	user.DefaultStreetAddress1 = userDescStreetAddress1.Default.(string)
+	// userDescStreetAddress2 is the schema descriptor for street_address2 field.
+	userDescStreetAddress2 := userFields[23].Descriptor()
+	// user.DefaultStreetAddress2 holds the default value on creation for the street_address2 field.
+	user.DefaultStreetAddress2 = userDescStreetAddress2.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

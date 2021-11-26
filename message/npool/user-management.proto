@@ -37,11 +37,11 @@ service User {
     };
     // Get user details in an app.
     rpc GetUserDetails (GetUserDetailsRequest) returns (GetUserDetailsResponse) {
-	option (google.api.http) = {
-	    post: "/v1/get/user/details"
+        option (google.api.http) = {
+            post: "/v1/get/user/details"
             body: "*"
-	};
-    }
+        };
+    };
     /*
     Get all users.
     */
@@ -124,7 +124,7 @@ service User {
         };
     };
     /*
-    Forget password. 
+    Forget password.
     */
     rpc ForgetPassword (ForgetPasswordRequest) returns (ForgetPasswordResponse) {
         option (google.api.http) = {
@@ -149,7 +149,7 @@ service User {
         };
     };
     /*
-    Delete users. 
+    Delete users.
     */
     rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
         option (google.api.http) = {
@@ -249,6 +249,10 @@ message UserBasicInfo {
     string SignupMethod = 18;
     string Career = 20;
     string DisplayName = 21;
+    string FirstName = 23;
+    string LastName = 24;
+    string StreetAddress1 = 25;
+    string StreetAddress2 = 26;
 }
 
 message SignupRequest {

@@ -33,36 +33,40 @@ const (
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *uuid.UUID
-	username      *string
-	password      *string
-	salt          *string
-	display_name  *string
-	phone_number  *string
-	email_address *string
-	signup_method *string
-	create_at     *uint32
-	addcreate_at  *uint32
-	update_at     *uint32
-	addupdate_at  *uint32
-	delete_at     *uint32
-	adddelete_at  *uint32
-	avatar        *string
-	region        *string
-	age           *uint32
-	addage        *uint32
-	gender        *string
-	birthday      *string
-	country       *string
-	province      *string
-	city          *string
-	career        *string
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*User, error)
-	predicates    []predicate.User
+	op              Op
+	typ             string
+	id              *uuid.UUID
+	username        *string
+	password        *string
+	salt            *string
+	display_name    *string
+	phone_number    *string
+	email_address   *string
+	signup_method   *string
+	create_at       *uint32
+	addcreate_at    *uint32
+	update_at       *uint32
+	addupdate_at    *uint32
+	delete_at       *uint32
+	adddelete_at    *uint32
+	avatar          *string
+	region          *string
+	age             *uint32
+	addage          *uint32
+	gender          *string
+	birthday        *string
+	country         *string
+	province        *string
+	city            *string
+	career          *string
+	first_name      *string
+	last_name       *string
+	street_address1 *string
+	street_address2 *string
+	clearedFields   map[string]struct{}
+	done            bool
+	oldValue        func(context.Context) (*User, error)
+	predicates      []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -940,6 +944,150 @@ func (m *UserMutation) ResetCareer() {
 	m.career = nil
 }
 
+// SetFirstName sets the "first_name" field.
+func (m *UserMutation) SetFirstName(s string) {
+	m.first_name = &s
+}
+
+// FirstName returns the value of the "first_name" field in the mutation.
+func (m *UserMutation) FirstName() (r string, exists bool) {
+	v := m.first_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFirstName returns the old "first_name" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldFirstName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldFirstName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldFirstName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFirstName: %w", err)
+	}
+	return oldValue.FirstName, nil
+}
+
+// ResetFirstName resets all changes to the "first_name" field.
+func (m *UserMutation) ResetFirstName() {
+	m.first_name = nil
+}
+
+// SetLastName sets the "last_name" field.
+func (m *UserMutation) SetLastName(s string) {
+	m.last_name = &s
+}
+
+// LastName returns the value of the "last_name" field in the mutation.
+func (m *UserMutation) LastName() (r string, exists bool) {
+	v := m.last_name
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastName returns the old "last_name" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldLastName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldLastName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldLastName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastName: %w", err)
+	}
+	return oldValue.LastName, nil
+}
+
+// ResetLastName resets all changes to the "last_name" field.
+func (m *UserMutation) ResetLastName() {
+	m.last_name = nil
+}
+
+// SetStreetAddress1 sets the "street_address1" field.
+func (m *UserMutation) SetStreetAddress1(s string) {
+	m.street_address1 = &s
+}
+
+// StreetAddress1 returns the value of the "street_address1" field in the mutation.
+func (m *UserMutation) StreetAddress1() (r string, exists bool) {
+	v := m.street_address1
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStreetAddress1 returns the old "street_address1" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldStreetAddress1(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStreetAddress1 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStreetAddress1 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStreetAddress1: %w", err)
+	}
+	return oldValue.StreetAddress1, nil
+}
+
+// ResetStreetAddress1 resets all changes to the "street_address1" field.
+func (m *UserMutation) ResetStreetAddress1() {
+	m.street_address1 = nil
+}
+
+// SetStreetAddress2 sets the "street_address2" field.
+func (m *UserMutation) SetStreetAddress2(s string) {
+	m.street_address2 = &s
+}
+
+// StreetAddress2 returns the value of the "street_address2" field in the mutation.
+func (m *UserMutation) StreetAddress2() (r string, exists bool) {
+	v := m.street_address2
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStreetAddress2 returns the old "street_address2" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldStreetAddress2(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldStreetAddress2 is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldStreetAddress2 requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStreetAddress2: %w", err)
+	}
+	return oldValue.StreetAddress2, nil
+}
+
+// ResetStreetAddress2 resets all changes to the "street_address2" field.
+func (m *UserMutation) ResetStreetAddress2() {
+	m.street_address2 = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -959,7 +1107,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 19)
+	fields := make([]string, 0, 23)
 	if m.username != nil {
 		fields = append(fields, user.FieldUsername)
 	}
@@ -1017,6 +1165,18 @@ func (m *UserMutation) Fields() []string {
 	if m.career != nil {
 		fields = append(fields, user.FieldCareer)
 	}
+	if m.first_name != nil {
+		fields = append(fields, user.FieldFirstName)
+	}
+	if m.last_name != nil {
+		fields = append(fields, user.FieldLastName)
+	}
+	if m.street_address1 != nil {
+		fields = append(fields, user.FieldStreetAddress1)
+	}
+	if m.street_address2 != nil {
+		fields = append(fields, user.FieldStreetAddress2)
+	}
 	return fields
 }
 
@@ -1063,6 +1223,14 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.City()
 	case user.FieldCareer:
 		return m.Career()
+	case user.FieldFirstName:
+		return m.FirstName()
+	case user.FieldLastName:
+		return m.LastName()
+	case user.FieldStreetAddress1:
+		return m.StreetAddress1()
+	case user.FieldStreetAddress2:
+		return m.StreetAddress2()
 	}
 	return nil, false
 }
@@ -1110,6 +1278,14 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldCity(ctx)
 	case user.FieldCareer:
 		return m.OldCareer(ctx)
+	case user.FieldFirstName:
+		return m.OldFirstName(ctx)
+	case user.FieldLastName:
+		return m.OldLastName(ctx)
+	case user.FieldStreetAddress1:
+		return m.OldStreetAddress1(ctx)
+	case user.FieldStreetAddress2:
+		return m.OldStreetAddress2(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -1251,6 +1427,34 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCareer(v)
+		return nil
+	case user.FieldFirstName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFirstName(v)
+		return nil
+	case user.FieldLastName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastName(v)
+		return nil
+	case user.FieldStreetAddress1:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStreetAddress1(v)
+		return nil
+	case user.FieldStreetAddress2:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStreetAddress2(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -1423,6 +1627,18 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldCareer:
 		m.ResetCareer()
+		return nil
+	case user.FieldFirstName:
+		m.ResetFirstName()
+		return nil
+	case user.FieldLastName:
+		m.ResetLastName()
+		return nil
+	case user.FieldStreetAddress1:
+		m.ResetStreetAddress1()
+		return nil
+	case user.FieldStreetAddress2:
+		m.ResetStreetAddress2()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

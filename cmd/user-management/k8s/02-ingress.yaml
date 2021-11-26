@@ -15,7 +15,7 @@ spec:
     - host: api.npool.top
       http: &http_appid_userid_rules
         paths:
-          - path: /user-management
+          - path: /api/user-management
             backend:
               serviceName: user-management
               servicePort: 50070
@@ -41,47 +41,47 @@ spec:
     - host: api.npool.top
       http: &http_appid_rules
         paths:
-          - path: /user-management/v1/signup
+          - path: /api/user-management/v1/signup
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/get/users
+          - path: /api/user-management/v1/get/users
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/update/user/info
+          - path: /api/user-management/v1/update/user/info
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/signup
+          - path: /api/user-management/v1/signup
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/forget/password
+          - path: /api/user-management/v1/forget/password
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/delete/user
+          - path: /api/user-management/v1/delete/user
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/add/user
+          - path: /api/user-management/v1/add/user
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/frozen/user
+          - path: /api/user-management/v1/frozen/user
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/unfrozen/user
+          - path: /api/user-management/v1/unfrozen/user
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/get/frozen/users
+          - path: /api/user-management/v1/get/frozen/users
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /user-management/v1/set/password
+          - path: /api/user-management/v1/set/password
             backend:
               serviceName: user-management
               servicePort: 50070
@@ -107,7 +107,7 @@ spec:
     - host: api.npool.top
       http: &http_rules
         paths:
-          - path: /user-management/version
+          - path: /api/user-management/version
             backend:
               serviceName: user-management
               servicePort: 50070
@@ -124,4 +124,4 @@ metadata:
 spec:
   stripPrefix:
     prefixes:
-      - /user-management
+      - /api/user-management

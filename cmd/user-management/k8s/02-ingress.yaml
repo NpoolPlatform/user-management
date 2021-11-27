@@ -104,8 +104,8 @@ metadata:
   name: user-management-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: user-management-npool
-    k8s.kuboard.cn/workload: user-management-npool
+    k8s.kuboard.cn/displayName: user-management
+    k8s.kuboard.cn/workload: user-management
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
     traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-common-headers@kubernetescrd

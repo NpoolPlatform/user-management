@@ -8,7 +8,7 @@ metadata:
     k8s.kuboard.cn/workload: user-management-appid-userid
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-cookies-appid-to-body@kubernetescrd,kube-system-cookies-userid-to-body@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-cookies-appid-to-body@kubernetescrd,kube-system-cookies-userid-to-body@kubernetescrd,kube-system-common-headers@kubernetescrd
 
 spec:
   rules:
@@ -20,6 +20,10 @@ spec:
               serviceName: user-management
               servicePort: 50070
     - host: api.xpool.top
+      http: *http_appid_userid_rules
+    - host: www.npool.top
+      http: *http_appid_userid_rules
+    - host: www.xpool.top
       http: *http_appid_userid_rules
 
 ---
@@ -34,7 +38,7 @@ metadata:
     k8s.kuboard.cn/workload: user-management-appid
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-cookies-appid-to-body@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-cookies-appid-to-body@kubernetescrd,kube-system-common-headers@kubernetescrd
 
 spec:
   rules:
@@ -87,6 +91,10 @@ spec:
               servicePort: 50070
     - host: api.xpool.top
       http: *http_appid_rules
+    - host: www.npool.top
+      http: *http_appid_rules
+    - host: www.xpool.top
+      http: *http_appid_rules
 
 ---
 
@@ -100,7 +108,7 @@ metadata:
     k8s.kuboard.cn/workload: user-management-npool
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-common-headers@kubernetescrd
 
 spec:
   rules:
@@ -112,6 +120,10 @@ spec:
               serviceName: user-management
               servicePort: 50070
     - host: api.xpool.top
+      http: *http_rules
+    - host: www.npool.top
+      http: *http_rules
+    - host: www.xpool.top
       http: *http_rules
 
 ---

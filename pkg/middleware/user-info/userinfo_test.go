@@ -31,6 +31,7 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 		Username:    "test-signup" + uuid.New().String(),
 		Password:    "123456789",
 		PhoneNumber: "test-signup" + uuid.New().String(),
+		AppID:       "ff2c5d50-be56-413e-aba5-9c7ad888a769",
 	}
 	CreateUserInfo := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{

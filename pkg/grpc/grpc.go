@@ -28,7 +28,7 @@ func VerifyCode(param, code string) error {
 	return nil
 }
 
-func QueryUserExist(appID string) error {
+func QueryAppExist(appID string) error {
 	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err

@@ -12,6 +12,11 @@ import (
 )
 
 func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) {
+	err := grpc.QueryUserExist(in.AppID)
+	if err != nil {
+		return nil, xerrors.Errorf("user sign up app not exist: %v", err)
+	}
+
 	if in.Username != "" {
 		_, err := userinfo.QueryUserByUsername(ctx, in.Username)
 		if err == nil {

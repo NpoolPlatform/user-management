@@ -8,6 +8,7 @@ import (
 	mygrpc "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
 	pbVerification "github.com/NpoolPlatform/verification-door/message/npool"
 	verificationconst "github.com/NpoolPlatform/verification-door/pkg/message/const"
+	"golang.org/x/xerrors"
 )
 
 func VerifyCode(param, code string) error {
@@ -25,6 +26,25 @@ func VerifyCode(param, code string) error {
 		return err
 	}
 	return nil
+}
+
+func QueryUserExist(appID string) error {
+	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
+	if err != nil {
+		return err
+	}
+
+	client := pbApplication.NewApplicationManagementClient(conn)
+	resp, err := client.GetApplication(context.Background(), &pbApplication.GetApplicationRequest{
+		AppID: appID,
+	})
+	if err != nil {
+		return err
+	}
+	if resp != nil {
+		return nil
+	}
+	return xerrors.Errorf("app not exist")
 }
 
 func AddUserToApplication(userID, appID string) error {

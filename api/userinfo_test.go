@@ -59,7 +59,6 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.SignupRequest{
 			Username: signupUserInfo.Username,
 			Password: signupUserInfo.Password,
-			AppID:    "ff2c5d50-be56-413e-aba5-9c7ad888a769",
 		}).
 		Post("http://localhost:50070/v1/signup")
 	if assert.Nil(t, err) {

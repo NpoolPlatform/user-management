@@ -15,7 +15,11 @@ spec:
     - host: api.npool.top
       http: &http_appid_userid_rules
         paths:
-          - path: /api/user-management
+          - path: /api/user-management/v1/get/user/details
+            backend:
+              serviceName: user-management
+              servicePort: 50070
+          - path: /api/user-management/v1/update/user
             backend:
               serviceName: user-management
               servicePort: 50070
@@ -27,7 +31,6 @@ spec:
       http: *http_appid_userid_rules
 
 ---
-
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -49,39 +52,11 @@ spec:
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /api/user-management/v1/get/users
-            backend:
-              serviceName: user-management
-              servicePort: 50070
           - path: /api/user-management/v1/update/user/info
             backend:
               serviceName: user-management
               servicePort: 50070
-          - path: /api/user-management/v1/signup
-            backend:
-              serviceName: user-management
-              servicePort: 50070
           - path: /api/user-management/v1/forget/password
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/delete/user
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/add/user
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/frozen/user
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/unfrozen/user
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/get/frozen/users
             backend:
               serviceName: user-management
               servicePort: 50070
@@ -97,7 +72,6 @@ spec:
       http: *http_appid_rules
 
 ---
-
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -127,7 +101,6 @@ spec:
       http: *http_rules
 
 ---
-
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:

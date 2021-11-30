@@ -2,5 +2,6 @@ commonLabels:
   # app: user-management
 
 resources:
-- 01-user-management.yaml
-- 02-ingress.yaml
+  - 01-user-management.yaml
+  - 02-traefik-ingress.yaml
+  - 03-nginx-ingress.yaml

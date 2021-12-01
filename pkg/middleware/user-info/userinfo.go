@@ -136,7 +136,12 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 		return nil, err
 	}
 
-	err = grpc.VerifyCode(in.Email, in.EmailVerifyCode)
+	resp, err := userinfo.QueryUserByUserID(ctx, in.UserID)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to query user: %v", err)
+	}
+
+	err = grpc.VerifyCode(resp.EmailAddress, in.EmailVerifyCode)
 	if err != nil {
 		return nil, err
 	}

@@ -50,12 +50,12 @@ github.com/BurntSushi/toml v0.4.1/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbi
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/DATA-DOG/go-sqlmock v1.5.0 h1:Shsta01QNfFxHCfpW6YH2STWB0MudeXXEWMr20OEh60=
 github.com/DATA-DOG/go-sqlmock v1.5.0/go.mod h1:f/Ixk793poVmq4qj/V1dPUg2JEAKC73Q5eFN3EC/SaM=
-github.com/NpoolPlatform/application-management v0.0.0-20211128064656-45d284b52423 h1:TnO/tL6E/7vsoKIcYIiNet4z63YDLtQ3rUzmvFH+DNA=
-github.com/NpoolPlatform/application-management v0.0.0-20211128064656-45d284b52423/go.mod h1:6SEmAmJVc6Yr53XNbpKbnoX7hM1i2jl9MlYGGspl3oE=
+github.com/NpoolPlatform/application-management v0.0.0-20211130040201-edb8269b3e6f h1:ddaSX0hhSgYWrX25IiVeYnlhCUZoshFRjZ7M/wiru5I=
+github.com/NpoolPlatform/application-management v0.0.0-20211130040201-edb8269b3e6f/go.mod h1:6SEmAmJVc6Yr53XNbpKbnoX7hM1i2jl9MlYGGspl3oE=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211117074545-bc1340849b08 h1:5UApYTG+JT7/Iejl+Oen1OFP2wYTuU5/G/SL47CBEl8=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211117074545-bc1340849b08/go.mod h1:6OR9IRTWXpkr7Igky6a7zbnDG2o5Vmx9zuIzNJ3M9xs=
-github.com/NpoolPlatform/verification-door v0.0.0-20211128065700-6613c67d3cb4 h1:MVpWRljt+exGj3x/Bd8hhAAjtsM3HkVQQRibJFwAutI=
-github.com/NpoolPlatform/verification-door v0.0.0-20211128065700-6613c67d3cb4/go.mod h1:4sQDIXwMI0CrI1Mg8AKHISogMZVM/Ie1aSLkUa9FybE=
+github.com/NpoolPlatform/verification-door v0.0.0-20211201031400-538c698eeea2 h1:70/+jW+JxZXmmT/DVH+ehY6r+iF1D8taMp76f9dzUgA=
+github.com/NpoolPlatform/verification-door v0.0.0-20211201031400-538c698eeea2/go.mod h1:u0PZw5nY0GBoXEAssZrYdQpSWA+wvPJAYT0yyHUAqzM=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/Shonminh/apollo-client v0.4.0 h1:AXGp4wOahrEKjheMXehgsG9B8dEfLQHttRLHeEefvus=

@@ -28,6 +28,24 @@ func VerifyCode(param, code string) error {
 	return nil
 }
 
+func VerifyGoogleCode(userID, appID, code string) error {
+	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
+	if err != nil {
+		return err
+	}
+
+	client := pbVerification.NewVerificationDoorClient(conn)
+	_, err = client.VerifyGoogleAuth(context.Background(), &pbVerification.VerifyGoogleAuthRequest{
+		AppID:  appID,
+		UserID: userID,
+		Code:   code,
+	})
+	if err != nil {
+		return xerrors.Errorf("fail to verify google authentication: %v", err)
+	}
+	return nil
+}
+
 func QueryAppExist(appID string) error {
 	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {

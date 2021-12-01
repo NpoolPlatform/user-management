@@ -25,6 +25,10 @@ spec:
             backend:
               serviceName: user-management
               servicePort: 50070
+          - path: /api/user-management/v1/change/password
+            backend:
+              serviceName: user-management
+              servicePort: 50070
     - host: api.xpool.top
       http: *http_appid_userid_rules
     - host: www.npool.top
@@ -63,10 +67,6 @@ spec:
               serviceName: user-management
               servicePort: 50070
           - path: /api/user-management/v1/forget/password
-            backend:
-              serviceName: user-management
-              servicePort: 50070
-          - path: /api/user-management/v1/set/password
             backend:
               serviceName: user-management
               servicePort: 50070

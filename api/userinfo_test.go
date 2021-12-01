@@ -130,7 +130,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/change/password")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp6.StatusCode())
+		assert.NotEqual(t, 200, resp6.StatusCode())
 	}
 
 	resp7, err := cli.R().

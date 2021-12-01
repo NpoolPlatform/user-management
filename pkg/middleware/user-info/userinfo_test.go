@@ -52,7 +52,7 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 		OldPassword: CreateUserInfo.UserInfo.Password,
 		Password:    "987654321",
 	})
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 
 	_, err = ForgetPassword(context.Background(), &npool.ForgetPasswordRequest{
 		PhoneNumber: CreateUserInfo.UserInfo.PhoneNumber,

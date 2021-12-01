@@ -376,8 +376,11 @@ message UnbindThirdPartyResponse {
 message ChangeUserPasswordRequest {
     string UserID = 1;
     string AppID = 2;
+    string Email = 3;
     string OldPassword = 4;
     string Password = 5;
+    string EmailVerifyCode = 6;
+    string GoogleVerifyCode = 7;
 }
 
 message ChangeUserPasswordResponse {

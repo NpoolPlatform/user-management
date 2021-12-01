@@ -130,7 +130,18 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 	if err != nil {
 		return nil, err
 	}
+
 	err = encryption.VerifyUserPassword(in.OldPassword, dbPassword, salt)
+	if err != nil {
+		return nil, err
+	}
+
+	err = grpc.VerifyCode(in.Email, in.EmailVerifyCode)
+	if err != nil {
+		return nil, err
+	}
+
+	err = grpc.VerifyGoogleCode(in.UserID, in.AppID, in.GoogleVerifyCode)
 	if err != nil {
 		return nil, err
 	}
@@ -139,6 +150,7 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 	if err != nil {
 		return nil, err
 	}
+
 	return &npool.ChangeUserPasswordResponse{
 		Info: "change user password successfully",
 	}, nil

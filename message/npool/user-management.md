@@ -254,8 +254,11 @@
 | ----- | ---- | ----- | ----------- |
 | UserID | [string](#string) |  |  |
 | AppID | [string](#string) |  |  |
+| Email | [string](#string) |  |  |
 | OldPassword | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
+| EmailVerifyCode | [string](#string) |  |  |
+| GoogleVerifyCode | [string](#string) |  |  |
 
 
 

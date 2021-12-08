@@ -41,12 +41,10 @@ type UserClient interface {
 	//
 	//Bind user's email address.
 	BindUserEmail(ctx context.Context, in *BindUserEmailRequest, opts ...grpc.CallOption) (*BindUserEmailResponse, error)
-	//
-	//Unbind user's phone number.
-	UnbindUserPhone(ctx context.Context, in *UnbindUserPhoneRequest, opts ...grpc.CallOption) (*UnbindUserPhoneResponse, error)
-	//
-	//Unbind user's email address.
-	UnbindUserEmail(ctx context.Context, in *UnbindUserEmailRequest, opts ...grpc.CallOption) (*UnbindUserEmailResponse, error)
+	// update user email.
+	UpdateUserEmail(ctx context.Context, in *UpdateUserEmailRequest, opts ...grpc.CallOption) (*UpdateUserEmailResponse, error)
+	// update user phone.
+	UpdateUserPhone(ctx context.Context, in *UpdateUserPhoneRequest, opts ...grpc.CallOption) (*UpdateUserPhoneResponse, error)
 	//
 	//Link to a third-party oauth. save the UserID from third-party into mysql.
 	BindThirdParty(ctx context.Context, in *BindThirdPartyRequest, opts ...grpc.CallOption) (*BindThirdPartyResponse, error)
@@ -167,18 +165,18 @@ func (c *userClient) BindUserEmail(ctx context.Context, in *BindUserEmailRequest
 	return out, nil
 }
 
-func (c *userClient) UnbindUserPhone(ctx context.Context, in *UnbindUserPhoneRequest, opts ...grpc.CallOption) (*UnbindUserPhoneResponse, error) {
-	out := new(UnbindUserPhoneResponse)
-	err := c.cc.Invoke(ctx, "/user.v1.User/UnbindUserPhone", in, out, opts...)
+func (c *userClient) UpdateUserEmail(ctx context.Context, in *UpdateUserEmailRequest, opts ...grpc.CallOption) (*UpdateUserEmailResponse, error) {
+	out := new(UpdateUserEmailResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/UpdateUserEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *userClient) UnbindUserEmail(ctx context.Context, in *UnbindUserEmailRequest, opts ...grpc.CallOption) (*UnbindUserEmailResponse, error) {
-	out := new(UnbindUserEmailResponse)
-	err := c.cc.Invoke(ctx, "/user.v1.User/UnbindUserEmail", in, out, opts...)
+func (c *userClient) UpdateUserPhone(ctx context.Context, in *UpdateUserPhoneRequest, opts ...grpc.CallOption) (*UpdateUserPhoneResponse, error) {
+	out := new(UpdateUserPhoneResponse)
+	err := c.cc.Invoke(ctx, "/user.v1.User/UpdateUserPhone", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -337,12 +335,10 @@ type UserServer interface {
 	//
 	//Bind user's email address.
 	BindUserEmail(context.Context, *BindUserEmailRequest) (*BindUserEmailResponse, error)
-	//
-	//Unbind user's phone number.
-	UnbindUserPhone(context.Context, *UnbindUserPhoneRequest) (*UnbindUserPhoneResponse, error)
-	//
-	//Unbind user's email address.
-	UnbindUserEmail(context.Context, *UnbindUserEmailRequest) (*UnbindUserEmailResponse, error)
+	// update user email.
+	UpdateUserEmail(context.Context, *UpdateUserEmailRequest) (*UpdateUserEmailResponse, error)
+	// update user phone.
+	UpdateUserPhone(context.Context, *UpdateUserPhoneRequest) (*UpdateUserPhoneResponse, error)
 	//
 	//Link to a third-party oauth. save the UserID from third-party into mysql.
 	BindThirdParty(context.Context, *BindThirdPartyRequest) (*BindThirdPartyResponse, error)
@@ -412,11 +408,11 @@ func (UnimplementedUserServer) BindUserPhone(context.Context, *BindUserPhoneRequ
 func (UnimplementedUserServer) BindUserEmail(context.Context, *BindUserEmailRequest) (*BindUserEmailResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BindUserEmail not implemented")
 }
-func (UnimplementedUserServer) UnbindUserPhone(context.Context, *UnbindUserPhoneRequest) (*UnbindUserPhoneResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnbindUserPhone not implemented")
+func (UnimplementedUserServer) UpdateUserEmail(context.Context, *UpdateUserEmailRequest) (*UpdateUserEmailResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserEmail not implemented")
 }
-func (UnimplementedUserServer) UnbindUserEmail(context.Context, *UnbindUserEmailRequest) (*UnbindUserEmailResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UnbindUserEmail not implemented")
+func (UnimplementedUserServer) UpdateUserPhone(context.Context, *UpdateUserPhoneRequest) (*UpdateUserPhoneResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUserPhone not implemented")
 }
 func (UnimplementedUserServer) BindThirdParty(context.Context, *BindThirdPartyRequest) (*BindThirdPartyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BindThirdParty not implemented")
@@ -617,38 +613,38 @@ func _User_BindUserEmail_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_UnbindUserPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnbindUserPhoneRequest)
+func _User_UpdateUserEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserEmailRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).UnbindUserPhone(ctx, in)
+		return srv.(UserServer).UpdateUserEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.User/UnbindUserPhone",
+		FullMethod: "/user.v1.User/UpdateUserEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UnbindUserPhone(ctx, req.(*UnbindUserPhoneRequest))
+		return srv.(UserServer).UpdateUserEmail(ctx, req.(*UpdateUserEmailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _User_UnbindUserEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UnbindUserEmailRequest)
+func _User_UpdateUserPhone_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserPhoneRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserServer).UnbindUserEmail(ctx, in)
+		return srv.(UserServer).UpdateUserPhone(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/user.v1.User/UnbindUserEmail",
+		FullMethod: "/user.v1.User/UpdateUserPhone",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserServer).UnbindUserEmail(ctx, req.(*UnbindUserEmailRequest))
+		return srv.(UserServer).UpdateUserPhone(ctx, req.(*UpdateUserPhoneRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -945,12 +941,12 @@ var User_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _User_BindUserEmail_Handler,
 		},
 		{
-			MethodName: "UnbindUserPhone",
-			Handler:    _User_UnbindUserPhone_Handler,
+			MethodName: "UpdateUserEmail",
+			Handler:    _User_UpdateUserEmail_Handler,
 		},
 		{
-			MethodName: "UnbindUserEmail",
-			Handler:    _User_UnbindUserEmail_Handler,
+			MethodName: "UpdateUserPhone",
+			Handler:    _User_UpdateUserPhone_Handler,
 		},
 		{
 			MethodName: "BindThirdParty",

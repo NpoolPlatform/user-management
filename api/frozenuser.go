@@ -15,7 +15,7 @@ func (s *Server) FrozenUser(ctx context.Context, in *npool.FrozenUserRequest) (*
 	resp, err := middleware.FrozenUser(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to frozen user: %v", err)
-		return &npool.FrozenUserResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.FrozenUserResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -24,7 +24,7 @@ func (s *Server) UnfrozenUser(ctx context.Context, in *npool.UnfrozenUserRequest
 	resp, err := middleware.UnfrozenUser(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to unfrozen user: %v", err)
-		return &npool.UnfrozenUserResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.UnfrozenUserResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -33,7 +33,7 @@ func (s *Server) QueryUserFrozen(ctx context.Context, in *npool.QueryUserFrozenR
 	resp, err := crud.Get(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get user frozen info: %v", err)
-		return &npool.QueryUserFrozenResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.QueryUserFrozenResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -42,7 +42,7 @@ func (s *Server) GetFrozenUsers(ctx context.Context, in *npool.GetFrozenUsersReq
 	resp, err := crud.GetAll(ctx)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get frozen user list: %v", err)
-		return &npool.GetFrozenUsersResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.GetFrozenUsersResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }

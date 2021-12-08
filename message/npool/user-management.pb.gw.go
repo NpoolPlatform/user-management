@@ -304,8 +304,8 @@ func local_request_User_BindUserEmail_0(ctx context.Context, marshaler runtime.M
 
 }
 
-func request_User_UnbindUserPhone_0(ctx context.Context, marshaler runtime.Marshaler, client UserClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnbindUserPhoneRequest
+func request_User_UpdateUserEmail_0(ctx context.Context, marshaler runtime.Marshaler, client UserClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserEmailRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -316,13 +316,13 @@ func request_User_UnbindUserPhone_0(ctx context.Context, marshaler runtime.Marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.UnbindUserPhone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateUserEmail(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_User_UnbindUserPhone_0(ctx context.Context, marshaler runtime.Marshaler, server UserServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnbindUserPhoneRequest
+func local_request_User_UpdateUserEmail_0(ctx context.Context, marshaler runtime.Marshaler, server UserServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserEmailRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -333,13 +333,13 @@ func local_request_User_UnbindUserPhone_0(ctx context.Context, marshaler runtime
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.UnbindUserPhone(ctx, &protoReq)
+	msg, err := server.UpdateUserEmail(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-func request_User_UnbindUserEmail_0(ctx context.Context, marshaler runtime.Marshaler, client UserClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnbindUserEmailRequest
+func request_User_UpdateUserPhone_0(ctx context.Context, marshaler runtime.Marshaler, client UserClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserPhoneRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -350,13 +350,13 @@ func request_User_UnbindUserEmail_0(ctx context.Context, marshaler runtime.Marsh
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.UnbindUserEmail(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.UpdateUserPhone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_User_UnbindUserEmail_0(ctx context.Context, marshaler runtime.Marshaler, server UserServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq UnbindUserEmailRequest
+func local_request_User_UpdateUserPhone_0(ctx context.Context, marshaler runtime.Marshaler, server UserServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq UpdateUserPhoneRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -367,7 +367,7 @@ func local_request_User_UnbindUserEmail_0(ctx context.Context, marshaler runtime
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.UnbindUserEmail(ctx, &protoReq)
+	msg, err := server.UpdateUserPhone(ctx, &protoReq)
 	return msg, metadata, err
 
 }
@@ -1038,18 +1038,18 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 
 	})
 
-	mux.Handle("POST", pattern_User_UnbindUserPhone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_User_UpdateUserEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/UnbindUserPhone", runtime.WithHTTPPathPattern("/v1/unbind/phone"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/UpdateUserEmail", runtime.WithHTTPPathPattern("/v1/update/user/email"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_User_UnbindUserPhone_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_User_UpdateUserEmail_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -1057,22 +1057,22 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_User_UnbindUserPhone_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_User_UpdateUserEmail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_User_UnbindUserEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_User_UpdateUserPhone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/UnbindUserEmail", runtime.WithHTTPPathPattern("/v1/unbind/email"))
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/user.v1.User/UpdateUserPhone", runtime.WithHTTPPathPattern("/v1/update/user/phone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_User_UnbindUserEmail_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_User_UpdateUserPhone_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -1080,7 +1080,7 @@ func RegisterUserHandlerServer(ctx context.Context, mux *runtime.ServeMux, serve
 			return
 		}
 
-		forward_User_UnbindUserEmail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_User_UpdateUserPhone_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1607,43 +1607,43 @@ func RegisterUserHandlerClient(ctx context.Context, mux *runtime.ServeMux, clien
 
 	})
 
-	mux.Handle("POST", pattern_User_UnbindUserPhone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_User_UpdateUserEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/UnbindUserPhone", runtime.WithHTTPPathPattern("/v1/unbind/phone"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/UpdateUserEmail", runtime.WithHTTPPathPattern("/v1/update/user/email"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_User_UnbindUserPhone_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_User_UpdateUserEmail_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_User_UnbindUserPhone_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_User_UpdateUserEmail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
-	mux.Handle("POST", pattern_User_UnbindUserEmail_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_User_UpdateUserPhone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/UnbindUserEmail", runtime.WithHTTPPathPattern("/v1/unbind/email"))
+		rctx, err := runtime.AnnotateContext(ctx, mux, req, "/user.v1.User/UpdateUserPhone", runtime.WithHTTPPathPattern("/v1/update/user/phone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_User_UnbindUserEmail_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_User_UpdateUserPhone_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_User_UnbindUserEmail_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_User_UpdateUserPhone_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -1947,9 +1947,9 @@ var (
 
 	pattern_User_BindUserEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "bind", "email"}, ""))
 
-	pattern_User_UnbindUserPhone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "unbind", "phone"}, ""))
+	pattern_User_UpdateUserEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "update", "user", "email"}, ""))
 
-	pattern_User_UnbindUserEmail_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "unbind", "email"}, ""))
+	pattern_User_UpdateUserPhone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 2, 3}, []string{"v1", "update", "user", "phone"}, ""))
 
 	pattern_User_BindThirdParty_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "bind", "thirdparty"}, ""))
 
@@ -1997,9 +1997,9 @@ var (
 
 	forward_User_BindUserEmail_0 = runtime.ForwardResponseMessage
 
-	forward_User_UnbindUserPhone_0 = runtime.ForwardResponseMessage
+	forward_User_UpdateUserEmail_0 = runtime.ForwardResponseMessage
 
-	forward_User_UnbindUserEmail_0 = runtime.ForwardResponseMessage
+	forward_User_UpdateUserPhone_0 = runtime.ForwardResponseMessage
 
 	forward_User_BindThirdParty_0 = runtime.ForwardResponseMessage
 

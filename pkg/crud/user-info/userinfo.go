@@ -13,6 +13,8 @@ import (
 	"golang.org/x/xerrors"
 )
 
+const UserExistError = "user doesn't exist"
+
 func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 	return &npool.UserBasicInfo{
 		UserID:         row.ID.String(),
@@ -37,6 +39,7 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 		LastName:       row.LastName,
 		StreetAddress1: row.StreetAddress1,
 		StreetAddress2: row.StreetAddress2,
+		Compony:        row.Compony,
 	}
 }
 
@@ -72,6 +75,7 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 		SetLastName(in.UserInfo.LastName).
 		SetStreetAddress1(in.UserInfo.StreetAddress1).
 		SetStreetAddress2(in.UserInfo.StreetAddress2).
+		SetCompony(in.UserInfo.Compony).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to create user: %v", err)
@@ -111,41 +115,30 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
-	myRow, err := db.Client().User.Query().Where(
-		user.And(
-			user.ID(id),
-		),
-	).All(ctx)
-	if err != nil {
-		return nil, err
-	}
 
-	if len(myRow) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
-	}
-
-	if myRow[0].DeleteAt != 0 {
-		return nil, xerrors.Errorf("user has already been deleted!")
+	resp, err := QueryUserByParam(ctx, in.Info.Username)
+	if err == nil && resp.UserID != in.Info.UserID {
+		return nil, xerrors.Errorf("username has been used")
 	}
 
 	info, err := db.Client().User.
 		UpdateOneID(id).
-		SetAvatar(in.GetInfo().GetAvatar()).
-		SetRegion(in.GetInfo().GetRegion()).
-		SetAge(in.GetInfo().GetAge()).
-		SetGender(in.GetInfo().Gender).
-		SetBirthday(in.GetInfo().GetBirthday()).
-		SetCountry(in.GetInfo().GetCountry()).
-		SetProvince(in.GetInfo().GetProvince()).
-		SetCity(in.GetInfo().GetCity()).
-		SetCareer(in.GetInfo().GetCareer()).
-		SetPhoneNumber(in.GetInfo().GetPhoneNumber()).
-		SetEmailAddress(in.GetInfo().GetEmailAddress()).
-		SetDisplayName(in.GetInfo().GetDisplayName()).
+		SetUsername(in.Info.Username).
+		SetAvatar(in.Info.Avatar).
+		SetRegion(in.Info.Region).
+		SetAge(in.Info.Age).
+		SetGender(in.Info.Gender).
+		SetBirthday(in.Info.Birthday).
+		SetCountry(in.Info.Country).
+		SetProvince(in.Info.Province).
+		SetCity(in.Info.City).
+		SetCareer(in.Info.Career).
+		SetDisplayName(in.Info.DisplayName).
 		SetFirstName(in.Info.FirstName).
 		SetLastName(in.Info.LastName).
 		SetStreetAddress1(in.Info.StreetAddress1).
 		SetStreetAddress2(in.Info.StreetAddress2).
+		SetCompony(in.Info.Compony).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to update user info: %v", err)
@@ -176,7 +169,7 @@ func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse,
 	}
 
 	if len(info) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf(UserExistError)
 	}
 
 	return &npool.GetUserResponse{
@@ -246,7 +239,7 @@ func GetUserPassword(ctx context.Context, userID string) (string, error) {
 	}
 
 	if len(info) == 0 {
-		return "", xerrors.Errorf("user doesn't exist")
+		return "", xerrors.Errorf(UserExistError)
 	}
 	return info[0].Password, nil
 }
@@ -270,13 +263,13 @@ func GetUserSalt(ctx context.Context, userID string) (string, error) {
 	}
 
 	if len(info) == 0 {
-		return "", xerrors.Errorf("user doesn't exist")
+		return "", xerrors.Errorf(UserExistError)
 	}
 
 	return info[0].Salt, nil
 }
 
-func QueryUserByUsername(ctx context.Context, param string) (*npool.UserBasicInfo, error) {
+func QueryUserByParam(ctx context.Context, param string) (*npool.UserBasicInfo, error) {
 	info, err := db.Client().
 		User.
 		Query().
@@ -315,7 +308,7 @@ func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo
 	}
 
 	if len(info) == 0 {
-		return nil, xerrors.Errorf("user doesn't exist")
+		return nil, xerrors.Errorf(UserExistError)
 	}
 
 	return dbRowToInfo(info[0]), nil
@@ -356,4 +349,48 @@ func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npoo
 	return &npool.QueryUserExistResponse{
 		Info: dbRowToInfo(info),
 	}, nil
+}
+
+func SetUserPhone(ctx context.Context, userID, phone string) error {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return xerrors.Errorf("invalid user id: %v", err)
+	}
+	resp, err := QueryUserByParam(ctx, phone)
+	if err == nil && resp.UserID != userID {
+		return xerrors.Errorf("phone number has been used")
+	}
+
+	_, err = db.Client().
+		User.
+		UpdateOneID(id).
+		SetPhoneNumber(phone).
+		Save(ctx)
+	if err != nil {
+		return xerrors.Errorf("fail to set phone number into database: %v", err)
+	}
+
+	return nil
+}
+
+func SetUserEmail(ctx context.Context, userID, email string) error {
+	id, err := uuid.Parse(userID)
+	if err != nil {
+		return xerrors.Errorf("invalid user id: %v", err)
+	}
+	resp, err := QueryUserByParam(ctx, email)
+	if err == nil && resp.UserID != userID {
+		return xerrors.Errorf("email address has been used")
+	}
+
+	_, err = db.Client().
+		User.
+		UpdateOneID(id).
+		SetEmailAddress(email).
+		Save(ctx)
+	if err != nil {
+		return xerrors.Errorf("fail to set email address into database: %v", err)
+	}
+
+	return nil
 }

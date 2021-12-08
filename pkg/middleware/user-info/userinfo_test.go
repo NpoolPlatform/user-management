@@ -64,7 +64,7 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 		UserID:      resp2.Info.UserID,
 		PhoneNumber: "test-bind" + uuid.New().String(),
 	})
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 
 	_, err = BindUserEmail(context.Background(), &npool.BindUserEmailRequest{
 		UserID:       resp2.Info.UserID,

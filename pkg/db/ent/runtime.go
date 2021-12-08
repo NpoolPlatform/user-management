@@ -86,6 +86,10 @@ func init() {
 	userDescStreetAddress2 := userFields[23].Descriptor()
 	// user.DefaultStreetAddress2 holds the default value on creation for the street_address2 field.
 	user.DefaultStreetAddress2 = userDescStreetAddress2.Default.(string)
+	// userDescCompony is the schema descriptor for compony field.
+	userDescCompony := userFields[24].Descriptor()
+	// user.DefaultCompony holds the default value on creation for the compony field.
+	user.DefaultCompony = userDescCompony.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

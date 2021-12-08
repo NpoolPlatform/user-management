@@ -252,6 +252,13 @@ func StreetAddress2(v string) predicate.User {
 	})
 }
 
+// Compony applies equality check predicate on the "compony" field. It's identical to ComponyEQ.
+func Compony(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCompony), v))
+	})
+}
+
 // UsernameEQ applies the EQ predicate on the "username" field.
 func UsernameEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -2690,6 +2697,117 @@ func StreetAddress2EqualFold(v string) predicate.User {
 func StreetAddress2ContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldStreetAddress2), v))
+	})
+}
+
+// ComponyEQ applies the EQ predicate on the "compony" field.
+func ComponyEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyNEQ applies the NEQ predicate on the "compony" field.
+func ComponyNEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyIn applies the In predicate on the "compony" field.
+func ComponyIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldCompony), v...))
+	})
+}
+
+// ComponyNotIn applies the NotIn predicate on the "compony" field.
+func ComponyNotIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldCompony), v...))
+	})
+}
+
+// ComponyGT applies the GT predicate on the "compony" field.
+func ComponyGT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyGTE applies the GTE predicate on the "compony" field.
+func ComponyGTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyLT applies the LT predicate on the "compony" field.
+func ComponyLT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyLTE applies the LTE predicate on the "compony" field.
+func ComponyLTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyContains applies the Contains predicate on the "compony" field.
+func ComponyContains(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyHasPrefix applies the HasPrefix predicate on the "compony" field.
+func ComponyHasPrefix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyHasSuffix applies the HasSuffix predicate on the "compony" field.
+func ComponyHasSuffix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyEqualFold applies the EqualFold predicate on the "compony" field.
+func ComponyEqualFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldCompony), v))
+	})
+}
+
+// ComponyContainsFold applies the ContainsFold predicate on the "compony" field.
+func ComponyContainsFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldCompony), v))
 	})
 }
 

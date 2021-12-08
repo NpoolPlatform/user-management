@@ -7,6 +7,7 @@ import (
 	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
 	"github.com/NpoolPlatform/user-management/pkg/grpc"
+	"github.com/NpoolPlatform/user-management/pkg/utils"
 	"github.com/google/uuid"
 	"golang.org/x/xerrors"
 )
@@ -17,18 +18,11 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, xerrors.Errorf("user sign up app not exist: %v", err)
 	}
 
-	if in.Username != "" {
-		_, err := userinfo.QueryUserByUsername(ctx, in.Username)
-		if err == nil {
-			return nil, xerrors.Errorf("user exists")
-		}
-	}
-
 	if in.EmailAddress != "" {
 		if in.Code == "" {
 			return nil, xerrors.Errorf("must have code to verify email")
 		}
-		_, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
+		_, err := userinfo.QueryUserByParam(ctx, in.EmailAddress)
 		if err == nil {
 			return nil, xerrors.Errorf("email has been used")
 		}
@@ -40,19 +34,28 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 	}
 
 	if in.PhoneNumber != "" {
-		_, err := userinfo.QueryUserByUsername(ctx, in.PhoneNumber)
+		if in.Code == "" {
+			return nil, xerrors.Errorf("must have code to verify email")
+		}
+		_, err := userinfo.QueryUserByParam(ctx, in.PhoneNumber)
 		if err == nil {
 			return nil, xerrors.Errorf("phone number has been used")
 		}
+
+		err = grpc.VerifyCode(in.PhoneNumber, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("input code is wrong")
+		}
 	}
 
-	if in.Username == "" {
-		in.Username = in.EmailAddress
+	username, err := utils.GenerateUsername()
+	if err != nil {
+		return nil, xerrors.Errorf("fail to generate username: %v", err)
 	}
 
 	request := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
-			Username:     in.Username,
+			Username:     username,
 			Password:     in.Password,
 			EmailAddress: in.EmailAddress,
 			PhoneNumber:  in.PhoneNumber,
@@ -76,26 +79,33 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 }
 
 func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
-	_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.Username)
+	_, err := userinfo.QueryUserByParam(ctx, in.UserInfo.Username)
 	if err == nil {
 		return nil, xerrors.Errorf("user exists")
 	}
 
 	if in.UserInfo.EmailAddress != "" {
-		_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.EmailAddress)
+		_, err := userinfo.QueryUserByParam(ctx, in.UserInfo.EmailAddress)
 		if err == nil {
 			return nil, xerrors.Errorf("email has been used")
 		}
 	}
 
 	if in.UserInfo.PhoneNumber != "" {
-		_, err := userinfo.QueryUserByUsername(ctx, in.UserInfo.PhoneNumber)
+		_, err := userinfo.QueryUserByParam(ctx, in.UserInfo.PhoneNumber)
 		if err == nil {
 			return nil, xerrors.Errorf("phone number has been used")
 		}
 	}
 
 	in.UserInfo.SignupMethod = "admin create"
+	if in.UserInfo.Username == "" {
+		username, err := utils.GenerateUsername()
+		if err != nil {
+			return nil, xerrors.Errorf("fail to generate username: %v", err)
+		}
+		in.UserInfo.Username = username
+	}
 
 	resp, err := userinfo.Create(ctx, in)
 	if err != nil {
@@ -105,7 +115,7 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 }
 
 func SetPassword(ctx context.Context, in *npool.SetPasswordRequest) (*npool.SetPasswordResponse, error) {
-	resp, err := userinfo.QueryUserByUsername(ctx, in.Username)
+	resp, err := userinfo.QueryUserByParam(ctx, in.Username)
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +177,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		if in.Code == "" {
 			return nil, xerrors.Errorf("input code is empty")
 		}
-		userInfo, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
+		userInfo, err := userinfo.QueryUserByParam(ctx, in.EmailAddress)
 		if err != nil {
 			return nil, err
 		}
@@ -177,7 +187,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		}
 		userID = userInfo.UserID
 	} else if in.EmailAddress == "" && in.PhoneNumber != "" {
-		userInfo, err := userinfo.QueryUserByUsername(ctx, in.PhoneNumber)
+		userInfo, err := userinfo.QueryUserByParam(ctx, in.PhoneNumber)
 		if err != nil {
 			return nil, err
 		}
@@ -194,15 +204,16 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 }
 
 func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.BindUserPhoneResponse, error) {
-	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserID)
-	if err != nil {
-		return nil, err
+	if in.Code == "" {
+		return nil, xerrors.Errorf("input code is empty")
 	}
-	userInfo.PhoneNumber = in.PhoneNumber
 
-	_, err = userinfo.Update(ctx, &npool.UpdateUserInfoRequest{
-		Info: userInfo,
-	})
+	err := grpc.VerifyCode(in.PhoneNumber, in.Code)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to verify phone code: %v", err)
+	}
+
+	err = userinfo.SetUserPhone(ctx, in.UserID, in.PhoneNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -216,30 +227,76 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 		return nil, xerrors.Errorf("input code is empty")
 	}
 
-	_, err := userinfo.QueryUserByUsername(ctx, in.EmailAddress)
-	if err != xerrors.Errorf("user doesn't exist") {
-		return nil, xerrors.Errorf("email has been used: %v", err)
-	}
-
-	err = grpc.VerifyCode(in.EmailAddress, in.Code)
+	err := grpc.VerifyCode(in.EmailAddress, in.Code)
 	if err != nil {
 		return nil, xerrors.Errorf("bind user email error: %v", err)
 	}
 
-	userInfo, err := userinfo.QueryUserByUserID(ctx, in.UserID)
+	err = userinfo.SetUserPhone(ctx, in.UserID, in.EmailAddress)
 	if err != nil {
 		return nil, err
 	}
-	userInfo.EmailAddress = in.EmailAddress
 
-	_, err = userinfo.Update(ctx, &npool.UpdateUserInfoRequest{
-		Info: userInfo,
-	})
-	if err != nil {
-		return nil, err
-	}
 	return &npool.BindUserEmailResponse{
 		Info: "bind email address successfully",
+	}, nil
+}
+
+func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*npool.UpdateUserEmailResponse, error) {
+	if in.OldCode == "" || in.NewCode == "" {
+		return nil, xerrors.Errorf("input code cannot be empty")
+	}
+
+	if in.OldEmail != in.NewEmail {
+		return nil, xerrors.Errorf("old email and new email cannot be same")
+	}
+
+	err := grpc.VerifyCode(in.OldEmail, in.OldCode)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
+	}
+
+	err = grpc.VerifyCode(in.NewEmail, in.NewCode)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to verify new email code: %v", err)
+	}
+
+	err = userinfo.SetUserEmail(ctx, in.UserID, in.NewEmail)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to update user email: %v", err)
+	}
+
+	return &npool.UpdateUserEmailResponse{
+		Info: "Update email successfully",
+	}, nil
+}
+
+func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*npool.UpdateUserPhoneResponse, error) {
+	if in.OldCode == "" || in.NewCode == "" {
+		return nil, xerrors.Errorf("input code cannot be empty")
+	}
+
+	if in.OldPhone != in.NewPhone {
+		return nil, xerrors.Errorf("old phone and new phone cannot be same")
+	}
+
+	err := grpc.VerifyCode(in.OldPhone, in.OldCode)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
+	}
+
+	err = grpc.VerifyCode(in.NewPhone, in.NewCode)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to verify new email code: %v", err)
+	}
+
+	err = userinfo.SetUserPhone(ctx, in.UserID, in.NewPhone)
+	if err != nil {
+		return nil, xerrors.Errorf("fail to update user phone: %v", err)
+	}
+
+	return &npool.UpdateUserPhoneResponse{
+		Info: "Update phone successfully",
 	}, nil
 }
 

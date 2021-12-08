@@ -112,6 +112,8 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/update/user")
 	if assert.Nil(t, err) {
+		fmt.Println("add user info user id is:", addUserInfo.UserID)
+		fmt.Println("user info api test resp5 is:", resp5)
 		assert.Equal(t, 200, resp5.StatusCode())
 		info := npool.UpdateUserInfoResponse{}
 		err := json.Unmarshal(resp5.Body(), &info)
@@ -163,7 +165,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		}).
 		Post("http://localhost:50070/v1/bind/phone")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp9.StatusCode())
+		assert.NotEqual(t, 200, resp9.StatusCode())
 	}
 
 	resp10, err := cli.R().

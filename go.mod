@@ -4,9 +4,10 @@ go 1.16
 
 require (
 	entgo.io/ent v0.9.1
-	github.com/NpoolPlatform/application-management v0.0.0-20211130040201-edb8269b3e6f
-	github.com/NpoolPlatform/go-service-framework v0.0.0-20211117074545-bc1340849b08
-	github.com/NpoolPlatform/verification-door v0.0.0-20211201031400-538c698eeea2
+	github.com/AmirSoleimani/VoucherCodeGenerator v0.0.0-20201014193813-0206853dccb9
+	github.com/NpoolPlatform/application-management v0.0.0-20211208081653-46e93c4154df
+	github.com/NpoolPlatform/go-service-framework v0.0.0-20211207121121-adb2402676f0
+	github.com/NpoolPlatform/verification-door v0.0.0-20211208034705-d6ede875668c
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/google/uuid v1.3.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0

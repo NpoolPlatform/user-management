@@ -14,7 +14,7 @@ func (s *Server) BindThirdParty(ctx context.Context, in *npool.BindThirdPartyReq
 	resp, err := middleware.BindThirdParty(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to bind third party: %v", err)
-		return &npool.BindThirdPartyResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.BindThirdPartyResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -23,7 +23,7 @@ func (s *Server) UnbindThirdParty(ctx context.Context, in *npool.UnbindThirdPart
 	resp, err := middleware.UnbindUserProviders(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to unbind third party: %v", err)
-		return &npool.UnbindThirdPartyResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.UnbindThirdPartyResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -32,7 +32,7 @@ func (s *Server) GetUserProviders(ctx context.Context, in *npool.GetUserProvider
 	resp, err := middleware.GetUserProviders(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get user providers third party: %v", err)
-		return &npool.GetUserProvidersResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.GetUserProvidersResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }
@@ -41,7 +41,7 @@ func (s *Server) QueryUserByUserProviderID(ctx context.Context, in *npool.QueryU
 	resp, err := middleware.QueryUserByUserProviderID(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to get user by user provider id: %v", err)
-		return &npool.QueryUserByUserProviderIDResponse{}, status.Errorf(codes.Internal, "internal server error: %v", err)
+		return &npool.QueryUserByUserProviderIDResponse{}, status.Errorf(codes.FailedPrecondition, "internal server error: %v", err)
 	}
 	return resp, nil
 }

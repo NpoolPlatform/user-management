@@ -29,6 +29,22 @@ spec:
             backend:
               serviceName: user-management
               servicePort: 50070
+          - path: /api/user-management/v1/bind/email
+            backend:
+              serviceName: user-management
+              servicePort: 50070
+          - path: /api/user-management/v1/bind/phone
+            backend:
+              serviceName: user-management
+              servicePort: 50070
+          - path: /api/user-management/v1/update/user/phone
+            backend:
+              serviceName: user-management
+              servicePort: 50070
+          - path: /api/user-management/v1/update/user/email
+            backend:
+              serviceName: user-management
+              servicePort: 50070
     - host: api.xpool.top
       http: *http_appid_userid_rules
     - host: www.npool.top

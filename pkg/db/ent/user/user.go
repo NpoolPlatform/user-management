@@ -57,6 +57,8 @@ const (
 	FieldStreetAddress1 = "street_address1"
 	// FieldStreetAddress2 holds the string denoting the street_address2 field in the database.
 	FieldStreetAddress2 = "street_address2"
+	// FieldCompony holds the string denoting the compony field in the database.
+	FieldCompony = "compony"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -87,6 +89,7 @@ var Columns = []string{
 	FieldLastName,
 	FieldStreetAddress1,
 	FieldStreetAddress2,
+	FieldCompony,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -136,6 +139,8 @@ var (
 	DefaultStreetAddress1 string
 	// DefaultStreetAddress2 holds the default value on creation for the "street_address2" field.
 	DefaultStreetAddress2 string
+	// DefaultCompony holds the default value on creation for the "compony" field.
+	DefaultCompony string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

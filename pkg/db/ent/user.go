@@ -62,6 +62,8 @@ type User struct {
 	StreetAddress1 string `json:"street_address1,omitempty"`
 	// StreetAddress2 holds the value of the "street_address2" field.
 	StreetAddress2 string `json:"street_address2,omitempty"`
+	// Compony holds the value of the "compony" field.
+	Compony string `json:"compony,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -71,7 +73,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2:
+		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2, user.FieldCompony:
 			values[i] = new(sql.NullString)
 		case user.FieldID:
 			values[i] = new(uuid.UUID)
@@ -234,6 +236,12 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.StreetAddress2 = value.String
 			}
+		case user.FieldCompony:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field compony", values[i])
+			} else if value.Valid {
+				u.Compony = value.String
+			}
 		}
 	}
 	return nil
@@ -308,6 +316,8 @@ func (u *User) String() string {
 	builder.WriteString(u.StreetAddress1)
 	builder.WriteString(", street_address2=")
 	builder.WriteString(u.StreetAddress2)
+	builder.WriteString(", compony=")
+	builder.WriteString(u.Compony)
 	builder.WriteByte(')')
 	return builder.String()
 }

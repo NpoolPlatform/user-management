@@ -78,21 +78,17 @@ service User {
             body: "*"
         };
     };
-    /*
-    Unbind user's phone number.
-    */
-    rpc UnbindUserPhone (UnbindUserPhoneRequest) returns (UnbindUserPhoneResponse) {
+    // update user email.
+    rpc UpdateUserEmail (UpdateUserEmailRequest) returns (UpdateUserEmailResponse) {
         option (google.api.http) = {
-            post: "/v1/unbind/phone"
+            post: "/v1/update/user/email"
             body: "*"
         };
     };
-    /*
-    Unbind user's email address.
-    */
-    rpc UnbindUserEmail (UnbindUserEmailRequest) returns (UnbindUserEmailResponse) {
+    // update user phone.
+    rpc UpdateUserPhone (UpdateUserPhoneRequest) returns (UpdateUserPhoneResponse) {
         option (google.api.http) = {
-            post: "/v1/unbind/email"
+            post: "/v1/update/user/phone"
             body: "*"
         };
     };
@@ -242,10 +238,6 @@ message UserBasicInfo {
     string EmailAddress = 12;
     uint32 CreateAt = 13;
     uint32 UpdateAt = 14;
-    uint32 LoginTimes = 19;
-    bool KycVerify = 16;
-    bool GaVerify = 17;
-    bool GaLogin = 22;
     string SignupMethod = 18;
     string Career = 20;
     string DisplayName = 21;
@@ -253,6 +245,7 @@ message UserBasicInfo {
     string LastName = 24;
     string StreetAddress1 = 25;
     string StreetAddress2 = 26;
+    string Compony = 27;
 }
 
 message SignupRequest {
@@ -304,6 +297,7 @@ message BindUserPhoneRequest {
     string UserID = 1;
     string PhoneNumber = 2;
     string AppID = 3;
+    string Code = 4;
 }
 
 message BindUserPhoneResponse {
@@ -318,24 +312,6 @@ message BindUserEmailRequest {
 }
 
 message BindUserEmailResponse {
-    string Info = 1;
-}
-
-message UnbindUserPhoneRequest {
-    string UserID = 1;
-    string AppID = 2;
-}
-
-message UnbindUserPhoneResponse {
-    string Info = 1;
-}
-
-message UnbindUserEmailRequest {
-    string UserID = 1;
-    string AppID = 2;
-}
-
-message UnbindUserEmailResponse {
     string Info = 1;
 }
 
@@ -553,4 +529,30 @@ message UserDetails {
 
 message GetUserDetailsResponse {
     UserDetails Info = 1;
+}
+
+message UpdateUserEmailRequest {
+    string OldEmail = 1;
+    string OldCode = 2;
+    string NewEmail = 3;
+    string NewCode = 4;
+    string UserID = 5;
+    string AppID = 6;
+}
+
+message UpdateUserEmailResponse {
+    string Info = 1;
+}
+
+message UpdateUserPhoneRequest {
+    string OldPhone = 1;
+    string OldCode = 2;
+    string NewPhone = 3;
+    string NewCode = 4;
+    string UserID = 5;
+    string AppID = 6;
+}
+
+message UpdateUserPhoneResponse {
+    string Info = 1;
 }

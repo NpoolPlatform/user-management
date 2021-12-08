@@ -348,6 +348,20 @@ func (uu *UserUpdate) SetNillableStreetAddress2(s *string) *UserUpdate {
 	return uu
 }
 
+// SetCompony sets the "compony" field.
+func (uu *UserUpdate) SetCompony(s string) *UserUpdate {
+	uu.mutation.SetCompony(s)
+	return uu
+}
+
+// SetNillableCompony sets the "compony" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCompony(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetCompony(*s)
+	}
+	return uu
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -633,6 +647,13 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldStreetAddress2,
+		})
+	}
+	if value, ok := uu.mutation.Compony(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldCompony,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -976,6 +997,20 @@ func (uuo *UserUpdateOne) SetNillableStreetAddress2(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetCompony sets the "compony" field.
+func (uuo *UserUpdateOne) SetCompony(s string) *UserUpdateOne {
+	uuo.mutation.SetCompony(s)
+	return uuo
+}
+
+// SetNillableCompony sets the "compony" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCompony(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetCompony(*s)
+	}
+	return uuo
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -1285,6 +1320,13 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldStreetAddress2,
+		})
+	}
+	if value, ok := uuo.mutation.Compony(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldCompony,
 		})
 	}
 	_node = &User{config: uuo.config}

@@ -63,6 +63,7 @@ type UserMutation struct {
 	last_name       *string
 	street_address1 *string
 	street_address2 *string
+	compony         *string
 	clearedFields   map[string]struct{}
 	done            bool
 	oldValue        func(context.Context) (*User, error)
@@ -1088,6 +1089,42 @@ func (m *UserMutation) ResetStreetAddress2() {
 	m.street_address2 = nil
 }
 
+// SetCompony sets the "compony" field.
+func (m *UserMutation) SetCompony(s string) {
+	m.compony = &s
+}
+
+// Compony returns the value of the "compony" field in the mutation.
+func (m *UserMutation) Compony() (r string, exists bool) {
+	v := m.compony
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCompony returns the old "compony" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldCompony(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldCompony is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldCompony requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCompony: %w", err)
+	}
+	return oldValue.Compony, nil
+}
+
+// ResetCompony resets all changes to the "compony" field.
+func (m *UserMutation) ResetCompony() {
+	m.compony = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -1107,7 +1144,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 23)
+	fields := make([]string, 0, 24)
 	if m.username != nil {
 		fields = append(fields, user.FieldUsername)
 	}
@@ -1177,6 +1214,9 @@ func (m *UserMutation) Fields() []string {
 	if m.street_address2 != nil {
 		fields = append(fields, user.FieldStreetAddress2)
 	}
+	if m.compony != nil {
+		fields = append(fields, user.FieldCompony)
+	}
 	return fields
 }
 
@@ -1231,6 +1271,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.StreetAddress1()
 	case user.FieldStreetAddress2:
 		return m.StreetAddress2()
+	case user.FieldCompony:
+		return m.Compony()
 	}
 	return nil, false
 }
@@ -1286,6 +1328,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStreetAddress1(ctx)
 	case user.FieldStreetAddress2:
 		return m.OldStreetAddress2(ctx)
+	case user.FieldCompony:
+		return m.OldCompony(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -1455,6 +1499,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStreetAddress2(v)
+		return nil
+	case user.FieldCompony:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCompony(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -1639,6 +1690,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldStreetAddress2:
 		m.ResetStreetAddress2()
+		return nil
+	case user.FieldCompony:
+		m.ResetCompony()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

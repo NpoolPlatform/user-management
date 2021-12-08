@@ -49,14 +49,14 @@
     - [SignupResponse](#user.v1.SignupResponse)
     - [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest)
     - [UnbindThirdPartyResponse](#user.v1.UnbindThirdPartyResponse)
-    - [UnbindUserEmailRequest](#user.v1.UnbindUserEmailRequest)
-    - [UnbindUserEmailResponse](#user.v1.UnbindUserEmailResponse)
-    - [UnbindUserPhoneRequest](#user.v1.UnbindUserPhoneRequest)
-    - [UnbindUserPhoneResponse](#user.v1.UnbindUserPhoneResponse)
     - [UnfrozenUserRequest](#user.v1.UnfrozenUserRequest)
     - [UnfrozenUserResponse](#user.v1.UnfrozenUserResponse)
+    - [UpdateUserEmailRequest](#user.v1.UpdateUserEmailRequest)
+    - [UpdateUserEmailResponse](#user.v1.UpdateUserEmailResponse)
     - [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest)
     - [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse)
+    - [UpdateUserPhoneRequest](#user.v1.UpdateUserPhoneRequest)
+    - [UpdateUserPhoneResponse](#user.v1.UpdateUserPhoneResponse)
     - [UserBasicInfo](#user.v1.UserBasicInfo)
     - [UserDetails](#user.v1.UserDetails)
     - [UserProvider](#user.v1.UserProvider)
@@ -184,6 +184,7 @@
 | UserID | [string](#string) |  |  |
 | PhoneNumber | [string](#string) |  |  |
 | AppID | [string](#string) |  |  |
+| Code | [string](#string) |  |  |
 
 
 
@@ -812,68 +813,6 @@
 
 
 
-<a name="user.v1.UnbindUserEmailRequest"></a>
-
-### UnbindUserEmailRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| UserID | [string](#string) |  |  |
-| AppID | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.UnbindUserEmailResponse"></a>
-
-### UnbindUserEmailResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.UnbindUserPhoneRequest"></a>
-
-### UnbindUserPhoneRequest
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| UserID | [string](#string) |  |  |
-| AppID | [string](#string) |  |  |
-
-
-
-
-
-
-<a name="user.v1.UnbindUserPhoneResponse"></a>
-
-### UnbindUserPhoneResponse
-
-
-
-| Field | Type | Label | Description |
-| ----- | ---- | ----- | ----------- |
-| Info | [string](#string) |  |  |
-
-
-
-
-
-
 <a name="user.v1.UnfrozenUserRequest"></a>
 
 ### UnfrozenUserRequest
@@ -901,6 +840,41 @@
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | Info | [FrozenUser](#user.v1.FrozenUser) |  |  |
+
+
+
+
+
+
+<a name="user.v1.UpdateUserEmailRequest"></a>
+
+### UpdateUserEmailRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| OldEmail | [string](#string) |  |  |
+| OldCode | [string](#string) |  |  |
+| NewEmail | [string](#string) |  |  |
+| NewCode | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.UpdateUserEmailResponse"></a>
+
+### UpdateUserEmailResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [string](#string) |  |  |
 
 
 
@@ -939,6 +913,41 @@
 
 
 
+<a name="user.v1.UpdateUserPhoneRequest"></a>
+
+### UpdateUserPhoneRequest
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| OldPhone | [string](#string) |  |  |
+| OldCode | [string](#string) |  |  |
+| NewPhone | [string](#string) |  |  |
+| NewCode | [string](#string) |  |  |
+| UserID | [string](#string) |  |  |
+| AppID | [string](#string) |  |  |
+
+
+
+
+
+
+<a name="user.v1.UpdateUserPhoneResponse"></a>
+
+### UpdateUserPhoneResponse
+
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| Info | [string](#string) |  |  |
+
+
+
+
+
+
 <a name="user.v1.UserBasicInfo"></a>
 
 ### UserBasicInfo
@@ -962,10 +971,6 @@
 | EmailAddress | [string](#string) |  |  |
 | CreateAt | [uint32](#uint32) |  |  |
 | UpdateAt | [uint32](#uint32) |  |  |
-| LoginTimes | [uint32](#uint32) |  |  |
-| KycVerify | [bool](#bool) |  |  |
-| GaVerify | [bool](#bool) |  |  |
-| GaLogin | [bool](#bool) |  |  |
 | SignupMethod | [string](#string) |  |  |
 | Career | [string](#string) |  |  |
 | DisplayName | [string](#string) |  |  |
@@ -973,6 +978,7 @@
 | LastName | [string](#string) |  |  |
 | StreetAddress1 | [string](#string) |  |  |
 | StreetAddress2 | [string](#string) |  |  |
+| Compony | [string](#string) |  |  |
 
 
 
@@ -1052,8 +1058,8 @@ a service of managing users
 | UpdateUserInfo | [UpdateUserInfoRequest](#user.v1.UpdateUserInfoRequest) | [UpdateUserInfoResponse](#user.v1.UpdateUserInfoResponse) | Update user&#39;s basic info. |
 | BindUserPhone | [BindUserPhoneRequest](#user.v1.BindUserPhoneRequest) | [BindUserPhoneResponse](#user.v1.BindUserPhoneResponse) | Bind user&#39;s phone number. |
 | BindUserEmail | [BindUserEmailRequest](#user.v1.BindUserEmailRequest) | [BindUserEmailResponse](#user.v1.BindUserEmailResponse) | Bind user&#39;s email address. |
-| UnbindUserPhone | [UnbindUserPhoneRequest](#user.v1.UnbindUserPhoneRequest) | [UnbindUserPhoneResponse](#user.v1.UnbindUserPhoneResponse) | Unbind user&#39;s phone number. |
-| UnbindUserEmail | [UnbindUserEmailRequest](#user.v1.UnbindUserEmailRequest) | [UnbindUserEmailResponse](#user.v1.UnbindUserEmailResponse) | Unbind user&#39;s email address. |
+| UpdateUserEmail | [UpdateUserEmailRequest](#user.v1.UpdateUserEmailRequest) | [UpdateUserEmailResponse](#user.v1.UpdateUserEmailResponse) | update user email. |
+| UpdateUserPhone | [UpdateUserPhoneRequest](#user.v1.UpdateUserPhoneRequest) | [UpdateUserPhoneResponse](#user.v1.UpdateUserPhoneResponse) | update user phone. |
 | BindThirdParty | [BindThirdPartyRequest](#user.v1.BindThirdPartyRequest) | [BindThirdPartyResponse](#user.v1.BindThirdPartyResponse) | Link to a third-party oauth. save the UserID from third-party into mysql. |
 | UnbindThirdParty | [UnbindThirdPartyRequest](#user.v1.UnbindThirdPartyRequest) | [UnbindThirdPartyResponse](#user.v1.UnbindThirdPartyResponse) | Unlink a third-party oauth. Delete the UserID we saved from mysql. |
 | ChangeUserPassword | [ChangeUserPasswordRequest](#user.v1.ChangeUserPasswordRequest) | [ChangeUserPasswordResponse](#user.v1.ChangeUserPasswordResponse) | Change user&#39;s password. Before change users password, system need the user to do an authentication. |

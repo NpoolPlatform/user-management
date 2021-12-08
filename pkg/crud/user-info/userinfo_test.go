@@ -108,6 +108,7 @@ func TestUserInfoCRUD(t *testing.T) {
 	}
 
 	userInfo.DisplayName = "lpzCrazy"
+	fmt.Println(userInfo.UserID)
 	resp1, err := Update(context.Background(), &npool.UpdateUserInfoRequest{
 		Info: &userInfo,
 	})
@@ -126,7 +127,7 @@ func TestUserInfoCRUD(t *testing.T) {
 		fmt.Println(resp4)
 	}
 
-	resp7, err := QueryUserByUsername(context.Background(), userInfo.Username)
+	resp7, err := QueryUserByParam(context.Background(), userInfo.Username)
 	if assert.Nil(t, err) {
 		fmt.Println(resp7)
 	}

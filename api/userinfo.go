@@ -21,6 +21,9 @@ func (s *Server) SignUp(ctx context.Context, in *npool.SignupRequest) (*npool.Si
 }
 
 func (s *Server) AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
+	if in.UserInfo == nil {
+		return &npool.AddUserResponse{}, status.Errorf(codes.InvalidArgument, "invalid argument, userinfo cannot be null")
+	}
 	resp, err := middleware.AddUser(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("add user error: %v", err)
@@ -57,6 +60,9 @@ func (s *Server) DeleteUser(ctx context.Context, in *npool.DeleteUserRequest) (*
 }
 
 func (s *Server) UpdateUserInfo(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.UpdateUserInfoResponse, error) {
+	if in.Info == nil {
+		return &npool.UpdateUserInfoResponse{}, status.Errorf(codes.InvalidArgument, "invalid argument, info cannot be null")
+	}
 	resp, err := crud.Update(ctx, in)
 	if err != nil {
 		logger.Sugar().Errorf("fail to update user: %v", err)

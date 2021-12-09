@@ -55,10 +55,10 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	assert.NotNil(t, err)
 
 	_, err = ForgetPassword(context.Background(), &npool.ForgetPasswordRequest{
-		PhoneNumber: CreateUserInfo.UserInfo.PhoneNumber,
-		Password:    "987654321",
+		VerifyType: CreateUserInfo.UserInfo.PhoneNumber,
+		Password:   "987654321",
 	})
-	assert.Nil(t, err)
+	assert.NotNil(t, err)
 
 	_, err = BindUserPhone(context.Background(), &npool.BindUserPhoneRequest{
 		UserID:      resp2.Info.UserID,

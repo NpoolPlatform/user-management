@@ -138,19 +138,19 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	resp7, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ForgetPasswordRequest{
-			PhoneNumber: addUserInfo.PhoneNumber,
+			VerifyParam: addUserInfo.PhoneNumber,
 			Password:    "123456789",
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
-		assert.Equal(t, 200, resp7.StatusCode())
+		assert.NotEqual(t, 200, resp7.StatusCode())
 	}
 
 	resp8, err := cli.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ForgetPasswordRequest{
-			EmailAddress: addUserInfo.EmailAddress,
-			Password:     "123456789",
+			VerifyParam: addUserInfo.EmailAddress,
+			Password:    "123456789",
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {

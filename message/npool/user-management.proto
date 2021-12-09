@@ -352,11 +352,12 @@ message UnbindThirdPartyResponse {
 message ChangeUserPasswordRequest {
     string UserID = 1;
     string AppID = 2;
-    string Email = 3;
-    string OldPassword = 4;
-    string Password = 5;
-    string EmailVerifyCode = 6;
-    string GoogleVerifyCode = 7;
+    string VerifyParam = 3;
+    // verify types are emial, phone and google.
+    string VerifyType = 4;
+    string OldPassword = 5;
+    string Password = 6;
+    string Code = 7;
 }
 
 message ChangeUserPasswordResponse {
@@ -390,13 +391,12 @@ message GetGaQRCodeResponse {
 }
 
 message ForgetPasswordRequest {
-    // Optional
-    string PhoneNumber = 1;
-    // Optional
-    string EmailAddress = 3;
-    string Password = 5;
-    string Code = 6;
-    string AppID = 7;
+    string VerifyParam = 1;
+    // verify types are emial, phone and google.
+    string VerifyType = 2;
+    string Password = 3;
+    string Code = 4;
+    string AppID = 5;
 }
 
 message ForgetPasswordResponse {

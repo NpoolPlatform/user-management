@@ -255,11 +255,11 @@
 | ----- | ---- | ----- | ----------- |
 | UserID | [string](#string) |  |  |
 | AppID | [string](#string) |  |  |
-| Email | [string](#string) |  |  |
+| VerifyParam | [string](#string) |  |  |
+| VerifyType | [string](#string) |  | verify types are emial, phone and google. |
 | OldPassword | [string](#string) |  |  |
 | Password | [string](#string) |  |  |
-| EmailVerifyCode | [string](#string) |  |  |
-| GoogleVerifyCode | [string](#string) |  |  |
+| Code | [string](#string) |  |  |
 
 
 
@@ -320,8 +320,8 @@
 
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
-| PhoneNumber | [string](#string) |  | Optional |
-| EmailAddress | [string](#string) |  | Optional |
+| VerifyParam | [string](#string) |  |  |
+| VerifyType | [string](#string) |  | verify types are emial, phone and google. |
 | Password | [string](#string) |  |  |
 | Code | [string](#string) |  |  |
 | AppID | [string](#string) |  |  |

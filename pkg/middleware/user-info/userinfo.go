@@ -12,6 +12,12 @@ import (
 	"golang.org/x/xerrors"
 )
 
+const (
+	Email  = "email"
+	Phone  = "phone"
+	Google = "google"
+)
+
 func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) {
 	err := grpc.QueryAppExist(in.AppID)
 	if err != nil {
@@ -131,6 +137,30 @@ func SetPassword(ctx context.Context, in *npool.SetPasswordRequest) (*npool.SetP
 }
 
 func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
+	if in.Code == "" {
+		return nil, xerrors.Errorf("input code is empty")
+	}
+
+	switch in.VerifyParam {
+	case Email:
+		err := grpc.VerifyCode(in.VerifyParam, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
+		}
+	case Phone:
+		err := grpc.VerifyCode(in.VerifyParam, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
+		}
+	case Google:
+		err := grpc.VerifyGoogleCode(in.UserID, in.AppID, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
+		}
+	default:
+		return nil, xerrors.Errorf("please input correct user account info")
+	}
+
 	dbPassword, err := userinfo.GetUserPassword(ctx, in.UserID)
 	if err != nil {
 		return nil, err
@@ -146,21 +176,6 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 		return nil, err
 	}
 
-	resp, err := userinfo.QueryUserByUserID(ctx, in.UserID)
-	if err != nil {
-		return nil, xerrors.Errorf("fail to query user: %v", err)
-	}
-
-	err = grpc.VerifyCode(resp.EmailAddress, in.EmailVerifyCode)
-	if err != nil {
-		return nil, err
-	}
-
-	err = grpc.VerifyGoogleCode(in.UserID, in.AppID, in.GoogleVerifyCode)
-	if err != nil {
-		return nil, err
-	}
-
 	err = userinfo.SetPassword(ctx, in.Password, in.UserID)
 	if err != nil {
 		return nil, err
@@ -172,26 +187,45 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 }
 
 func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npool.ForgetPasswordResponse, error) {
+	if in.Code == "" {
+		return nil, xerrors.Errorf("input code is empty")
+	}
+
 	var userID string
-	if in.PhoneNumber == "" && in.EmailAddress != "" {
-		if in.Code == "" {
-			return nil, xerrors.Errorf("input code is empty")
-		}
-		userInfo, err := userinfo.QueryUserByParam(ctx, in.EmailAddress)
+
+	switch in.VerifyParam {
+	case Phone:
+		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
 		if err != nil {
 			return nil, err
 		}
-		err = grpc.VerifyCode(in.EmailAddress, in.Code)
+		err = grpc.VerifyCode(in.VerifyParam, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
 		userID = userInfo.UserID
-	} else if in.EmailAddress == "" && in.PhoneNumber != "" {
-		userInfo, err := userinfo.QueryUserByParam(ctx, in.PhoneNumber)
+	case Email:
+		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
 		if err != nil {
 			return nil, err
 		}
+		err = grpc.VerifyCode(in.VerifyParam, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
+		}
 		userID = userInfo.UserID
+	case Google:
+		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
+		if err != nil {
+			return nil, err
+		}
+		err = grpc.VerifyGoogleCode(userInfo.UserID, in.AppID, in.Code)
+		if err != nil {
+			return nil, xerrors.Errorf("fail to verify code: %v", err)
+		}
+		userID = userInfo.UserID
+	default:
+		return nil, xerrors.Errorf("please input correct user account info")
 	}
 
 	err := userinfo.SetPassword(ctx, in.Password, userID)
@@ -199,7 +233,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		return nil, err
 	}
 	return &npool.ForgetPasswordResponse{
-		Info: "change password successfully",
+		Info: "reset password successfully",
 	}, nil
 }
 

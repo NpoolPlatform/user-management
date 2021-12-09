@@ -9,6 +9,7 @@ import (
 	"github.com/NpoolPlatform/user-management/pkg/db/ent"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/user"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
+	"github.com/NpoolPlatform/user-management/pkg/utils"
 	"github.com/google/uuid"
 	"golang.org/x/xerrors"
 )
@@ -114,6 +115,11 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 	id, err := uuid.Parse(in.Info.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
+	}
+
+	ok := utils.RegexpUsername(in.Info.Username)
+	if !ok {
+		return nil, xerrors.Errorf("username not legal")
 	}
 
 	resp, err := QueryUserByParam(ctx, in.Info.Username)

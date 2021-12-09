@@ -28,6 +28,24 @@ func VerifyCode(param, code string) error {
 	return nil
 }
 
+func VerifyCodeWithUserID(userID, param, code string) error {
+	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
+	if err != nil {
+		return err
+	}
+
+	client := pbVerification.NewVerificationDoorClient(conn)
+	_, err = client.VerifyCodeWithUserID(context.Background(), &pbVerification.VerifyCodeWithUserIDRequest{
+		UserID: userID,
+		Code:   code,
+		Param:  param,
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func VerifyGoogleCode(userID, appID, code string) error {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {

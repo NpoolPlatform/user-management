@@ -85,6 +85,19 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 }
 
 func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
+	if in.UserInfo.Username == "" {
+		username, err := utils.GenerateUsername()
+		if err != nil {
+			return nil, xerrors.Errorf("fail to generate username: %v", err)
+		}
+		in.UserInfo.Username = username
+	} else {
+		ok := utils.RegexpUsername(in.UserInfo.Username)
+		if !ok {
+			return nil, xerrors.Errorf("username not legal")
+		}
+	}
+
 	_, err := userinfo.QueryUserByParam(ctx, in.UserInfo.Username)
 	if err == nil {
 		return nil, xerrors.Errorf("user exists")
@@ -105,13 +118,6 @@ func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespo
 	}
 
 	in.UserInfo.SignupMethod = "admin create"
-	if in.UserInfo.Username == "" {
-		username, err := utils.GenerateUsername()
-		if err != nil {
-			return nil, xerrors.Errorf("fail to generate username: %v", err)
-		}
-		in.UserInfo.Username = username
-	}
 
 	resp, err := userinfo.Create(ctx, in)
 	if err != nil {
@@ -141,23 +147,12 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 		return nil, xerrors.Errorf("input code is empty")
 	}
 
-	switch in.VerifyParam {
-	case Email:
-		err := grpc.VerifyCode(in.VerifyParam, in.Code)
+	if in.VerifyParam == Email || in.VerifyParam == Phone {
+		err := grpc.VerifyCodeWithUserID(in.UserID, in.VerifyParam, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
-	case Phone:
-		err := grpc.VerifyCode(in.VerifyParam, in.Code)
-		if err != nil {
-			return nil, xerrors.Errorf("fail to verify code: %v", err)
-		}
-	case Google:
-		err := grpc.VerifyGoogleCode(in.UserID, in.AppID, in.Code)
-		if err != nil {
-			return nil, xerrors.Errorf("fail to verify code: %v", err)
-		}
-	default:
+	} else {
 		return nil, xerrors.Errorf("please input correct user account info")
 	}
 
@@ -192,9 +187,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 	}
 
 	var userID string
-
-	switch in.VerifyParam {
-	case Phone:
+	if in.VerifyParam == Email || in.VerifyParam == Phone {
 		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
 		if err != nil {
 			return nil, err
@@ -204,27 +197,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
 		userID = userInfo.UserID
-	case Email:
-		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
-		if err != nil {
-			return nil, err
-		}
-		err = grpc.VerifyCode(in.VerifyParam, in.Code)
-		if err != nil {
-			return nil, xerrors.Errorf("fail to verify code: %v", err)
-		}
-		userID = userInfo.UserID
-	case Google:
-		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
-		if err != nil {
-			return nil, err
-		}
-		err = grpc.VerifyGoogleCode(userInfo.UserID, in.AppID, in.Code)
-		if err != nil {
-			return nil, xerrors.Errorf("fail to verify code: %v", err)
-		}
-		userID = userInfo.UserID
-	default:
+	} else {
 		return nil, xerrors.Errorf("please input correct user account info")
 	}
 
@@ -285,7 +258,7 @@ func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*np
 		return nil, xerrors.Errorf("old email and new email cannot be same")
 	}
 
-	err := grpc.VerifyCode(in.OldEmail, in.OldCode)
+	err := grpc.VerifyCodeWithUserID(in.UserID, in.OldEmail, in.OldCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
 	}
@@ -314,7 +287,7 @@ func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*np
 		return nil, xerrors.Errorf("old phone and new phone cannot be same")
 	}
 
-	err := grpc.VerifyCode(in.OldPhone, in.OldCode)
+	err := grpc.VerifyCodeWithUserID(in.UserID, in.OldPhone, in.OldCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
 	}

@@ -262,7 +262,7 @@ func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*np
 		return nil, xerrors.Errorf("input code cannot be empty")
 	}
 
-	if in.OldEmail != in.NewEmail {
+	if in.OldEmail == in.NewEmail {
 		return nil, xerrors.Errorf("old email and new email cannot be same")
 	}
 
@@ -291,7 +291,7 @@ func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*np
 		return nil, xerrors.Errorf("input code cannot be empty")
 	}
 
-	if in.OldPhone != in.NewPhone {
+	if in.OldPhone == in.NewPhone {
 		return nil, xerrors.Errorf("old phone and new phone cannot be same")
 	}
 

@@ -18,7 +18,7 @@ const (
 	Google = "google"
 )
 
-func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) {
+func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) { // nolint
 	if in.Code == "" || in.Password == "" {
 		return nil, xerrors.Errorf("verify code and password not empty")
 	}

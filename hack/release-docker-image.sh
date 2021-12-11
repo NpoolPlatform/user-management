@@ -25,6 +25,12 @@ fi
 
 service_name=$1
 
+registry=uhub.service.ucloud.cn
+
+if [ "x" != $3 ]; then
+  registry=$3
+fi
+
 echo "Release docker image for $PLATFORM -- $version"
 
 user=`whoami`

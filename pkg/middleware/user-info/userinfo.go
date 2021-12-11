@@ -155,7 +155,7 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 		return nil, xerrors.Errorf("input code is empty")
 	}
 
-	if in.VerifyParam == Email || in.VerifyParam == Phone {
+	if in.VerifyType == Email || in.VerifyType == Phone {
 		err := grpc.VerifyCodeWithUserID(in.UserID, in.VerifyParam, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
@@ -195,7 +195,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 	}
 
 	var userID string
-	if in.VerifyParam == Email || in.VerifyParam == Phone {
+	if in.VerifyType == Email || in.VerifyType == Phone {
 		userInfo, err := userinfo.QueryUserByParam(ctx, in.VerifyParam)
 		if err != nil {
 			return nil, err

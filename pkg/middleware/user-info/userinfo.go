@@ -19,6 +19,14 @@ const (
 )
 
 func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) {
+	if in.Code == "" || in.Password == "" {
+		return nil, xerrors.Errorf("verify code and password not empty")
+	}
+
+	if in.EmailAddress == "" && in.PhoneNumber == "" {
+		return nil, xerrors.Errorf("user account info cannot be null")
+	}
+
 	err := grpc.QueryAppExist(in.AppID)
 	if err != nil {
 		return nil, xerrors.Errorf("user sign up app not exist: %v", err)

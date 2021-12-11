@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -25,6 +26,7 @@ func TestUtils(t *testing.T) {
 
 	username, err := GenerateUsername()
 	assert.Nil(t, err)
+	fmt.Println("user name is", username)
 	match = RegexpUsername(username)
 	assert.Equal(t, true, match)
 }

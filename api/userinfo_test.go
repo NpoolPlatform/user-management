@@ -28,7 +28,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 
 	addUserInfo := npool.UserBasicInfo{
 		Username:    uuid.New().String()[0:12],
-		Password:    "123456789",
+		Password:    "12343dsadsa56789",
 		PhoneNumber: uuid.New().String()[0:12],
 	}
 	resp2, err := cli.R().
@@ -50,7 +50,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 
 	signupUserInfo := npool.UserBasicInfo{
 		Username:     uuid.New().String()[0:12],
-		Password:     "123456789",
+		Password:     "1234dsada56789",
 		EmailAddress: uuid.New().String() + ".com",
 	}
 
@@ -128,7 +128,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetBody(&npool.ChangeUserPasswordRequest{
 			UserID:      addUserInfo.UserID,
 			OldPassword: addUserInfo.Password,
-			Password:    "987654321",
+			Password:    "987654dasdsa321",
 		}).
 		Post("http://localhost:50070/v1/change/password")
 	if assert.Nil(t, err) {
@@ -139,7 +139,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ForgetPasswordRequest{
 			VerifyParam: addUserInfo.PhoneNumber,
-			Password:    "123456789",
+			Password:    "12345asdasd6789",
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {
@@ -150,7 +150,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 		SetHeader("Content-Type", "application/json").
 		SetBody(&npool.ForgetPasswordRequest{
 			VerifyParam: addUserInfo.EmailAddress,
-			Password:    "123456789",
+			Password:    "12345dasdas6789",
 		}).
 		Post("http://localhost:50070/v1/forget/password")
 	if assert.Nil(t, err) {

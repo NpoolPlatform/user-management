@@ -22,7 +22,7 @@ func TestUserProviderAPI(t *testing.T) {
 
 	addUserInfo := npool.UserBasicInfo{
 		Username:    uuid.New().String()[0:12],
-		Password:    "123456789",
+		Password:    "12345dasda6789",
 		PhoneNumber: uuid.New().String()[0:12],
 	}
 	resp1, err := cli.R().

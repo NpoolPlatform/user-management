@@ -29,13 +29,13 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 
 	SignupUserInfo := &npool.SignupRequest{
 		Username:    uuid.New().String()[0:12],
-		Password:    "123456789",
+		Password:    "123456dasdas789",
 		PhoneNumber: "test-signup" + uuid.New().String(),
 	}
 	CreateUserInfo := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
 			Username:    uuid.New().String()[0:12],
-			Password:    "123456789",
+			Password:    "12345adsda6789",
 			PhoneNumber: "test-add" + uuid.New().String(),
 		},
 	}
@@ -50,13 +50,13 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	_, err = ChangeUserPassword(context.Background(), &npool.ChangeUserPasswordRequest{
 		UserID:      resp2.Info.UserID,
 		OldPassword: CreateUserInfo.UserInfo.Password,
-		Password:    "987654321",
+		Password:    "98765dassd4321",
 	})
 	assert.NotNil(t, err)
 
 	_, err = ForgetPassword(context.Background(), &npool.ForgetPasswordRequest{
 		VerifyType: CreateUserInfo.UserInfo.PhoneNumber,
-		Password:   "987654321",
+		Password:   "98765dasdas4321",
 	})
 	assert.NotNil(t, err)
 

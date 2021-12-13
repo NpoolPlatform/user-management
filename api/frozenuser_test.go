@@ -22,7 +22,7 @@ func TestFrozenUserAPI(t *testing.T) {
 
 	addUserInfo := npool.UserBasicInfo{
 		Username:    uuid.New().String()[0:12],
-		Password:    "123456789",
+		Password:    "12dasda3456789",
 		PhoneNumber: uuid.New().String(),
 	}
 	resp1, err := cli.R().

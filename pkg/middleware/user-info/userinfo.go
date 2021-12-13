@@ -20,11 +20,15 @@ const (
 
 func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse, error) { // nolint
 	if in.Code == "" || in.Password == "" {
-		return nil, xerrors.Errorf("verify code and password not empty")
+		return nil, xerrors.Errorf("verify code and password can not empty")
 	}
 
 	if in.EmailAddress == "" && in.PhoneNumber == "" {
 		return nil, xerrors.Errorf("user account info cannot be null")
+	}
+
+	if match := utils.RegexpPassword(in.Password); !match {
+		return nil, xerrors.Errorf("password not legal")
 	}
 
 	err := grpc.QueryAppExist(in.AppID)
@@ -93,6 +97,10 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 }
 
 func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
+	if utils.RegexpPassword(in.UserInfo.Password) {
+		return nil, xerrors.Errorf("password isn't legal")
+	}
+
 	if in.UserInfo.Username == "" {
 		username, err := utils.GenerateUsername()
 		if err != nil {
@@ -151,8 +159,12 @@ func SetPassword(ctx context.Context, in *npool.SetPasswordRequest) (*npool.SetP
 }
 
 func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest) (*npool.ChangeUserPasswordResponse, error) {
-	if in.Code == "" {
-		return nil, xerrors.Errorf("input code is empty")
+	if in.Code == "" || in.Password == "" {
+		return nil, xerrors.Errorf("input code or password cannot empty")
+	}
+
+	if match := utils.RegexpPassword(in.Password); !match {
+		return nil, xerrors.Errorf("password isn't legal")
 	}
 
 	if in.VerifyType == Email || in.VerifyType == Phone {
@@ -190,8 +202,12 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 }
 
 func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npool.ForgetPasswordResponse, error) {
-	if in.Code == "" {
-		return nil, xerrors.Errorf("input code is empty")
+	if in.Code == "" || in.Password == "" {
+		return nil, xerrors.Errorf("input code or password cannot be empty")
+	}
+
+	if match := utils.RegexpPassword(in.Password); !match {
+		return nil, xerrors.Errorf("password isn't legal")
 	}
 
 	var userID string
@@ -219,8 +235,8 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 }
 
 func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.BindUserPhoneResponse, error) {
-	if in.Code == "" {
-		return nil, xerrors.Errorf("input code is empty")
+	if in.Code == "" || in.PhoneNumber == "" {
+		return nil, xerrors.Errorf("input phone number and code cannot be empty")
 	}
 
 	err := grpc.VerifyCode(in.PhoneNumber, in.Code)
@@ -238,8 +254,8 @@ func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.
 }
 
 func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.BindUserEmailResponse, error) {
-	if in.Code == "" {
-		return nil, xerrors.Errorf("input code is empty")
+	if in.Code == "" || in.EmailAddress == "" {
+		return nil, xerrors.Errorf("input email address and code cannot be empty")
 	}
 
 	err := grpc.VerifyCode(in.EmailAddress, in.Code)
@@ -257,9 +273,13 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 	}, nil
 }
 
-func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*npool.UpdateUserEmailResponse, error) {
+func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*npool.UpdateUserEmailResponse, error) { // nolint
 	if in.OldCode == "" || in.NewCode == "" {
 		return nil, xerrors.Errorf("input code cannot be empty")
+	}
+
+	if in.OldEmail == "" || in.NewEmail == "" {
+		return nil, xerrors.Errorf("input old email and new email cannot be empty")
 	}
 
 	if in.OldEmail == in.NewEmail {
@@ -286,9 +306,13 @@ func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*np
 	}, nil
 }
 
-func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*npool.UpdateUserPhoneResponse, error) {
+func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*npool.UpdateUserPhoneResponse, error) { // nolint
 	if in.OldCode == "" || in.NewCode == "" {
 		return nil, xerrors.Errorf("input code cannot be empty")
+	}
+
+	if in.OldPhone == "" || in.NewPhone == "" {
+		return nil, xerrors.Errorf("input old email and new email cannot be empty")
 	}
 
 	if in.OldPhone == in.NewPhone {

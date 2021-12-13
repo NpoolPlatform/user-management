@@ -1,15 +1,18 @@
 package utils
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestUtils(t *testing.T) {
-	username := "12312312312312321312"
+	username := "123  dsada"
 	match := RegexpUsername(username)
+	assert.Equal(t, false, match)
+
+	username = "12312312312312321312"
+	match = RegexpUsername(username)
 	assert.Equal(t, false, match)
 
 	username = "242424242"
@@ -26,7 +29,22 @@ func TestUtils(t *testing.T) {
 
 	username, err := GenerateUsername()
 	assert.Nil(t, err)
-	fmt.Println("user name is", username)
 	match = RegexpUsername(username)
+	assert.Equal(t, true, match)
+
+	passwprd := "crasd12313"
+	match = RegexpPassword(passwprd)
+	assert.Equal(t, true, match)
+
+	passwprd = "12312312312"
+	match = RegexpPassword(passwprd)
+	assert.Equal(t, false, match)
+
+	passwprd = "dasdsadasdasdas"
+	match = RegexpPassword(passwprd)
+	assert.Equal(t, false, match)
+
+	passwprd = "ojidsoaWJ894342"
+	match = RegexpPassword(passwprd)
 	assert.Equal(t, true, match)
 }

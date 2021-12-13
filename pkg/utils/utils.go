@@ -3,6 +3,7 @@ package utils
 import (
 	"net/mail"
 	"regexp"
+	"strings"
 
 	"github.com/AmirSoleimani/VoucherCodeGenerator/vcgen"
 	"golang.org/x/xerrors"
@@ -22,6 +23,10 @@ func GenerateUsername() (string, error) {
 }
 
 func RegexpUsername(username string) bool {
+	if len(username) < 4 || len(username) > 32 {
+		return false
+	}
+
 	if b, err := regexp.MatchString("^[0-9]*$", username); b {
 		if err == nil {
 			return false
@@ -29,6 +34,31 @@ func RegexpUsername(username string) bool {
 		return false
 	}
 
+	if b := strings.Contains(username, " "); b {
+		return false
+	}
+
 	_, err := mail.ParseAddress(username)
 	return err != nil
+}
+
+func RegexpPassword(password string) bool {
+	if b, err := regexp.MatchString("^[0-9]*$", password); b {
+		if err == nil {
+			return false
+		}
+		return false
+	}
+
+	if b, err := regexp.MatchString("^[a-zA-Z]*$", password); b {
+		if err == nil {
+			return false
+		}
+		return false
+	}
+
+	if b := strings.Contains(password, " "); b {
+		return false
+	}
+	return true
 }

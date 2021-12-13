@@ -97,7 +97,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 }
 
 func AddUser(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
-	if utils.RegexpPassword(in.UserInfo.Password) {
+	if !utils.RegexpPassword(in.UserInfo.Password) {
 		return nil, xerrors.Errorf("password isn't legal")
 	}
 

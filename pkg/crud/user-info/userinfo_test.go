@@ -49,7 +49,7 @@ func TestUserInfoCRUD(t *testing.T) {
 		return
 	}
 	userInfo := npool.UserBasicInfo{
-		Username:     uuid.New().String(),
+		Username:     uuid.New().String()[0:12],
 		Password:     "123456789",
 		Age:          22,
 		Gender:       "male",

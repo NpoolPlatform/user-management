@@ -28,13 +28,13 @@ func TestUserInfoMiddleware(t *testing.T) { // nolint
 	}
 
 	SignupUserInfo := &npool.SignupRequest{
-		Username:    "test-signup" + uuid.New().String(),
+		Username:    uuid.New().String()[0:12],
 		Password:    "123456789",
 		PhoneNumber: "test-signup" + uuid.New().String(),
 	}
 	CreateUserInfo := &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
-			Username:    "test-add" + uuid.NewString(),
+			Username:    uuid.New().String()[0:12],
 			Password:    "123456789",
 			PhoneNumber: "test-add" + uuid.New().String(),
 		},

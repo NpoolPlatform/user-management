@@ -21,7 +21,7 @@ func TestFrozenUserAPI(t *testing.T) {
 	cli := resty.New()
 
 	addUserInfo := npool.UserBasicInfo{
-		Username:    "test-add" + uuid.New().String(),
+		Username:    uuid.New().String()[0:12],
 		Password:    "123456789",
 		PhoneNumber: uuid.New().String(),
 	}

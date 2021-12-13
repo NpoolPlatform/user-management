@@ -27,9 +27,9 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	cli := resty.New()
 
 	addUserInfo := npool.UserBasicInfo{
-		Username:    "test-add" + uuid.New().String(),
+		Username:    uuid.New().String()[0:12],
 		Password:    "123456789",
-		PhoneNumber: uuid.New().String(),
+		PhoneNumber: uuid.New().String()[0:12],
 	}
 	resp2, err := cli.R().
 		SetHeader("Content-Type", "application/json").
@@ -49,7 +49,7 @@ func TestUserInfoAPI(t *testing.T) { //nolint
 	}
 
 	signupUserInfo := npool.UserBasicInfo{
-		Username:     "test-signup" + uuid.New().String(),
+		Username:     uuid.New().String()[0:12],
 		Password:     "123456789",
 		EmailAddress: uuid.New().String() + ".com",
 	}

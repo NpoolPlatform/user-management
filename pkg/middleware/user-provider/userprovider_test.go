@@ -30,7 +30,7 @@ func TestUserProviderMiddleware(t *testing.T) { // nolint
 
 	resp, err := userinfo.Create(context.Background(), &npool.AddUserRequest{
 		UserInfo: &npool.UserBasicInfo{
-			Username:    "test-frozen" + uuid.New().String(),
+			Username:    uuid.New().String()[0:12],
 			Password:    "123456789",
 			PhoneNumber: uuid.New().String(),
 		},

@@ -35,6 +35,7 @@ var (
 		{Name: "street_address1", Type: field.TypeString, Default: ""},
 		{Name: "street_address2", Type: field.TypeString, Default: ""},
 		{Name: "compony", Type: field.TypeString, Default: ""},
+		{Name: "postal_code", Type: field.TypeString, Default: ""},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

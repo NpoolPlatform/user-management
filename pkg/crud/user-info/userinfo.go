@@ -41,6 +41,7 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 		StreetAddress1: row.StreetAddress1,
 		StreetAddress2: row.StreetAddress2,
 		Compony:        row.Compony,
+		PostalCode:     row.PostalCode,
 	}
 }
 
@@ -77,6 +78,7 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 		SetStreetAddress1(in.UserInfo.StreetAddress1).
 		SetStreetAddress2(in.UserInfo.StreetAddress2).
 		SetCompony(in.UserInfo.Compony).
+		SetPostalCode(in.UserInfo.PostalCode).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to create user: %v", err)
@@ -145,6 +147,7 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 		SetStreetAddress1(in.Info.StreetAddress1).
 		SetStreetAddress2(in.Info.StreetAddress2).
 		SetCompony(in.Info.Compony).
+		SetPostalCode(in.Info.PostalCode).
 		Save(ctx)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to update user info: %v", err)

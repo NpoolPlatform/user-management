@@ -90,6 +90,10 @@ func init() {
 	userDescCompony := userFields[24].Descriptor()
 	// user.DefaultCompony holds the default value on creation for the compony field.
 	user.DefaultCompony = userDescCompony.Default.(string)
+	// userDescPostalCode is the schema descriptor for postal_code field.
+	userDescPostalCode := userFields[25].Descriptor()
+	// user.DefaultPostalCode holds the default value on creation for the postal_code field.
+	user.DefaultPostalCode = userDescPostalCode.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userFields[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

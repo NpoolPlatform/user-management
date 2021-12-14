@@ -979,6 +979,7 @@
 | StreetAddress1 | [string](#string) |  |  |
 | StreetAddress2 | [string](#string) |  |  |
 | Compony | [string](#string) |  |  |
+| PostalCode | [string](#string) |  |  |
 
 
 

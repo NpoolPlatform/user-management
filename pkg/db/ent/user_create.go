@@ -324,6 +324,20 @@ func (uc *UserCreate) SetNillableCompony(s *string) *UserCreate {
 	return uc
 }
 
+// SetPostalCode sets the "postal_code" field.
+func (uc *UserCreate) SetPostalCode(s string) *UserCreate {
+	uc.mutation.SetPostalCode(s)
+	return uc
+}
+
+// SetNillablePostalCode sets the "postal_code" field if the given value is not nil.
+func (uc *UserCreate) SetNillablePostalCode(s *string) *UserCreate {
+	if s != nil {
+		uc.SetPostalCode(*s)
+	}
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(u uuid.UUID) *UserCreate {
 	uc.mutation.SetID(u)
@@ -473,6 +487,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultCompony
 		uc.mutation.SetCompony(v)
 	}
+	if _, ok := uc.mutation.PostalCode(); !ok {
+		v := user.DefaultPostalCode
+		uc.mutation.SetPostalCode(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -546,6 +564,9 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Compony(); !ok {
 		return &ValidationError{Name: "compony", err: errors.New(`ent: missing required field "compony"`)}
+	}
+	if _, ok := uc.mutation.PostalCode(); !ok {
+		return &ValidationError{Name: "postal_code", err: errors.New(`ent: missing required field "postal_code"`)}
 	}
 	return nil
 }
@@ -770,6 +791,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 			Column: user.FieldCompony,
 		})
 		_node.Compony = value
+	}
+	if value, ok := uc.mutation.PostalCode(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldPostalCode,
+		})
+		_node.PostalCode = value
 	}
 	return _node, _spec
 }

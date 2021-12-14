@@ -56,6 +56,7 @@ func (User) Fields() []ent.Field {
 		field.String("street_address1").Default(""),
 		field.String("street_address2").Default(""),
 		field.String("compony").Default(""),
+		field.String("postal_code").Default(""),
 	}
 }
 

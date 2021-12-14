@@ -246,6 +246,7 @@ message UserBasicInfo {
     string StreetAddress1 = 25;
     string StreetAddress2 = 26;
     string Compony = 27;
+    string PostalCode = 28;
 }
 
 message SignupRequest {

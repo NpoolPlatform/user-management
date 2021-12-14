@@ -64,6 +64,8 @@ type User struct {
 	StreetAddress2 string `json:"street_address2,omitempty"`
 	// Compony holds the value of the "compony" field.
 	Compony string `json:"compony,omitempty"`
+	// PostalCode holds the value of the "postal_code" field.
+	PostalCode string `json:"postal_code,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -73,7 +75,7 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
 			values[i] = new(sql.NullInt64)
-		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2, user.FieldCompony:
+		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2, user.FieldCompony, user.FieldPostalCode:
 			values[i] = new(sql.NullString)
 		case user.FieldID:
 			values[i] = new(uuid.UUID)
@@ -242,6 +244,12 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.Compony = value.String
 			}
+		case user.FieldPostalCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field postal_code", values[i])
+			} else if value.Valid {
+				u.PostalCode = value.String
+			}
 		}
 	}
 	return nil
@@ -318,6 +326,8 @@ func (u *User) String() string {
 	builder.WriteString(u.StreetAddress2)
 	builder.WriteString(", compony=")
 	builder.WriteString(u.Compony)
+	builder.WriteString(", postal_code=")
+	builder.WriteString(u.PostalCode)
 	builder.WriteByte(')')
 	return builder.String()
 }

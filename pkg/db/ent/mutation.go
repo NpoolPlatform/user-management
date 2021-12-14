@@ -64,6 +64,7 @@ type UserMutation struct {
 	street_address1 *string
 	street_address2 *string
 	compony         *string
+	postal_code     *string
 	clearedFields   map[string]struct{}
 	done            bool
 	oldValue        func(context.Context) (*User, error)
@@ -1125,6 +1126,42 @@ func (m *UserMutation) ResetCompony() {
 	m.compony = nil
 }
 
+// SetPostalCode sets the "postal_code" field.
+func (m *UserMutation) SetPostalCode(s string) {
+	m.postal_code = &s
+}
+
+// PostalCode returns the value of the "postal_code" field in the mutation.
+func (m *UserMutation) PostalCode() (r string, exists bool) {
+	v := m.postal_code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldPostalCode returns the old "postal_code" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldPostalCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, fmt.Errorf("OldPostalCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, fmt.Errorf("OldPostalCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldPostalCode: %w", err)
+	}
+	return oldValue.PostalCode, nil
+}
+
+// ResetPostalCode resets all changes to the "postal_code" field.
+func (m *UserMutation) ResetPostalCode() {
+	m.postal_code = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -1144,7 +1181,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 24)
+	fields := make([]string, 0, 25)
 	if m.username != nil {
 		fields = append(fields, user.FieldUsername)
 	}
@@ -1217,6 +1254,9 @@ func (m *UserMutation) Fields() []string {
 	if m.compony != nil {
 		fields = append(fields, user.FieldCompony)
 	}
+	if m.postal_code != nil {
+		fields = append(fields, user.FieldPostalCode)
+	}
 	return fields
 }
 
@@ -1273,6 +1313,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.StreetAddress2()
 	case user.FieldCompony:
 		return m.Compony()
+	case user.FieldPostalCode:
+		return m.PostalCode()
 	}
 	return nil, false
 }
@@ -1330,6 +1372,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldStreetAddress2(ctx)
 	case user.FieldCompony:
 		return m.OldCompony(ctx)
+	case user.FieldPostalCode:
+		return m.OldPostalCode(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -1506,6 +1550,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetCompony(v)
+		return nil
+	case user.FieldPostalCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetPostalCode(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -1693,6 +1744,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldCompony:
 		m.ResetCompony()
+		return nil
+	case user.FieldPostalCode:
+		m.ResetPostalCode()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

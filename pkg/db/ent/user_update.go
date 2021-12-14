@@ -362,6 +362,20 @@ func (uu *UserUpdate) SetNillableCompony(s *string) *UserUpdate {
 	return uu
 }
 
+// SetPostalCode sets the "postal_code" field.
+func (uu *UserUpdate) SetPostalCode(s string) *UserUpdate {
+	uu.mutation.SetPostalCode(s)
+	return uu
+}
+
+// SetNillablePostalCode sets the "postal_code" field if the given value is not nil.
+func (uu *UserUpdate) SetNillablePostalCode(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetPostalCode(*s)
+	}
+	return uu
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -654,6 +668,13 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldCompony,
+		})
+	}
+	if value, ok := uu.mutation.PostalCode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldPostalCode,
 		})
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -1011,6 +1032,20 @@ func (uuo *UserUpdateOne) SetNillableCompony(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetPostalCode sets the "postal_code" field.
+func (uuo *UserUpdateOne) SetPostalCode(s string) *UserUpdateOne {
+	uuo.mutation.SetPostalCode(s)
+	return uuo
+}
+
+// SetNillablePostalCode sets the "postal_code" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillablePostalCode(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetPostalCode(*s)
+	}
+	return uuo
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -1327,6 +1362,13 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldCompony,
+		})
+	}
+	if value, ok := uuo.mutation.PostalCode(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: user.FieldPostalCode,
 		})
 	}
 	_node = &User{config: uuo.config}

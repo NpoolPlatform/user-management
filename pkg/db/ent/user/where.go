@@ -259,6 +259,13 @@ func Compony(v string) predicate.User {
 	})
 }
 
+// PostalCode applies equality check predicate on the "postal_code" field. It's identical to PostalCodeEQ.
+func PostalCode(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPostalCode), v))
+	})
+}
+
 // UsernameEQ applies the EQ predicate on the "username" field.
 func UsernameEQ(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
@@ -2808,6 +2815,117 @@ func ComponyEqualFold(v string) predicate.User {
 func ComponyContainsFold(v string) predicate.User {
 	return predicate.User(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldCompony), v))
+	})
+}
+
+// PostalCodeEQ applies the EQ predicate on the "postal_code" field.
+func PostalCodeEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeNEQ applies the NEQ predicate on the "postal_code" field.
+func PostalCodeNEQ(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeIn applies the In predicate on the "postal_code" field.
+func PostalCodeIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.In(s.C(FieldPostalCode), v...))
+	})
+}
+
+// PostalCodeNotIn applies the NotIn predicate on the "postal_code" field.
+func PostalCodeNotIn(vs ...string) predicate.User {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.User(func(s *sql.Selector) {
+		// if not arguments were provided, append the FALSE constants,
+		// since we can't apply "IN ()". This will make this predicate falsy.
+		if len(v) == 0 {
+			s.Where(sql.False())
+			return
+		}
+		s.Where(sql.NotIn(s.C(FieldPostalCode), v...))
+	})
+}
+
+// PostalCodeGT applies the GT predicate on the "postal_code" field.
+func PostalCodeGT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeGTE applies the GTE predicate on the "postal_code" field.
+func PostalCodeGTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeLT applies the LT predicate on the "postal_code" field.
+func PostalCodeLT(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeLTE applies the LTE predicate on the "postal_code" field.
+func PostalCodeLTE(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeContains applies the Contains predicate on the "postal_code" field.
+func PostalCodeContains(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeHasPrefix applies the HasPrefix predicate on the "postal_code" field.
+func PostalCodeHasPrefix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeHasSuffix applies the HasSuffix predicate on the "postal_code" field.
+func PostalCodeHasSuffix(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeEqualFold applies the EqualFold predicate on the "postal_code" field.
+func PostalCodeEqualFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldPostalCode), v))
+	})
+}
+
+// PostalCodeContainsFold applies the ContainsFold predicate on the "postal_code" field.
+func PostalCodeContainsFold(v string) predicate.User {
+	return predicate.User(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldPostalCode), v))
 	})
 }
 

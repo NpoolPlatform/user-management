@@ -263,7 +263,7 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 		return nil, xerrors.Errorf("bind user email error: %v", err)
 	}
 
-	err = userinfo.SetUserPhone(ctx, in.UserID, in.EmailAddress)
+	err = userinfo.SetUserEmail(ctx, in.UserID, in.EmailAddress)
 	if err != nil {
 		return nil, err
 	}

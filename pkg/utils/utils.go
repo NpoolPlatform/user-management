@@ -34,7 +34,7 @@ func RegexpUsername(username string) bool {
 		return false
 	}
 
-	if b := strings.Contains(username, " "); b {
+	if ok := strings.Contains(username, " "); ok {
 		return false
 	}
 
@@ -42,7 +42,7 @@ func RegexpUsername(username string) bool {
 	return err != nil
 }
 
-func RegexpPassword(password string) bool {
+func RegexpPassword(password string) bool { // nolint
 	if b, err := regexp.MatchString("^[0-9]*$", password); b {
 		if err == nil {
 			return false
@@ -57,8 +57,13 @@ func RegexpPassword(password string) bool {
 		return false
 	}
 
-	if b := strings.Contains(password, " "); b {
+	if ok := strings.Contains(password, " "); ok {
 		return false
 	}
+
+	if password == "" {
+		return false
+	}
+
 	return true
 }

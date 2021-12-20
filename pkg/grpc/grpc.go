@@ -17,6 +17,8 @@ func VerifyCode(param, code string) error {
 		return err
 	}
 
+	defer conn.Close()
+
 	client := pbVerification.NewVerificationDoorClient(conn)
 	_, err = client.VerifyCode(context.Background(), &pbVerification.VerifyCodeRequest{
 		Param: param,
@@ -33,6 +35,8 @@ func VerifyCodeWithUserID(userID, param, code string) error {
 	if err != nil {
 		return err
 	}
+
+	defer conn.Close()
 
 	client := pbVerification.NewVerificationDoorClient(conn)
 	_, err = client.VerifyCodeWithUserID(context.Background(), &pbVerification.VerifyCodeWithUserIDRequest{
@@ -52,6 +56,8 @@ func VerifyGoogleCode(userID, appID, code string) error {
 		return err
 	}
 
+	defer conn.Close()
+
 	client := pbVerification.NewVerificationDoorClient(conn)
 	_, err = client.VerifyGoogleAuth(context.Background(), &pbVerification.VerifyGoogleAuthRequest{
 		AppID:  appID,
@@ -69,6 +75,8 @@ func QueryAppExist(appID string) error {
 	if err != nil {
 		return err
 	}
+
+	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
 	resp, err := client.GetApplication(context.Background(), &pbApplication.GetApplicationRequest{
@@ -89,6 +97,8 @@ func AddUserToApplication(userID, appID string) error {
 		return err
 	}
 
+	defer conn.Close()
+
 	client := pbApplication.NewApplicationManagementClient(conn)
 	_, err = client.AddUsersToApplication(context.Background(), &pbApplication.AddUsersToApplicationRequest{
 		UserIDs: []string{userID},
@@ -105,6 +115,8 @@ func GetUserApplicationInfo(userID, appID string) (*pbApplication.ApplicationUse
 	if err != nil {
 		return nil, err
 	}
+
+	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
 	resp, err := client.GetApplicationUserDetail(context.Background(), &pbApplication.GetApplicationUserDetailRequest{

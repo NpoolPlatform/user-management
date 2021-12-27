@@ -41,7 +41,12 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 		return nil, xerrors.Errorf("invalid frozen admin id: %v", err)
 	}
 
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -61,7 +66,7 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 		}
 	}
 
-	info, err := db.Client().
+	info, err := cli.
 		UserFrozen.
 		Create().
 		SetUserID(id).
@@ -90,7 +95,12 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 		return nil, xerrors.Errorf("invalid unfrozen admin id: %v", err)
 	}
 
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -107,7 +117,7 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 		return nil, xerrors.Errorf("frozen user info doesn't exist")
 	}
 
-	info, err := db.Client().
+	info, err := cli.
 		UserFrozen.UpdateOneID(id).
 		SetUnfrozenBy(unfrozenBy).
 		SetStatus(UnfrozenStatus).
@@ -128,7 +138,12 @@ func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUse
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -147,7 +162,12 @@ func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUse
 }
 
 func GetAll(ctx context.Context) (*npool.GetFrozenUsersResponse, error) {
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().All(ctx)
 	if err != nil {

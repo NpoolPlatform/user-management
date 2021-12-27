@@ -41,7 +41,12 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -59,7 +64,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 		return nil, xerrors.Errorf("user has been binded this provider")
 	}
 
-	createInfo, err := db.Client().
+	createInfo, err := cli.
 		UserProvider.
 		Create().
 		SetUserID(userID).
@@ -80,7 +85,13 @@ func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUser
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
-	infos, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -118,7 +129,12 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 		return nil, err
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		UpdateOneID(id).
 		SetProviderUserID("deleted" + providerUserID + time.Now().String()).
@@ -134,7 +150,12 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 }
 
 func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, providerID uuid.UUID) (uuid.UUID, string, error) {
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return uuid.UUID{}, "", xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -157,7 +178,13 @@ func QueryUserProviderInfoByProviderUserID(ctx context.Context, in *npool.QueryU
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
-	info, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(

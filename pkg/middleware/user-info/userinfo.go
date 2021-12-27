@@ -31,7 +31,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, xerrors.Errorf("password not legal")
 	}
 
-	err := grpc.QueryAppExist(in.AppID)
+	err := grpc.QueryAppExist(ctx, in.AppID)
 	if err != nil {
 		return nil, xerrors.Errorf("user sign up app not exist: %v", err)
 	}
@@ -45,7 +45,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 			return nil, xerrors.Errorf("email has been used")
 		}
 
-		err = grpc.VerifyCode(in.EmailAddress, in.Code)
+		err = grpc.VerifyCode(ctx, in.EmailAddress, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("input code is wrong")
 		}
@@ -60,7 +60,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 			return nil, xerrors.Errorf("phone number has been used")
 		}
 
-		err = grpc.VerifyCode(in.PhoneNumber, in.Code)
+		err = grpc.VerifyCode(ctx, in.PhoneNumber, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("input code is wrong")
 		}
@@ -86,7 +86,7 @@ func Signup(ctx context.Context, in *npool.SignupRequest) (*npool.SignupResponse
 		return nil, err
 	}
 
-	err = grpc.AddUserToApplication(resp.Info.UserID, in.AppID)
+	err = grpc.AddUserToApplication(ctx, resp.Info.UserID, in.AppID)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ func ChangeUserPassword(ctx context.Context, in *npool.ChangeUserPasswordRequest
 	}
 
 	if in.VerifyType == Email || in.VerifyType == Phone {
-		err := grpc.VerifyCodeWithUserID(in.UserID, in.VerifyParam, in.Code)
+		err := grpc.VerifyCodeWithUserID(ctx, in.UserID, in.VerifyParam, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
@@ -216,7 +216,7 @@ func ForgetPassword(ctx context.Context, in *npool.ForgetPasswordRequest) (*npoo
 		if err != nil {
 			return nil, err
 		}
-		err = grpc.VerifyCode(in.VerifyParam, in.Code)
+		err = grpc.VerifyCode(ctx, in.VerifyParam, in.Code)
 		if err != nil {
 			return nil, xerrors.Errorf("fail to verify code: %v", err)
 		}
@@ -239,7 +239,7 @@ func BindUserPhone(ctx context.Context, in *npool.BindUserPhoneRequest) (*npool.
 		return nil, xerrors.Errorf("input phone number and code cannot be empty")
 	}
 
-	err := grpc.VerifyCode(in.PhoneNumber, in.Code)
+	err := grpc.VerifyCode(ctx, in.PhoneNumber, in.Code)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify phone code: %v", err)
 	}
@@ -258,7 +258,7 @@ func BindUserEmail(ctx context.Context, in *npool.BindUserEmailRequest) (*npool.
 		return nil, xerrors.Errorf("input email address and code cannot be empty")
 	}
 
-	err := grpc.VerifyCode(in.EmailAddress, in.Code)
+	err := grpc.VerifyCode(ctx, in.EmailAddress, in.Code)
 	if err != nil {
 		return nil, xerrors.Errorf("bind user email error: %v", err)
 	}
@@ -286,12 +286,12 @@ func UpdateUserEmail(ctx context.Context, in *npool.UpdateUserEmailRequest) (*np
 		return nil, xerrors.Errorf("old email and new email cannot be same")
 	}
 
-	err := grpc.VerifyCodeWithUserID(in.UserID, in.OldEmail, in.OldCode)
+	err := grpc.VerifyCodeWithUserID(ctx, in.UserID, in.OldEmail, in.OldCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
 	}
 
-	err = grpc.VerifyCode(in.NewEmail, in.NewCode)
+	err = grpc.VerifyCode(ctx, in.NewEmail, in.NewCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify new email code: %v", err)
 	}
@@ -319,12 +319,12 @@ func UpdateUserPhone(ctx context.Context, in *npool.UpdateUserPhoneRequest) (*np
 		return nil, xerrors.Errorf("old phone and new phone cannot be same")
 	}
 
-	err := grpc.VerifyCodeWithUserID(in.UserID, in.OldPhone, in.OldCode)
+	err := grpc.VerifyCodeWithUserID(ctx, in.UserID, in.OldPhone, in.OldCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify old email code: %v", err)
 	}
 
-	err = grpc.VerifyCode(in.NewPhone, in.NewCode)
+	err = grpc.VerifyCode(ctx, in.NewPhone, in.NewCode)
 	if err != nil {
 		return nil, xerrors.Errorf("fail to verify new email code: %v", err)
 	}
@@ -348,7 +348,7 @@ func GetUserDetails(ctx context.Context, in *npool.GetUserDetailsRequest) (*npoo
 		return nil, xerrors.Errorf("invalid app id: %v", err)
 	}
 
-	resp, err := grpc.GetUserApplicationInfo(in.UserID, in.AppID)
+	resp, err := grpc.GetUserApplicationInfo(ctx, in.UserID, in.AppID)
 	if err != nil {
 		return nil, xerrors.Errorf("grpc applciation error: %v", err)
 	}

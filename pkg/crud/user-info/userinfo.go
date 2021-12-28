@@ -46,6 +46,9 @@ func dbRowToInfo(row *ent.User) *npool.UserBasicInfo {
 }
 
 func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	password := in.GetUserInfo().GetPassword()
 
 	salt := encryption.Salt()
@@ -54,7 +57,12 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 		return nil, err
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Create().
 		SetUsername(in.UserInfo.Username).
@@ -90,9 +98,17 @@ func Create(ctx context.Context, in *npool.AddUserRequest) (*npool.AddUserRespon
 }
 
 func SetPassword(ctx context.Context, password, userID string) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return xerrors.Errorf("invalid user id: %v", err)
+	}
+
+	cli, err := db.Client()
+	if err != nil {
+		return xerrors.Errorf("fail get db client: %v", err)
 	}
 
 	salt := encryption.Salt()
@@ -101,7 +117,7 @@ func SetPassword(ctx context.Context, password, userID string) error {
 		return err
 	}
 
-	_, err = db.Client().
+	_, err = cli.
 		User.
 		UpdateOneID(id).
 		SetPassword(hashPassword).
@@ -114,6 +130,9 @@ func SetPassword(ctx context.Context, password, userID string) error {
 }
 
 func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.UpdateUserInfoResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(in.Info.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
@@ -129,7 +148,12 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 		return nil, xerrors.Errorf("username has been used")
 	}
 
-	info, err := db.Client().User.
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.User.
 		UpdateOneID(id).
 		SetUsername(in.Info.Username).
 		SetAvatar(in.Info.Avatar).
@@ -159,12 +183,20 @@ func Update(ctx context.Context, in *npool.UpdateUserInfoRequest) (*npool.Update
 }
 
 func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -187,7 +219,15 @@ func Get(ctx context.Context, in *npool.GetUserRequest) (*npool.GetUserResponse,
 }
 
 func GetAll(ctx context.Context) (*npool.GetUsersResponse, error) {
-	infos, err := db.Client().
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		User.
 		Query().
 		Where(
@@ -209,13 +249,21 @@ func GetAll(ctx context.Context) (*npool.GetUsersResponse, error) {
 }
 
 func Delete(ctx context.Context, in *npool.DeleteUserRequest) (*npool.DeleteUserResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	for _, id := range in.DeleteUserIDs {
 		id, err := uuid.Parse(id)
 		if err != nil {
 			return nil, xerrors.Errorf("invalid user id: %v", err)
 		}
 
-		_, err = db.Client().
+		cli, err := db.Client()
+		if err != nil {
+			return nil, xerrors.Errorf("fail get db client: %v", err)
+		}
+
+		_, err = cli.
 			User.
 			UpdateOneID(id).
 			SetDeleteAt(uint32(time.Now().Unix())).
@@ -230,11 +278,19 @@ func Delete(ctx context.Context, in *npool.DeleteUserRequest) (*npool.DeleteUser
 }
 
 func GetUserPassword(ctx context.Context, userID string) (string, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return "", xerrors.Errorf("invalid user id: %v", err)
 	}
-	info, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return "", xerrors.Errorf("fail get db client: %v", err)
+	}
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -254,11 +310,20 @@ func GetUserPassword(ctx context.Context, userID string) (string, error) {
 }
 
 func GetUserSalt(ctx context.Context, userID string) (string, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return "", xerrors.Errorf("invalid user id: %v", err)
 	}
-	info, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return "", xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -279,7 +344,15 @@ func GetUserSalt(ctx context.Context, userID string) (string, error) {
 }
 
 func QueryUserByParam(ctx context.Context, param string) (*npool.UserBasicInfo, error) {
-	info, err := db.Client().
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -298,12 +371,20 @@ func QueryUserByParam(ctx context.Context, param string) (*npool.UserBasicInfo, 
 }
 
 func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return &npool.UserBasicInfo{}, xerrors.Errorf("fail to invalid user id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -324,7 +405,15 @@ func QueryUserByUserID(ctx context.Context, userID string) (*npool.UserBasicInfo
 }
 
 func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npool.QueryUserExistResponse, error) {
-	info, err := db.Client().
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		User.
 		Query().
 		Where(
@@ -361,6 +450,9 @@ func QueryUserExist(ctx context.Context, in *npool.QueryUserExistRequest) (*npoo
 }
 
 func SetUserPhone(ctx context.Context, userID, phone string) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return xerrors.Errorf("invalid user id: %v", err)
@@ -370,7 +462,12 @@ func SetUserPhone(ctx context.Context, userID, phone string) error {
 		return xerrors.Errorf("phone number has been used")
 	}
 
-	_, err = db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	_, err = cli.
 		User.
 		UpdateOneID(id).
 		SetPhoneNumber(phone).
@@ -383,6 +480,9 @@ func SetUserPhone(ctx context.Context, userID, phone string) error {
 }
 
 func SetUserEmail(ctx context.Context, userID, email string) error {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(userID)
 	if err != nil {
 		return xerrors.Errorf("invalid user id: %v", err)
@@ -392,7 +492,12 @@ func SetUserEmail(ctx context.Context, userID, email string) error {
 		return xerrors.Errorf("email address has been used")
 	}
 
-	_, err = db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	_, err = cli.
 		User.
 		UpdateOneID(id).
 		SetEmailAddress(email).

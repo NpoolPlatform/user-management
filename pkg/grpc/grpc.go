@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"context"
+	"time"
 
 	pbApplication "github.com/NpoolPlatform/application-management/message/npool"
 	applicationconst "github.com/NpoolPlatform/application-management/pkg/message/const"
@@ -11,7 +12,11 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func VerifyCode(param, code string) error {
+const (
+	grpcTimeout = 5 * time.Second
+)
+
+func VerifyCode(ctx context.Context, param, code string) error {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err
@@ -20,7 +25,11 @@ func VerifyCode(param, code string) error {
 	defer conn.Close()
 
 	client := pbVerification.NewVerificationDoorClient(conn)
-	_, err = client.VerifyCode(context.Background(), &pbVerification.VerifyCodeRequest{
+
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	_, err = client.VerifyCode(ctx, &pbVerification.VerifyCodeRequest{
 		Param: param,
 		Code:  code,
 	})
@@ -30,7 +39,7 @@ func VerifyCode(param, code string) error {
 	return nil
 }
 
-func VerifyCodeWithUserID(userID, param, code string) error {
+func VerifyCodeWithUserID(ctx context.Context, userID, param, code string) error {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err
@@ -39,7 +48,11 @@ func VerifyCodeWithUserID(userID, param, code string) error {
 	defer conn.Close()
 
 	client := pbVerification.NewVerificationDoorClient(conn)
-	_, err = client.VerifyCodeWithUserID(context.Background(), &pbVerification.VerifyCodeWithUserIDRequest{
+
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	_, err = client.VerifyCodeWithUserID(ctx, &pbVerification.VerifyCodeWithUserIDRequest{
 		UserID: userID,
 		Code:   code,
 		Param:  param,
@@ -50,7 +63,7 @@ func VerifyCodeWithUserID(userID, param, code string) error {
 	return nil
 }
 
-func VerifyGoogleCode(userID, appID, code string) error {
+func VerifyGoogleCode(ctx context.Context, userID, appID, code string) error {
 	conn, err := mygrpc.GetGRPCConn(verificationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err
@@ -59,7 +72,10 @@ func VerifyGoogleCode(userID, appID, code string) error {
 	defer conn.Close()
 
 	client := pbVerification.NewVerificationDoorClient(conn)
-	_, err = client.VerifyGoogleAuth(context.Background(), &pbVerification.VerifyGoogleAuthRequest{
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	_, err = client.VerifyGoogleAuth(ctx, &pbVerification.VerifyGoogleAuthRequest{
 		AppID:  appID,
 		UserID: userID,
 		Code:   code,
@@ -70,7 +86,7 @@ func VerifyGoogleCode(userID, appID, code string) error {
 	return nil
 }
 
-func QueryAppExist(appID string) error {
+func QueryAppExist(ctx context.Context, appID string) error {
 	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err
@@ -79,7 +95,10 @@ func QueryAppExist(appID string) error {
 	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
-	resp, err := client.GetApplication(context.Background(), &pbApplication.GetApplicationRequest{
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	resp, err := client.GetApplication(ctx, &pbApplication.GetApplicationRequest{
 		AppID: appID,
 	})
 	if err != nil {
@@ -91,7 +110,7 @@ func QueryAppExist(appID string) error {
 	return xerrors.Errorf("app not exist")
 }
 
-func AddUserToApplication(userID, appID string) error {
+func AddUserToApplication(ctx context.Context, userID, appID string) error {
 	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return err
@@ -100,7 +119,11 @@ func AddUserToApplication(userID, appID string) error {
 	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
-	_, err = client.AddUsersToApplication(context.Background(), &pbApplication.AddUsersToApplicationRequest{
+
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	_, err = client.AddUsersToApplication(ctx, &pbApplication.AddUsersToApplicationRequest{
 		UserIDs: []string{userID},
 		AppID:   appID,
 	})
@@ -110,7 +133,7 @@ func AddUserToApplication(userID, appID string) error {
 	return nil
 }
 
-func GetUserApplicationInfo(userID, appID string) (*pbApplication.ApplicationUserDetail, error) {
+func GetUserApplicationInfo(ctx context.Context, userID, appID string) (*pbApplication.ApplicationUserDetail, error) {
 	conn, err := mygrpc.GetGRPCConn(applicationconst.ServiceName, mygrpc.GRPCTAG)
 	if err != nil {
 		return nil, err
@@ -119,7 +142,10 @@ func GetUserApplicationInfo(userID, appID string) (*pbApplication.ApplicationUse
 	defer conn.Close()
 
 	client := pbApplication.NewApplicationManagementClient(conn)
-	resp, err := client.GetApplicationUserDetail(context.Background(), &pbApplication.GetApplicationUserDetailRequest{
+	ctx, cancel := context.WithTimeout(ctx, grpcTimeout)
+	defer cancel()
+
+	resp, err := client.GetApplicationUserDetail(ctx, &pbApplication.GetApplicationUserDetailRequest{
 		UserID: userID,
 		AppID:  appID,
 	})

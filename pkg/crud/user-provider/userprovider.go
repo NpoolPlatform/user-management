@@ -33,6 +33,9 @@ func dbRowToInfo(row *ent.UserProvider) *npool.UserProvider {
 }
 
 func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindThirdPartyResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
@@ -41,7 +44,12 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -59,7 +67,7 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 		return nil, xerrors.Errorf("user has been binded this provider")
 	}
 
-	createInfo, err := db.Client().
+	createInfo, err := cli.
 		UserProvider.
 		Create().
 		SetUserID(userID).
@@ -76,11 +84,20 @@ func Create(ctx context.Context, in *npool.BindThirdPartyRequest) (*npool.BindTh
 }
 
 func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUserProvidersResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
-	infos, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -103,6 +120,9 @@ func Get(ctx context.Context, in *npool.GetUserProvidersRequest) (*npool.GetUser
 }
 
 func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.UnbindThirdPartyResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	userID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
@@ -118,7 +138,12 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 		return nil, err
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		UpdateOneID(id).
 		SetProviderUserID("deleted" + providerUserID + time.Now().String()).
@@ -134,7 +159,15 @@ func Delete(ctx context.Context, in *npool.UnbindThirdPartyRequest) (*npool.Unbi
 }
 
 func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, providerID uuid.UUID) (uuid.UUID, string, error) {
-	info, err := db.Client().
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	cli, err := db.Client()
+	if err != nil {
+		return uuid.UUID{}, "", xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(
@@ -153,11 +186,20 @@ func QueryUserProviderIDByUserIDAndProviderID(ctx context.Context, userID, provi
 }
 
 func QueryUserProviderInfoByProviderUserID(ctx context.Context, in *npool.QueryUserByUserProviderIDRequest) (*npool.QueryUserByUserProviderIDResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	providerID, err := uuid.Parse(in.ProviderID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid provider id: %v", err)
 	}
-	info, err := db.Client().
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserProvider.
 		Query().
 		Where(

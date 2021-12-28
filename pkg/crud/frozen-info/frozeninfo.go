@@ -31,6 +31,9 @@ func dbRowToInfo(row *ent.UserFrozen) *npool.FrozenUser {
 }
 
 func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUserResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
@@ -41,7 +44,12 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 		return nil, xerrors.Errorf("invalid frozen admin id: %v", err)
 	}
 
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -61,7 +69,7 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 		}
 	}
 
-	info, err := db.Client().
+	info, err := cli.
 		UserFrozen.
 		Create().
 		SetUserID(id).
@@ -80,6 +88,9 @@ func Create(ctx context.Context, in *npool.FrozenUserRequest) (*npool.FrozenUser
 }
 
 func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.UnfrozenUserResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	id, err := uuid.Parse(in.ID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid id: %v", err)
@@ -90,7 +101,12 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 		return nil, xerrors.Errorf("invalid unfrozen admin id: %v", err)
 	}
 
-	infos, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -107,7 +123,7 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 		return nil, xerrors.Errorf("frozen user info doesn't exist")
 	}
 
-	info, err := db.Client().
+	info, err := cli.
 		UserFrozen.UpdateOneID(id).
 		SetUnfrozenBy(unfrozenBy).
 		SetStatus(UnfrozenStatus).
@@ -123,12 +139,20 @@ func Update(ctx context.Context, in *npool.UnfrozenUserRequest) (*npool.Unfrozen
 }
 
 func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUserFrozenResponse, error) {
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
 	UserID, err := uuid.Parse(in.UserID)
 	if err != nil {
 		return nil, xerrors.Errorf("invalid user id: %v", err)
 	}
 
-	info, err := db.Client().
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	info, err := cli.
 		UserFrozen.
 		Query().
 		Where(
@@ -147,7 +171,15 @@ func Get(ctx context.Context, in *npool.QueryUserFrozenRequest) (*npool.QueryUse
 }
 
 func GetAll(ctx context.Context) (*npool.GetFrozenUsersResponse, error) {
-	infos, err := db.Client().
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+
+	cli, err := db.Client()
+	if err != nil {
+		return nil, xerrors.Errorf("fail get db client: %v", err)
+	}
+
+	infos, err := cli.
 		UserFrozen.
 		Query().All(ctx)
 	if err != nil {

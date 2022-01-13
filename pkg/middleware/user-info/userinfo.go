@@ -3,7 +3,7 @@ package userinfo
 import (
 	"context"
 
-	"github.com/NpoolPlatform/user-management/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/user"
 	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
 	"github.com/NpoolPlatform/user-management/pkg/grpc"

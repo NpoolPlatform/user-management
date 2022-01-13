@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	pbApplication "github.com/NpoolPlatform/application-management/message/npool"
 	applicationconst "github.com/NpoolPlatform/application-management/pkg/message/const"
 	mygrpc "github.com/NpoolPlatform/go-service-framework/pkg/grpc"
-	pbVerification "github.com/NpoolPlatform/verification-door/message/npool"
+	pbApplication "github.com/NpoolPlatform/message/npool/application"
+	pbVerification "github.com/NpoolPlatform/message/npool/verification"
 	verificationconst "github.com/NpoolPlatform/verification-door/pkg/message/const"
 	"golang.org/x/xerrors"
 )

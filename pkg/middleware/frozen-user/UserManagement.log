@@ -1,2 +1,0 @@
-{"level":"info","ts":"2022-01-13T12:55:45.317Z","caller":"app/app.go:86","msg":"success to create redis client"}
-{"level":"info","ts":"2022-01-13T12:55:45.422Z","caller":"app/app.go:93","msg":"success to create rabbitmq server"}

@@ -3,7 +3,7 @@ package frozenuser
 import (
 	"context"
 
-	"github.com/NpoolPlatform/user-management/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/user"
 	frozeninfo "github.com/NpoolPlatform/user-management/pkg/crud/frozen-info"
 	userinfo "github.com/NpoolPlatform/user-management/pkg/crud/user-info"
 )

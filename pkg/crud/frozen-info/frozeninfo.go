@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/NpoolPlatform/user-management/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/user"
 	"github.com/NpoolPlatform/user-management/pkg/db"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/userfrozen"

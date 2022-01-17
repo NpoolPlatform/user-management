@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/NpoolPlatform/user-management/message/npool"
+	npool "github.com/NpoolPlatform/message/npool/user"
 	"github.com/NpoolPlatform/user-management/pkg/encryption"
 	testinit "github.com/NpoolPlatform/user-management/pkg/test-init"
 	"github.com/google/uuid"

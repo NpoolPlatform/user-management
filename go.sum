@@ -61,8 +61,8 @@ github.com/Masterminds/sprig v2.15.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuN
 github.com/Masterminds/sprig v2.22.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
 github.com/NpoolPlatform/application-management v0.0.0-20211208025229-05c3643bbb23/go.mod h1:tnaxdTAWZg7V8em9OD5B4525RUqP6rLBU+oPdU22U78=
 github.com/NpoolPlatform/application-management v0.0.0-20211208081653-46e93c4154df/go.mod h1:tnaxdTAWZg7V8em9OD5B4525RUqP6rLBU+oPdU22U78=
-github.com/NpoolPlatform/application-management v0.0.0-20211220130311-b604f4a9f416 h1:Rf5Fb7TtZf27OdKdIYOC2K0qM8qHXW/oAulme+STous=
-github.com/NpoolPlatform/application-management v0.0.0-20211220130311-b604f4a9f416/go.mod h1:tnaxdTAWZg7V8em9OD5B4525RUqP6rLBU+oPdU22U78=
+github.com/NpoolPlatform/application-management v0.0.0-20220118102249-a68703db2408 h1:mj8SZmgN9wh0dHE3GBSNxehufM+ljXdpl4jD2+XKTG0=
+github.com/NpoolPlatform/application-management v0.0.0-20220118102249-a68703db2408/go.mod h1:XTfN3ojlkmdQShgpBY4u4ng5nHMbgSq+dRDZJs4cvwo=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211207121121-adb2402676f0/go.mod h1:6OR9IRTWXpkr7Igky6a7zbnDG2o5Vmx9zuIzNJ3M9xs=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211222114515-4928e6cf3f1f h1:lRODA53ytJrn34SFmwbDRglulni2AJketigyyrNZVpc=
 github.com/NpoolPlatform/go-service-framework v0.0.0-20211222114515-4928e6cf3f1f/go.mod h1:kR7v9OYmi38GLucJoVUOxLYiA3xtLp5TY/fWqrR6WRw=
@@ -70,8 +70,8 @@ github.com/NpoolPlatform/message v0.0.0-20220118090327-926885a280ec h1:k6U6UaPK9
 github.com/NpoolPlatform/message v0.0.0-20220118090327-926885a280ec/go.mod h1:zv/FSNmmW0Og/XKErnXrRuLzLeTDMxymEImhjNp/V/w=
 github.com/NpoolPlatform/user-management v0.0.0-20211209064002-32ab23f7777b/go.mod h1:No1dDB017gQZh1z4fZFWxhZe3GvDxz49mwUKvlY0BCU=
 github.com/NpoolPlatform/verification-door v0.0.0-20211208034705-d6ede875668c/go.mod h1:MOfpbTnpOt4zM4Sy0w9cOjJKn7sNTsZkuzyVmMInA2k=
-github.com/NpoolPlatform/verification-door v0.0.0-20211220123125-2b9208be9208 h1:zabDeomQbmb+WR8z+Z4k8OUif2ajzVxEo0KiwB4yzhQ=
-github.com/NpoolPlatform/verification-door v0.0.0-20211220123125-2b9208be9208/go.mod h1:Hcz3/UUxznJDFWYYBwe8ckLen9X22zj1m6HgMD++5FU=
+github.com/NpoolPlatform/verification-door v0.0.0-20220118103355-4fab5bae70e9 h1:H2f2vbhR40Il6Aym9gFfFlUu0dNuQpLcKAj1nPZFeNg=
+github.com/NpoolPlatform/verification-door v0.0.0-20220118103355-4fab5bae70e9/go.mod h1:GFiDvrMDO/LfCRhFN5UGqEPChke6GYiYwjKmho7kdNY=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/Shonminh/apollo-client v0.4.0 h1:AXGp4wOahrEKjheMXehgsG9B8dEfLQHttRLHeEefvus=

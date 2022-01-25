@@ -26,7 +26,8 @@ func (User) Fields() []ent.Field {
 		field.String("display_name").Default(""),
 		field.String("phone_number").Optional(),
 		field.String("email_address").Optional(),
-		field.UUID("app_id", uuid.UUID{}),
+		field.UUID("app_id", uuid.UUID{}).
+			Default(uuid.New),
 		// Signup by user or import from other app
 		field.String("signup_method"),
 		field.String("avatar").Default(""),
@@ -42,7 +43,7 @@ func (User) Fields() []ent.Field {
 		field.String("last_name").Default(""),
 		field.String("street_address1").Default(""),
 		field.String("street_address2").Default(""),
-		field.String("organization").Default(""),
+		field.String("compony").Default(""),
 		field.String("postal_code").Default(""),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {

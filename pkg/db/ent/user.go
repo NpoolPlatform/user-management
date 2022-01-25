@@ -28,14 +28,10 @@ type User struct {
 	PhoneNumber string `json:"phone_number,omitempty"`
 	// EmailAddress holds the value of the "email_address" field.
 	EmailAddress string `json:"email_address,omitempty"`
+	// AppID holds the value of the "app_id" field.
+	AppID uuid.UUID `json:"app_id,omitempty"`
 	// SignupMethod holds the value of the "signup_method" field.
 	SignupMethod string `json:"signup_method,omitempty"`
-	// CreateAt holds the value of the "create_at" field.
-	CreateAt uint32 `json:"create_at,omitempty"`
-	// UpdateAt holds the value of the "update_at" field.
-	UpdateAt uint32 `json:"update_at,omitempty"`
-	// DeleteAt holds the value of the "delete_at" field.
-	DeleteAt uint32 `json:"delete_at,omitempty"`
 	// Avatar holds the value of the "avatar" field.
 	Avatar string `json:"avatar,omitempty"`
 	// Region holds the value of the "region" field.
@@ -66,6 +62,12 @@ type User struct {
 	Compony string `json:"compony,omitempty"`
 	// PostalCode holds the value of the "postal_code" field.
 	PostalCode string `json:"postal_code,omitempty"`
+	// CreateAt holds the value of the "create_at" field.
+	CreateAt uint32 `json:"create_at,omitempty"`
+	// UpdateAt holds the value of the "update_at" field.
+	UpdateAt uint32 `json:"update_at,omitempty"`
+	// DeleteAt holds the value of the "delete_at" field.
+	DeleteAt uint32 `json:"delete_at,omitempty"`
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -73,11 +75,11 @@ func (*User) scanValues(columns []string) ([]interface{}, error) {
 	values := make([]interface{}, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt, user.FieldAge:
+		case user.FieldAge, user.FieldCreateAt, user.FieldUpdateAt, user.FieldDeleteAt:
 			values[i] = new(sql.NullInt64)
 		case user.FieldUsername, user.FieldPassword, user.FieldSalt, user.FieldDisplayName, user.FieldPhoneNumber, user.FieldEmailAddress, user.FieldSignupMethod, user.FieldAvatar, user.FieldRegion, user.FieldGender, user.FieldBirthday, user.FieldCountry, user.FieldProvince, user.FieldCity, user.FieldCareer, user.FieldFirstName, user.FieldLastName, user.FieldStreetAddress1, user.FieldStreetAddress2, user.FieldCompony, user.FieldPostalCode:
 			values[i] = new(sql.NullString)
-		case user.FieldID:
+		case user.FieldID, user.FieldAppID:
 			values[i] = new(uuid.UUID)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type User", columns[i])
@@ -136,29 +138,17 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.EmailAddress = value.String
 			}
+		case user.FieldAppID:
+			if value, ok := values[i].(*uuid.UUID); !ok {
+				return fmt.Errorf("unexpected type %T for field app_id", values[i])
+			} else if value != nil {
+				u.AppID = *value
+			}
 		case user.FieldSignupMethod:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field signup_method", values[i])
 			} else if value.Valid {
 				u.SignupMethod = value.String
-			}
-		case user.FieldCreateAt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field create_at", values[i])
-			} else if value.Valid {
-				u.CreateAt = uint32(value.Int64)
-			}
-		case user.FieldUpdateAt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field update_at", values[i])
-			} else if value.Valid {
-				u.UpdateAt = uint32(value.Int64)
-			}
-		case user.FieldDeleteAt:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
-			} else if value.Valid {
-				u.DeleteAt = uint32(value.Int64)
 			}
 		case user.FieldAvatar:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -250,6 +240,24 @@ func (u *User) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				u.PostalCode = value.String
 			}
+		case user.FieldCreateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field create_at", values[i])
+			} else if value.Valid {
+				u.CreateAt = uint32(value.Int64)
+			}
+		case user.FieldUpdateAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field update_at", values[i])
+			} else if value.Valid {
+				u.UpdateAt = uint32(value.Int64)
+			}
+		case user.FieldDeleteAt:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field delete_at", values[i])
+			} else if value.Valid {
+				u.DeleteAt = uint32(value.Int64)
+			}
 		}
 	}
 	return nil
@@ -290,14 +298,10 @@ func (u *User) String() string {
 	builder.WriteString(u.PhoneNumber)
 	builder.WriteString(", email_address=")
 	builder.WriteString(u.EmailAddress)
+	builder.WriteString(", app_id=")
+	builder.WriteString(fmt.Sprintf("%v", u.AppID))
 	builder.WriteString(", signup_method=")
 	builder.WriteString(u.SignupMethod)
-	builder.WriteString(", create_at=")
-	builder.WriteString(fmt.Sprintf("%v", u.CreateAt))
-	builder.WriteString(", update_at=")
-	builder.WriteString(fmt.Sprintf("%v", u.UpdateAt))
-	builder.WriteString(", delete_at=")
-	builder.WriteString(fmt.Sprintf("%v", u.DeleteAt))
 	builder.WriteString(", avatar=")
 	builder.WriteString(u.Avatar)
 	builder.WriteString(", region=")
@@ -328,6 +332,12 @@ func (u *User) String() string {
 	builder.WriteString(u.Compony)
 	builder.WriteString(", postal_code=")
 	builder.WriteString(u.PostalCode)
+	builder.WriteString(", create_at=")
+	builder.WriteString(fmt.Sprintf("%v", u.CreateAt))
+	builder.WriteString(", update_at=")
+	builder.WriteString(fmt.Sprintf("%v", u.UpdateAt))
+	builder.WriteString(", delete_at=")
+	builder.WriteString(fmt.Sprintf("%v", u.DeleteAt))
 	builder.WriteByte(')')
 	return builder.String()
 }

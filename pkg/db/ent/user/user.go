@@ -23,14 +23,10 @@ const (
 	FieldPhoneNumber = "phone_number"
 	// FieldEmailAddress holds the string denoting the email_address field in the database.
 	FieldEmailAddress = "email_address"
+	// FieldAppID holds the string denoting the app_id field in the database.
+	FieldAppID = "app_id"
 	// FieldSignupMethod holds the string denoting the signup_method field in the database.
 	FieldSignupMethod = "signup_method"
-	// FieldCreateAt holds the string denoting the create_at field in the database.
-	FieldCreateAt = "create_at"
-	// FieldUpdateAt holds the string denoting the update_at field in the database.
-	FieldUpdateAt = "update_at"
-	// FieldDeleteAt holds the string denoting the delete_at field in the database.
-	FieldDeleteAt = "delete_at"
 	// FieldAvatar holds the string denoting the avatar field in the database.
 	FieldAvatar = "avatar"
 	// FieldRegion holds the string denoting the region field in the database.
@@ -61,6 +57,12 @@ const (
 	FieldCompony = "compony"
 	// FieldPostalCode holds the string denoting the postal_code field in the database.
 	FieldPostalCode = "postal_code"
+	// FieldCreateAt holds the string denoting the create_at field in the database.
+	FieldCreateAt = "create_at"
+	// FieldUpdateAt holds the string denoting the update_at field in the database.
+	FieldUpdateAt = "update_at"
+	// FieldDeleteAt holds the string denoting the delete_at field in the database.
+	FieldDeleteAt = "delete_at"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -74,10 +76,8 @@ var Columns = []string{
 	FieldDisplayName,
 	FieldPhoneNumber,
 	FieldEmailAddress,
+	FieldAppID,
 	FieldSignupMethod,
-	FieldCreateAt,
-	FieldUpdateAt,
-	FieldDeleteAt,
 	FieldAvatar,
 	FieldRegion,
 	FieldAge,
@@ -93,6 +93,9 @@ var Columns = []string{
 	FieldStreetAddress2,
 	FieldCompony,
 	FieldPostalCode,
+	FieldCreateAt,
+	FieldUpdateAt,
+	FieldDeleteAt,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -108,14 +111,8 @@ func ValidColumn(column string) bool {
 var (
 	// DefaultDisplayName holds the default value on creation for the "display_name" field.
 	DefaultDisplayName string
-	// DefaultCreateAt holds the default value on creation for the "create_at" field.
-	DefaultCreateAt func() uint32
-	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
-	DefaultUpdateAt func() uint32
-	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
-	UpdateDefaultUpdateAt func() uint32
-	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
-	DefaultDeleteAt func() uint32
+	// DefaultAppID holds the default value on creation for the "app_id" field.
+	DefaultAppID func() uuid.UUID
 	// DefaultAvatar holds the default value on creation for the "avatar" field.
 	DefaultAvatar string
 	// DefaultRegion holds the default value on creation for the "region" field.
@@ -146,6 +143,14 @@ var (
 	DefaultCompony string
 	// DefaultPostalCode holds the default value on creation for the "postal_code" field.
 	DefaultPostalCode string
+	// DefaultCreateAt holds the default value on creation for the "create_at" field.
+	DefaultCreateAt func() uint32
+	// DefaultUpdateAt holds the default value on creation for the "update_at" field.
+	DefaultUpdateAt func() uint32
+	// UpdateDefaultUpdateAt holds the default value on update for the "update_at" field.
+	UpdateDefaultUpdateAt func() uint32
+	// DefaultDeleteAt holds the default value on creation for the "delete_at" field.
+	DefaultDeleteAt func() uint32
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() uuid.UUID
 )

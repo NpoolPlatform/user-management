@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 
+	"entgo.io/ent/dialect"
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/userprovider"
@@ -18,6 +20,7 @@ type UserProviderCreate struct {
 	config
 	mutation *UserProviderMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetUserID sets the "user_id" field.
@@ -89,6 +92,14 @@ func (upc *UserProviderCreate) SetNillableDeleteAt(u *uint32) *UserProviderCreat
 // SetID sets the "id" field.
 func (upc *UserProviderCreate) SetID(u uuid.UUID) *UserProviderCreate {
 	upc.mutation.SetID(u)
+	return upc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (upc *UserProviderCreate) SetNillableID(u *uuid.UUID) *UserProviderCreate {
+	if u != nil {
+		upc.SetID(*u)
+	}
 	return upc
 }
 
@@ -184,25 +195,25 @@ func (upc *UserProviderCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (upc *UserProviderCreate) check() error {
 	if _, ok := upc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "user_id"`)}
+		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserProvider.user_id"`)}
 	}
 	if _, ok := upc.mutation.ProviderID(); !ok {
-		return &ValidationError{Name: "provider_id", err: errors.New(`ent: missing required field "provider_id"`)}
+		return &ValidationError{Name: "provider_id", err: errors.New(`ent: missing required field "UserProvider.provider_id"`)}
 	}
 	if _, ok := upc.mutation.ProviderUserID(); !ok {
-		return &ValidationError{Name: "provider_user_id", err: errors.New(`ent: missing required field "provider_user_id"`)}
+		return &ValidationError{Name: "provider_user_id", err: errors.New(`ent: missing required field "UserProvider.provider_user_id"`)}
 	}
 	if _, ok := upc.mutation.UserProviderInfo(); !ok {
-		return &ValidationError{Name: "user_provider_info", err: errors.New(`ent: missing required field "user_provider_info"`)}
+		return &ValidationError{Name: "user_provider_info", err: errors.New(`ent: missing required field "UserProvider.user_provider_info"`)}
 	}
 	if _, ok := upc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "UserProvider.create_at"`)}
 	}
 	if _, ok := upc.mutation.UpdateAt(); !ok {
-		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "update_at"`)}
+		return &ValidationError{Name: "update_at", err: errors.New(`ent: missing required field "UserProvider.update_at"`)}
 	}
 	if _, ok := upc.mutation.DeleteAt(); !ok {
-		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "delete_at"`)}
+		return &ValidationError{Name: "delete_at", err: errors.New(`ent: missing required field "UserProvider.delete_at"`)}
 	}
 	return nil
 }
@@ -216,7 +227,11 @@ func (upc *UserProviderCreate) sqlSave(ctx context.Context) (*UserProvider, erro
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -232,9 +247,10 @@ func (upc *UserProviderCreate) createSpec() (*UserProvider, *sqlgraph.CreateSpec
 			},
 		}
 	)
+	_spec.OnConflict = upc.conflict
 	if id, ok := upc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := upc.mutation.UserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -295,10 +311,371 @@ func (upc *UserProviderCreate) createSpec() (*UserProvider, *sqlgraph.CreateSpec
 	return _node, _spec
 }
 
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.UserProvider.Create().
+//		SetUserID(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.UserProviderUpsert) {
+//			SetUserID(v+v).
+//		}).
+//		Exec(ctx)
+//
+func (upc *UserProviderCreate) OnConflict(opts ...sql.ConflictOption) *UserProviderUpsertOne {
+	upc.conflict = opts
+	return &UserProviderUpsertOne{
+		create: upc,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.UserProvider.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+//
+func (upc *UserProviderCreate) OnConflictColumns(columns ...string) *UserProviderUpsertOne {
+	upc.conflict = append(upc.conflict, sql.ConflictColumns(columns...))
+	return &UserProviderUpsertOne{
+		create: upc,
+	}
+}
+
+type (
+	// UserProviderUpsertOne is the builder for "upsert"-ing
+	//  one UserProvider node.
+	UserProviderUpsertOne struct {
+		create *UserProviderCreate
+	}
+
+	// UserProviderUpsert is the "OnConflict" setter.
+	UserProviderUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetUserID sets the "user_id" field.
+func (u *UserProviderUpsert) SetUserID(v uuid.UUID) *UserProviderUpsert {
+	u.Set(userprovider.FieldUserID, v)
+	return u
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateUserID() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldUserID)
+	return u
+}
+
+// SetProviderID sets the "provider_id" field.
+func (u *UserProviderUpsert) SetProviderID(v uuid.UUID) *UserProviderUpsert {
+	u.Set(userprovider.FieldProviderID, v)
+	return u
+}
+
+// UpdateProviderID sets the "provider_id" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateProviderID() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldProviderID)
+	return u
+}
+
+// SetProviderUserID sets the "provider_user_id" field.
+func (u *UserProviderUpsert) SetProviderUserID(v string) *UserProviderUpsert {
+	u.Set(userprovider.FieldProviderUserID, v)
+	return u
+}
+
+// UpdateProviderUserID sets the "provider_user_id" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateProviderUserID() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldProviderUserID)
+	return u
+}
+
+// SetUserProviderInfo sets the "user_provider_info" field.
+func (u *UserProviderUpsert) SetUserProviderInfo(v string) *UserProviderUpsert {
+	u.Set(userprovider.FieldUserProviderInfo, v)
+	return u
+}
+
+// UpdateUserProviderInfo sets the "user_provider_info" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateUserProviderInfo() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldUserProviderInfo)
+	return u
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserProviderUpsert) SetCreateAt(v uint32) *UserProviderUpsert {
+	u.Set(userprovider.FieldCreateAt, v)
+	return u
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateCreateAt() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldCreateAt)
+	return u
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserProviderUpsert) AddCreateAt(v uint32) *UserProviderUpsert {
+	u.Add(userprovider.FieldCreateAt, v)
+	return u
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *UserProviderUpsert) SetUpdateAt(v uint32) *UserProviderUpsert {
+	u.Set(userprovider.FieldUpdateAt, v)
+	return u
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateUpdateAt() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldUpdateAt)
+	return u
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *UserProviderUpsert) AddUpdateAt(v uint32) *UserProviderUpsert {
+	u.Add(userprovider.FieldUpdateAt, v)
+	return u
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *UserProviderUpsert) SetDeleteAt(v uint32) *UserProviderUpsert {
+	u.Set(userprovider.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *UserProviderUpsert) UpdateDeleteAt() *UserProviderUpsert {
+	u.SetExcluded(userprovider.FieldDeleteAt)
+	return u
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *UserProviderUpsert) AddDeleteAt(v uint32) *UserProviderUpsert {
+	u.Add(userprovider.FieldDeleteAt, v)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
+// Using this option is equivalent to using:
+//
+//	client.UserProvider.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(userprovider.FieldID)
+//			}),
+//		).
+//		Exec(ctx)
+//
+func (u *UserProviderUpsertOne) UpdateNewValues() *UserProviderUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(userprovider.FieldID)
+		}
+	}))
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//  client.UserProvider.Create().
+//      OnConflict(sql.ResolveWithIgnore()).
+//      Exec(ctx)
+//
+func (u *UserProviderUpsertOne) Ignore() *UserProviderUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *UserProviderUpsertOne) DoNothing() *UserProviderUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the UserProviderCreate.OnConflict
+// documentation for more info.
+func (u *UserProviderUpsertOne) Update(set func(*UserProviderUpsert)) *UserProviderUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&UserProviderUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserProviderUpsertOne) SetUserID(v uuid.UUID) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateUserID() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUserID()
+	})
+}
+
+// SetProviderID sets the "provider_id" field.
+func (u *UserProviderUpsertOne) SetProviderID(v uuid.UUID) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetProviderID(v)
+	})
+}
+
+// UpdateProviderID sets the "provider_id" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateProviderID() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateProviderID()
+	})
+}
+
+// SetProviderUserID sets the "provider_user_id" field.
+func (u *UserProviderUpsertOne) SetProviderUserID(v string) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetProviderUserID(v)
+	})
+}
+
+// UpdateProviderUserID sets the "provider_user_id" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateProviderUserID() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateProviderUserID()
+	})
+}
+
+// SetUserProviderInfo sets the "user_provider_info" field.
+func (u *UserProviderUpsertOne) SetUserProviderInfo(v string) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUserProviderInfo(v)
+	})
+}
+
+// UpdateUserProviderInfo sets the "user_provider_info" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateUserProviderInfo() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUserProviderInfo()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserProviderUpsertOne) SetCreateAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserProviderUpsertOne) AddCreateAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateCreateAt() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *UserProviderUpsertOne) SetUpdateAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUpdateAt(v)
+	})
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *UserProviderUpsertOne) AddUpdateAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateUpdateAt() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUpdateAt()
+	})
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *UserProviderUpsertOne) SetDeleteAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *UserProviderUpsertOne) AddDeleteAt(v uint32) *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddDeleteAt(v)
+	})
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *UserProviderUpsertOne) UpdateDeleteAt() *UserProviderUpsertOne {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateDeleteAt()
+	})
+}
+
+// Exec executes the query.
+func (u *UserProviderUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for UserProviderCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *UserProviderUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *UserProviderUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: UserProviderUpsertOne.ID is not supported by MySQL driver. Use UserProviderUpsertOne.Exec instead")
+	}
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *UserProviderUpsertOne) IDX(ctx context.Context) uuid.UUID {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
+}
+
 // UserProviderCreateBulk is the builder for creating many UserProvider entities in bulk.
 type UserProviderCreateBulk struct {
 	config
 	builders []*UserProviderCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the UserProvider entities in the database.
@@ -325,6 +702,7 @@ func (upcb *UserProviderCreateBulk) Save(ctx context.Context) ([]*UserProvider, 
 					_, err = mutators[i+1].Mutate(root, upcb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = upcb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, upcb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -371,6 +749,241 @@ func (upcb *UserProviderCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (upcb *UserProviderCreateBulk) ExecX(ctx context.Context) {
 	if err := upcb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.UserProvider.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.UserProviderUpsert) {
+//			SetUserID(v+v).
+//		}).
+//		Exec(ctx)
+//
+func (upcb *UserProviderCreateBulk) OnConflict(opts ...sql.ConflictOption) *UserProviderUpsertBulk {
+	upcb.conflict = opts
+	return &UserProviderUpsertBulk{
+		create: upcb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.UserProvider.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+//
+func (upcb *UserProviderCreateBulk) OnConflictColumns(columns ...string) *UserProviderUpsertBulk {
+	upcb.conflict = append(upcb.conflict, sql.ConflictColumns(columns...))
+	return &UserProviderUpsertBulk{
+		create: upcb,
+	}
+}
+
+// UserProviderUpsertBulk is the builder for "upsert"-ing
+// a bulk of UserProvider nodes.
+type UserProviderUpsertBulk struct {
+	create *UserProviderCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.UserProvider.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(userprovider.FieldID)
+//			}),
+//		).
+//		Exec(ctx)
+//
+func (u *UserProviderUpsertBulk) UpdateNewValues() *UserProviderUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(userprovider.FieldID)
+				return
+			}
+		}
+	}))
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.UserProvider.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+//
+func (u *UserProviderUpsertBulk) Ignore() *UserProviderUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *UserProviderUpsertBulk) DoNothing() *UserProviderUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the UserProviderCreateBulk.OnConflict
+// documentation for more info.
+func (u *UserProviderUpsertBulk) Update(set func(*UserProviderUpsert)) *UserProviderUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&UserProviderUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserProviderUpsertBulk) SetUserID(v uuid.UUID) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateUserID() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUserID()
+	})
+}
+
+// SetProviderID sets the "provider_id" field.
+func (u *UserProviderUpsertBulk) SetProviderID(v uuid.UUID) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetProviderID(v)
+	})
+}
+
+// UpdateProviderID sets the "provider_id" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateProviderID() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateProviderID()
+	})
+}
+
+// SetProviderUserID sets the "provider_user_id" field.
+func (u *UserProviderUpsertBulk) SetProviderUserID(v string) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetProviderUserID(v)
+	})
+}
+
+// UpdateProviderUserID sets the "provider_user_id" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateProviderUserID() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateProviderUserID()
+	})
+}
+
+// SetUserProviderInfo sets the "user_provider_info" field.
+func (u *UserProviderUpsertBulk) SetUserProviderInfo(v string) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUserProviderInfo(v)
+	})
+}
+
+// UpdateUserProviderInfo sets the "user_provider_info" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateUserProviderInfo() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUserProviderInfo()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserProviderUpsertBulk) SetCreateAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserProviderUpsertBulk) AddCreateAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateCreateAt() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (u *UserProviderUpsertBulk) SetUpdateAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetUpdateAt(v)
+	})
+}
+
+// AddUpdateAt adds v to the "update_at" field.
+func (u *UserProviderUpsertBulk) AddUpdateAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddUpdateAt(v)
+	})
+}
+
+// UpdateUpdateAt sets the "update_at" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateUpdateAt() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateUpdateAt()
+	})
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (u *UserProviderUpsertBulk) SetDeleteAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.SetDeleteAt(v)
+	})
+}
+
+// AddDeleteAt adds v to the "delete_at" field.
+func (u *UserProviderUpsertBulk) AddDeleteAt(v uint32) *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.AddDeleteAt(v)
+	})
+}
+
+// UpdateDeleteAt sets the "delete_at" field to the value that was provided on create.
+func (u *UserProviderUpsertBulk) UpdateDeleteAt() *UserProviderUpsertBulk {
+	return u.Update(func(s *UserProviderUpsert) {
+		s.UpdateDeleteAt()
+	})
+}
+
+// Exec executes the query.
+func (u *UserProviderUpsertBulk) Exec(ctx context.Context) error {
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the UserProviderCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for UserProviderCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *UserProviderUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

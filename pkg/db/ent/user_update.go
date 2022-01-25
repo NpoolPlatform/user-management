@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -11,6 +12,7 @@ import (
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/predicate"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/user"
+	"github.com/google/uuid"
 )
 
 // UserUpdate is the builder for updating User entities.
@@ -98,64 +100,23 @@ func (uu *UserUpdate) ClearEmailAddress() *UserUpdate {
 	return uu
 }
 
+// SetAppID sets the "app_id" field.
+func (uu *UserUpdate) SetAppID(u uuid.UUID) *UserUpdate {
+	uu.mutation.SetAppID(u)
+	return uu
+}
+
+// SetNillableAppID sets the "app_id" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableAppID(u *uuid.UUID) *UserUpdate {
+	if u != nil {
+		uu.SetAppID(*u)
+	}
+	return uu
+}
+
 // SetSignupMethod sets the "signup_method" field.
 func (uu *UserUpdate) SetSignupMethod(s string) *UserUpdate {
 	uu.mutation.SetSignupMethod(s)
-	return uu
-}
-
-// SetCreateAt sets the "create_at" field.
-func (uu *UserUpdate) SetCreateAt(u uint32) *UserUpdate {
-	uu.mutation.ResetCreateAt()
-	uu.mutation.SetCreateAt(u)
-	return uu
-}
-
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCreateAt(u *uint32) *UserUpdate {
-	if u != nil {
-		uu.SetCreateAt(*u)
-	}
-	return uu
-}
-
-// AddCreateAt adds u to the "create_at" field.
-func (uu *UserUpdate) AddCreateAt(u uint32) *UserUpdate {
-	uu.mutation.AddCreateAt(u)
-	return uu
-}
-
-// SetUpdateAt sets the "update_at" field.
-func (uu *UserUpdate) SetUpdateAt(u uint32) *UserUpdate {
-	uu.mutation.ResetUpdateAt()
-	uu.mutation.SetUpdateAt(u)
-	return uu
-}
-
-// AddUpdateAt adds u to the "update_at" field.
-func (uu *UserUpdate) AddUpdateAt(u uint32) *UserUpdate {
-	uu.mutation.AddUpdateAt(u)
-	return uu
-}
-
-// SetDeleteAt sets the "delete_at" field.
-func (uu *UserUpdate) SetDeleteAt(u uint32) *UserUpdate {
-	uu.mutation.ResetDeleteAt()
-	uu.mutation.SetDeleteAt(u)
-	return uu
-}
-
-// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDeleteAt(u *uint32) *UserUpdate {
-	if u != nil {
-		uu.SetDeleteAt(*u)
-	}
-	return uu
-}
-
-// AddDeleteAt adds u to the "delete_at" field.
-func (uu *UserUpdate) AddDeleteAt(u uint32) *UserUpdate {
-	uu.mutation.AddDeleteAt(u)
 	return uu
 }
 
@@ -203,7 +164,7 @@ func (uu *UserUpdate) SetNillableAge(u *uint32) *UserUpdate {
 }
 
 // AddAge adds u to the "age" field.
-func (uu *UserUpdate) AddAge(u uint32) *UserUpdate {
+func (uu *UserUpdate) AddAge(u int32) *UserUpdate {
 	uu.mutation.AddAge(u)
 	return uu
 }
@@ -376,6 +337,61 @@ func (uu *UserUpdate) SetNillablePostalCode(s *string) *UserUpdate {
 	return uu
 }
 
+// SetCreateAt sets the "create_at" field.
+func (uu *UserUpdate) SetCreateAt(u uint32) *UserUpdate {
+	uu.mutation.ResetCreateAt()
+	uu.mutation.SetCreateAt(u)
+	return uu
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCreateAt(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetCreateAt(*u)
+	}
+	return uu
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (uu *UserUpdate) AddCreateAt(u int32) *UserUpdate {
+	uu.mutation.AddCreateAt(u)
+	return uu
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (uu *UserUpdate) SetUpdateAt(u uint32) *UserUpdate {
+	uu.mutation.ResetUpdateAt()
+	uu.mutation.SetUpdateAt(u)
+	return uu
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (uu *UserUpdate) AddUpdateAt(u int32) *UserUpdate {
+	uu.mutation.AddUpdateAt(u)
+	return uu
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (uu *UserUpdate) SetDeleteAt(u uint32) *UserUpdate {
+	uu.mutation.ResetDeleteAt()
+	uu.mutation.SetDeleteAt(u)
+	return uu
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDeleteAt(u *uint32) *UserUpdate {
+	if u != nil {
+		uu.SetDeleteAt(*u)
+	}
+	return uu
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (uu *UserUpdate) AddDeleteAt(u int32) *UserUpdate {
+	uu.mutation.AddDeleteAt(u)
+	return uu
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -516,53 +532,18 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldEmailAddress,
 		})
 	}
+	if value, ok := uu.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: user.FieldAppID,
+		})
+	}
 	if value, ok := uu.mutation.SignupMethod(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldSignupMethod,
-		})
-	}
-	if value, ok := uu.mutation.CreateAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldCreateAt,
-		})
-	}
-	if value, ok := uu.mutation.AddedCreateAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldCreateAt,
-		})
-	}
-	if value, ok := uu.mutation.UpdateAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldUpdateAt,
-		})
-	}
-	if value, ok := uu.mutation.AddedUpdateAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldUpdateAt,
-		})
-	}
-	if value, ok := uu.mutation.DeleteAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldDeleteAt,
-		})
-	}
-	if value, ok := uu.mutation.AddedDeleteAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldDeleteAt,
 		})
 	}
 	if value, ok := uu.mutation.Avatar(); ok {
@@ -677,6 +658,48 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: user.FieldPostalCode,
 		})
 	}
+	if value, ok := uu.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldCreateAt,
+		})
+	}
+	if value, ok := uu.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldCreateAt,
+		})
+	}
+	if value, ok := uu.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldUpdateAt,
+		})
+	}
+	if value, ok := uu.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldUpdateAt,
+		})
+	}
+	if value, ok := uu.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldDeleteAt,
+		})
+	}
+	if value, ok := uu.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldDeleteAt,
+		})
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{user.Label}
@@ -768,64 +791,23 @@ func (uuo *UserUpdateOne) ClearEmailAddress() *UserUpdateOne {
 	return uuo
 }
 
+// SetAppID sets the "app_id" field.
+func (uuo *UserUpdateOne) SetAppID(u uuid.UUID) *UserUpdateOne {
+	uuo.mutation.SetAppID(u)
+	return uuo
+}
+
+// SetNillableAppID sets the "app_id" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableAppID(u *uuid.UUID) *UserUpdateOne {
+	if u != nil {
+		uuo.SetAppID(*u)
+	}
+	return uuo
+}
+
 // SetSignupMethod sets the "signup_method" field.
 func (uuo *UserUpdateOne) SetSignupMethod(s string) *UserUpdateOne {
 	uuo.mutation.SetSignupMethod(s)
-	return uuo
-}
-
-// SetCreateAt sets the "create_at" field.
-func (uuo *UserUpdateOne) SetCreateAt(u uint32) *UserUpdateOne {
-	uuo.mutation.ResetCreateAt()
-	uuo.mutation.SetCreateAt(u)
-	return uuo
-}
-
-// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCreateAt(u *uint32) *UserUpdateOne {
-	if u != nil {
-		uuo.SetCreateAt(*u)
-	}
-	return uuo
-}
-
-// AddCreateAt adds u to the "create_at" field.
-func (uuo *UserUpdateOne) AddCreateAt(u uint32) *UserUpdateOne {
-	uuo.mutation.AddCreateAt(u)
-	return uuo
-}
-
-// SetUpdateAt sets the "update_at" field.
-func (uuo *UserUpdateOne) SetUpdateAt(u uint32) *UserUpdateOne {
-	uuo.mutation.ResetUpdateAt()
-	uuo.mutation.SetUpdateAt(u)
-	return uuo
-}
-
-// AddUpdateAt adds u to the "update_at" field.
-func (uuo *UserUpdateOne) AddUpdateAt(u uint32) *UserUpdateOne {
-	uuo.mutation.AddUpdateAt(u)
-	return uuo
-}
-
-// SetDeleteAt sets the "delete_at" field.
-func (uuo *UserUpdateOne) SetDeleteAt(u uint32) *UserUpdateOne {
-	uuo.mutation.ResetDeleteAt()
-	uuo.mutation.SetDeleteAt(u)
-	return uuo
-}
-
-// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDeleteAt(u *uint32) *UserUpdateOne {
-	if u != nil {
-		uuo.SetDeleteAt(*u)
-	}
-	return uuo
-}
-
-// AddDeleteAt adds u to the "delete_at" field.
-func (uuo *UserUpdateOne) AddDeleteAt(u uint32) *UserUpdateOne {
-	uuo.mutation.AddDeleteAt(u)
 	return uuo
 }
 
@@ -873,7 +855,7 @@ func (uuo *UserUpdateOne) SetNillableAge(u *uint32) *UserUpdateOne {
 }
 
 // AddAge adds u to the "age" field.
-func (uuo *UserUpdateOne) AddAge(u uint32) *UserUpdateOne {
+func (uuo *UserUpdateOne) AddAge(u int32) *UserUpdateOne {
 	uuo.mutation.AddAge(u)
 	return uuo
 }
@@ -1046,6 +1028,61 @@ func (uuo *UserUpdateOne) SetNillablePostalCode(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// SetCreateAt sets the "create_at" field.
+func (uuo *UserUpdateOne) SetCreateAt(u uint32) *UserUpdateOne {
+	uuo.mutation.ResetCreateAt()
+	uuo.mutation.SetCreateAt(u)
+	return uuo
+}
+
+// SetNillableCreateAt sets the "create_at" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCreateAt(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetCreateAt(*u)
+	}
+	return uuo
+}
+
+// AddCreateAt adds u to the "create_at" field.
+func (uuo *UserUpdateOne) AddCreateAt(u int32) *UserUpdateOne {
+	uuo.mutation.AddCreateAt(u)
+	return uuo
+}
+
+// SetUpdateAt sets the "update_at" field.
+func (uuo *UserUpdateOne) SetUpdateAt(u uint32) *UserUpdateOne {
+	uuo.mutation.ResetUpdateAt()
+	uuo.mutation.SetUpdateAt(u)
+	return uuo
+}
+
+// AddUpdateAt adds u to the "update_at" field.
+func (uuo *UserUpdateOne) AddUpdateAt(u int32) *UserUpdateOne {
+	uuo.mutation.AddUpdateAt(u)
+	return uuo
+}
+
+// SetDeleteAt sets the "delete_at" field.
+func (uuo *UserUpdateOne) SetDeleteAt(u uint32) *UserUpdateOne {
+	uuo.mutation.ResetDeleteAt()
+	uuo.mutation.SetDeleteAt(u)
+	return uuo
+}
+
+// SetNillableDeleteAt sets the "delete_at" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDeleteAt(u *uint32) *UserUpdateOne {
+	if u != nil {
+		uuo.SetDeleteAt(*u)
+	}
+	return uuo
+}
+
+// AddDeleteAt adds u to the "delete_at" field.
+func (uuo *UserUpdateOne) AddDeleteAt(u int32) *UserUpdateOne {
+	uuo.mutation.AddDeleteAt(u)
+	return uuo
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
@@ -1134,7 +1171,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	id, ok := uuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing User.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "User.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := uuo.fields; len(fields) > 0 {
@@ -1210,53 +1247,18 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Column: user.FieldEmailAddress,
 		})
 	}
+	if value, ok := uuo.mutation.AppID(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUUID,
+			Value:  value,
+			Column: user.FieldAppID,
+		})
+	}
 	if value, ok := uuo.mutation.SignupMethod(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldSignupMethod,
-		})
-	}
-	if value, ok := uuo.mutation.CreateAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldCreateAt,
-		})
-	}
-	if value, ok := uuo.mutation.AddedCreateAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldCreateAt,
-		})
-	}
-	if value, ok := uuo.mutation.UpdateAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldUpdateAt,
-		})
-	}
-	if value, ok := uuo.mutation.AddedUpdateAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldUpdateAt,
-		})
-	}
-	if value, ok := uuo.mutation.DeleteAt(); ok {
-		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldDeleteAt,
-		})
-	}
-	if value, ok := uuo.mutation.AddedDeleteAt(); ok {
-		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
-			Type:   field.TypeUint32,
-			Value:  value,
-			Column: user.FieldDeleteAt,
 		})
 	}
 	if value, ok := uuo.mutation.Avatar(); ok {
@@ -1369,6 +1371,48 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: user.FieldPostalCode,
+		})
+	}
+	if value, ok := uuo.mutation.CreateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldCreateAt,
+		})
+	}
+	if value, ok := uuo.mutation.AddedCreateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldCreateAt,
+		})
+	}
+	if value, ok := uuo.mutation.UpdateAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldUpdateAt,
+		})
+	}
+	if value, ok := uuo.mutation.AddedUpdateAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldUpdateAt,
+		})
+	}
+	if value, ok := uuo.mutation.DeleteAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldDeleteAt,
+		})
+	}
+	if value, ok := uuo.mutation.AddedDeleteAt(); ok {
+		_spec.Fields.Add = append(_spec.Fields.Add, &sqlgraph.FieldSpec{
+			Type:   field.TypeUint32,
+			Value:  value,
+			Column: user.FieldDeleteAt,
 		})
 	}
 	_node = &User{config: uuo.config}

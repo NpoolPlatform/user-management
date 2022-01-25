@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -61,7 +62,7 @@ func (ufu *UserFrozenUpdate) SetNillableCreateAt(u *uint32) *UserFrozenUpdate {
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (ufu *UserFrozenUpdate) AddCreateAt(u uint32) *UserFrozenUpdate {
+func (ufu *UserFrozenUpdate) AddCreateAt(u int32) *UserFrozenUpdate {
 	ufu.mutation.AddCreateAt(u)
 	return ufu
 }
@@ -82,7 +83,7 @@ func (ufu *UserFrozenUpdate) SetNillableEndAt(u *uint32) *UserFrozenUpdate {
 }
 
 // AddEndAt adds u to the "end_at" field.
-func (ufu *UserFrozenUpdate) AddEndAt(u uint32) *UserFrozenUpdate {
+func (ufu *UserFrozenUpdate) AddEndAt(u int32) *UserFrozenUpdate {
 	ufu.mutation.AddEndAt(u)
 	return ufu
 }
@@ -292,7 +293,7 @@ func (ufuo *UserFrozenUpdateOne) SetNillableCreateAt(u *uint32) *UserFrozenUpdat
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (ufuo *UserFrozenUpdateOne) AddCreateAt(u uint32) *UserFrozenUpdateOne {
+func (ufuo *UserFrozenUpdateOne) AddCreateAt(u int32) *UserFrozenUpdateOne {
 	ufuo.mutation.AddCreateAt(u)
 	return ufuo
 }
@@ -313,7 +314,7 @@ func (ufuo *UserFrozenUpdateOne) SetNillableEndAt(u *uint32) *UserFrozenUpdateOn
 }
 
 // AddEndAt adds u to the "end_at" field.
-func (ufuo *UserFrozenUpdateOne) AddEndAt(u uint32) *UserFrozenUpdateOne {
+func (ufuo *UserFrozenUpdateOne) AddEndAt(u int32) *UserFrozenUpdateOne {
 	ufuo.mutation.AddEndAt(u)
 	return ufuo
 }
@@ -409,7 +410,7 @@ func (ufuo *UserFrozenUpdateOne) sqlSave(ctx context.Context) (_node *UserFrozen
 	}
 	id, ok := ufuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing UserFrozen.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "UserFrozen.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := ufuo.fields; len(fields) > 0 {

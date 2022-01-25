@@ -337,6 +337,10 @@ func (ufq *UserFrozenQuery) sqlAll(ctx context.Context) ([]*UserFrozen, error) {
 
 func (ufq *UserFrozenQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := ufq.querySpec()
+	_spec.Node.Columns = ufq.fields
+	if len(ufq.fields) > 0 {
+		_spec.Unique = ufq.unique != nil && *ufq.unique
+	}
 	return sqlgraph.CountNodes(ctx, ufq.driver, _spec)
 }
 
@@ -407,6 +411,9 @@ func (ufq *UserFrozenQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if ufq.sql != nil {
 		selector = ufq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if ufq.unique != nil && *ufq.unique {
+		selector.Distinct()
 	}
 	for _, p := range ufq.predicates {
 		p(selector)
@@ -686,9 +693,7 @@ func (ufgb *UserFrozenGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range ufgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(ufgb.fields...)...)

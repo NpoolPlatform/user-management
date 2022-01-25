@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"entgo.io/ent/dialect/sql"
@@ -67,7 +68,7 @@ func (upu *UserProviderUpdate) SetNillableCreateAt(u *uint32) *UserProviderUpdat
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (upu *UserProviderUpdate) AddCreateAt(u uint32) *UserProviderUpdate {
+func (upu *UserProviderUpdate) AddCreateAt(u int32) *UserProviderUpdate {
 	upu.mutation.AddCreateAt(u)
 	return upu
 }
@@ -80,7 +81,7 @@ func (upu *UserProviderUpdate) SetUpdateAt(u uint32) *UserProviderUpdate {
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (upu *UserProviderUpdate) AddUpdateAt(u uint32) *UserProviderUpdate {
+func (upu *UserProviderUpdate) AddUpdateAt(u int32) *UserProviderUpdate {
 	upu.mutation.AddUpdateAt(u)
 	return upu
 }
@@ -101,7 +102,7 @@ func (upu *UserProviderUpdate) SetNillableDeleteAt(u *uint32) *UserProviderUpdat
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (upu *UserProviderUpdate) AddDeleteAt(u uint32) *UserProviderUpdate {
+func (upu *UserProviderUpdate) AddDeleteAt(u int32) *UserProviderUpdate {
 	upu.mutation.AddDeleteAt(u)
 	return upu
 }
@@ -321,7 +322,7 @@ func (upuo *UserProviderUpdateOne) SetNillableCreateAt(u *uint32) *UserProviderU
 }
 
 // AddCreateAt adds u to the "create_at" field.
-func (upuo *UserProviderUpdateOne) AddCreateAt(u uint32) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) AddCreateAt(u int32) *UserProviderUpdateOne {
 	upuo.mutation.AddCreateAt(u)
 	return upuo
 }
@@ -334,7 +335,7 @@ func (upuo *UserProviderUpdateOne) SetUpdateAt(u uint32) *UserProviderUpdateOne 
 }
 
 // AddUpdateAt adds u to the "update_at" field.
-func (upuo *UserProviderUpdateOne) AddUpdateAt(u uint32) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) AddUpdateAt(u int32) *UserProviderUpdateOne {
 	upuo.mutation.AddUpdateAt(u)
 	return upuo
 }
@@ -355,7 +356,7 @@ func (upuo *UserProviderUpdateOne) SetNillableDeleteAt(u *uint32) *UserProviderU
 }
 
 // AddDeleteAt adds u to the "delete_at" field.
-func (upuo *UserProviderUpdateOne) AddDeleteAt(u uint32) *UserProviderUpdateOne {
+func (upuo *UserProviderUpdateOne) AddDeleteAt(u int32) *UserProviderUpdateOne {
 	upuo.mutation.AddDeleteAt(u)
 	return upuo
 }
@@ -448,7 +449,7 @@ func (upuo *UserProviderUpdateOne) sqlSave(ctx context.Context) (_node *UserProv
 	}
 	id, ok := upuo.mutation.ID()
 	if !ok {
-		return nil, &ValidationError{Name: "ID", err: fmt.Errorf("missing UserProvider.ID for update")}
+		return nil, &ValidationError{Name: "id", err: errors.New(`ent: missing "UserProvider.id" for update`)}
 	}
 	_spec.Node.ID.Value = id
 	if fields := upuo.fields; len(fields) > 0 {

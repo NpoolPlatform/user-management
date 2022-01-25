@@ -17,10 +17,8 @@ var (
 		{Name: "display_name", Type: field.TypeString, Default: ""},
 		{Name: "phone_number", Type: field.TypeString, Nullable: true},
 		{Name: "email_address", Type: field.TypeString, Nullable: true},
+		{Name: "app_id", Type: field.TypeUUID},
 		{Name: "signup_method", Type: field.TypeString},
-		{Name: "create_at", Type: field.TypeUint32},
-		{Name: "update_at", Type: field.TypeUint32},
-		{Name: "delete_at", Type: field.TypeUint32},
 		{Name: "avatar", Type: field.TypeString, Default: ""},
 		{Name: "region", Type: field.TypeString, Default: ""},
 		{Name: "age", Type: field.TypeUint32, Default: 0},
@@ -36,6 +34,9 @@ var (
 		{Name: "street_address2", Type: field.TypeString, Default: ""},
 		{Name: "compony", Type: field.TypeString, Default: ""},
 		{Name: "postal_code", Type: field.TypeString, Default: ""},
+		{Name: "create_at", Type: field.TypeUint32},
+		{Name: "update_at", Type: field.TypeUint32},
+		{Name: "delete_at", Type: field.TypeUint32},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{
@@ -44,19 +45,19 @@ var (
 		PrimaryKey: []*schema.Column{UsersColumns[0]},
 		Indexes: []*schema.Index{
 			{
-				Name:    "user_username",
+				Name:    "user_username_app_id",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[1]},
+				Columns: []*schema.Column{UsersColumns[1], UsersColumns[7]},
 			},
 			{
-				Name:    "user_email_address",
+				Name:    "user_email_address_app_id",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[6]},
+				Columns: []*schema.Column{UsersColumns[6], UsersColumns[7]},
 			},
 			{
-				Name:    "user_phone_number",
+				Name:    "user_phone_number_app_id",
 				Unique:  false,
-				Columns: []*schema.Column{UsersColumns[5]},
+				Columns: []*schema.Column{UsersColumns[5], UsersColumns[7]},
 			},
 		},
 	}

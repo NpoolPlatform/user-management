@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 
+	"entgo.io/ent/dialect"
+	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/NpoolPlatform/user-management/pkg/db/ent/userfrozen"
@@ -18,6 +20,7 @@ type UserFrozenCreate struct {
 	config
 	mutation *UserFrozenMutation
 	hooks    []Hook
+	conflict []sql.ConflictOption
 }
 
 // SetUserID sets the "user_id" field.
@@ -81,6 +84,14 @@ func (ufc *UserFrozenCreate) SetUnfrozenBy(u uuid.UUID) *UserFrozenCreate {
 // SetID sets the "id" field.
 func (ufc *UserFrozenCreate) SetID(u uuid.UUID) *UserFrozenCreate {
 	ufc.mutation.SetID(u)
+	return ufc
+}
+
+// SetNillableID sets the "id" field if the given value is not nil.
+func (ufc *UserFrozenCreate) SetNillableID(u *uuid.UUID) *UserFrozenCreate {
+	if u != nil {
+		ufc.SetID(*u)
+	}
 	return ufc
 }
 
@@ -172,25 +183,25 @@ func (ufc *UserFrozenCreate) defaults() {
 // check runs all checks and user-defined validators on the builder.
 func (ufc *UserFrozenCreate) check() error {
 	if _, ok := ufc.mutation.UserID(); !ok {
-		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "user_id"`)}
+		return &ValidationError{Name: "user_id", err: errors.New(`ent: missing required field "UserFrozen.user_id"`)}
 	}
 	if _, ok := ufc.mutation.FrozenBy(); !ok {
-		return &ValidationError{Name: "frozen_by", err: errors.New(`ent: missing required field "frozen_by"`)}
+		return &ValidationError{Name: "frozen_by", err: errors.New(`ent: missing required field "UserFrozen.frozen_by"`)}
 	}
 	if _, ok := ufc.mutation.FrozenCause(); !ok {
-		return &ValidationError{Name: "frozen_cause", err: errors.New(`ent: missing required field "frozen_cause"`)}
+		return &ValidationError{Name: "frozen_cause", err: errors.New(`ent: missing required field "UserFrozen.frozen_cause"`)}
 	}
 	if _, ok := ufc.mutation.CreateAt(); !ok {
-		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "create_at"`)}
+		return &ValidationError{Name: "create_at", err: errors.New(`ent: missing required field "UserFrozen.create_at"`)}
 	}
 	if _, ok := ufc.mutation.EndAt(); !ok {
-		return &ValidationError{Name: "end_at", err: errors.New(`ent: missing required field "end_at"`)}
+		return &ValidationError{Name: "end_at", err: errors.New(`ent: missing required field "UserFrozen.end_at"`)}
 	}
 	if _, ok := ufc.mutation.Status(); !ok {
-		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "status"`)}
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "UserFrozen.status"`)}
 	}
 	if _, ok := ufc.mutation.UnfrozenBy(); !ok {
-		return &ValidationError{Name: "unfrozen_by", err: errors.New(`ent: missing required field "unfrozen_by"`)}
+		return &ValidationError{Name: "unfrozen_by", err: errors.New(`ent: missing required field "UserFrozen.unfrozen_by"`)}
 	}
 	return nil
 }
@@ -204,7 +215,11 @@ func (ufc *UserFrozenCreate) sqlSave(ctx context.Context) (*UserFrozen, error) {
 		return nil, err
 	}
 	if _spec.ID.Value != nil {
-		_node.ID = _spec.ID.Value.(uuid.UUID)
+		if id, ok := _spec.ID.Value.(*uuid.UUID); ok {
+			_node.ID = *id
+		} else if err := _node.ID.Scan(_spec.ID.Value); err != nil {
+			return nil, err
+		}
 	}
 	return _node, nil
 }
@@ -220,9 +235,10 @@ func (ufc *UserFrozenCreate) createSpec() (*UserFrozen, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	_spec.OnConflict = ufc.conflict
 	if id, ok := ufc.mutation.ID(); ok {
 		_node.ID = id
-		_spec.ID.Value = id
+		_spec.ID.Value = &id
 	}
 	if value, ok := ufc.mutation.UserID(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -283,10 +299,358 @@ func (ufc *UserFrozenCreate) createSpec() (*UserFrozen, *sqlgraph.CreateSpec) {
 	return _node, _spec
 }
 
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.UserFrozen.Create().
+//		SetUserID(v).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.UserFrozenUpsert) {
+//			SetUserID(v+v).
+//		}).
+//		Exec(ctx)
+//
+func (ufc *UserFrozenCreate) OnConflict(opts ...sql.ConflictOption) *UserFrozenUpsertOne {
+	ufc.conflict = opts
+	return &UserFrozenUpsertOne{
+		create: ufc,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.UserFrozen.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+//
+func (ufc *UserFrozenCreate) OnConflictColumns(columns ...string) *UserFrozenUpsertOne {
+	ufc.conflict = append(ufc.conflict, sql.ConflictColumns(columns...))
+	return &UserFrozenUpsertOne{
+		create: ufc,
+	}
+}
+
+type (
+	// UserFrozenUpsertOne is the builder for "upsert"-ing
+	//  one UserFrozen node.
+	UserFrozenUpsertOne struct {
+		create *UserFrozenCreate
+	}
+
+	// UserFrozenUpsert is the "OnConflict" setter.
+	UserFrozenUpsert struct {
+		*sql.UpdateSet
+	}
+)
+
+// SetUserID sets the "user_id" field.
+func (u *UserFrozenUpsert) SetUserID(v uuid.UUID) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldUserID, v)
+	return u
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateUserID() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldUserID)
+	return u
+}
+
+// SetFrozenBy sets the "frozen_by" field.
+func (u *UserFrozenUpsert) SetFrozenBy(v uuid.UUID) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldFrozenBy, v)
+	return u
+}
+
+// UpdateFrozenBy sets the "frozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateFrozenBy() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldFrozenBy)
+	return u
+}
+
+// SetFrozenCause sets the "frozen_cause" field.
+func (u *UserFrozenUpsert) SetFrozenCause(v string) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldFrozenCause, v)
+	return u
+}
+
+// UpdateFrozenCause sets the "frozen_cause" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateFrozenCause() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldFrozenCause)
+	return u
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserFrozenUpsert) SetCreateAt(v uint32) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldCreateAt, v)
+	return u
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateCreateAt() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldCreateAt)
+	return u
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserFrozenUpsert) AddCreateAt(v uint32) *UserFrozenUpsert {
+	u.Add(userfrozen.FieldCreateAt, v)
+	return u
+}
+
+// SetEndAt sets the "end_at" field.
+func (u *UserFrozenUpsert) SetEndAt(v uint32) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldEndAt, v)
+	return u
+}
+
+// UpdateEndAt sets the "end_at" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateEndAt() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldEndAt)
+	return u
+}
+
+// AddEndAt adds v to the "end_at" field.
+func (u *UserFrozenUpsert) AddEndAt(v uint32) *UserFrozenUpsert {
+	u.Add(userfrozen.FieldEndAt, v)
+	return u
+}
+
+// SetStatus sets the "status" field.
+func (u *UserFrozenUpsert) SetStatus(v string) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldStatus, v)
+	return u
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateStatus() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldStatus)
+	return u
+}
+
+// SetUnfrozenBy sets the "unfrozen_by" field.
+func (u *UserFrozenUpsert) SetUnfrozenBy(v uuid.UUID) *UserFrozenUpsert {
+	u.Set(userfrozen.FieldUnfrozenBy, v)
+	return u
+}
+
+// UpdateUnfrozenBy sets the "unfrozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsert) UpdateUnfrozenBy() *UserFrozenUpsert {
+	u.SetExcluded(userfrozen.FieldUnfrozenBy)
+	return u
+}
+
+// UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
+// Using this option is equivalent to using:
+//
+//	client.UserFrozen.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(userfrozen.FieldID)
+//			}),
+//		).
+//		Exec(ctx)
+//
+func (u *UserFrozenUpsertOne) UpdateNewValues() *UserFrozenUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		if _, exists := u.create.mutation.ID(); exists {
+			s.SetIgnore(userfrozen.FieldID)
+		}
+	}))
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//  client.UserFrozen.Create().
+//      OnConflict(sql.ResolveWithIgnore()).
+//      Exec(ctx)
+//
+func (u *UserFrozenUpsertOne) Ignore() *UserFrozenUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *UserFrozenUpsertOne) DoNothing() *UserFrozenUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the UserFrozenCreate.OnConflict
+// documentation for more info.
+func (u *UserFrozenUpsertOne) Update(set func(*UserFrozenUpsert)) *UserFrozenUpsertOne {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&UserFrozenUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserFrozenUpsertOne) SetUserID(v uuid.UUID) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateUserID() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateUserID()
+	})
+}
+
+// SetFrozenBy sets the "frozen_by" field.
+func (u *UserFrozenUpsertOne) SetFrozenBy(v uuid.UUID) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetFrozenBy(v)
+	})
+}
+
+// UpdateFrozenBy sets the "frozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateFrozenBy() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateFrozenBy()
+	})
+}
+
+// SetFrozenCause sets the "frozen_cause" field.
+func (u *UserFrozenUpsertOne) SetFrozenCause(v string) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetFrozenCause(v)
+	})
+}
+
+// UpdateFrozenCause sets the "frozen_cause" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateFrozenCause() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateFrozenCause()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserFrozenUpsertOne) SetCreateAt(v uint32) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserFrozenUpsertOne) AddCreateAt(v uint32) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateCreateAt() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetEndAt sets the "end_at" field.
+func (u *UserFrozenUpsertOne) SetEndAt(v uint32) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetEndAt(v)
+	})
+}
+
+// AddEndAt adds v to the "end_at" field.
+func (u *UserFrozenUpsertOne) AddEndAt(v uint32) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.AddEndAt(v)
+	})
+}
+
+// UpdateEndAt sets the "end_at" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateEndAt() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateEndAt()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *UserFrozenUpsertOne) SetStatus(v string) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateStatus() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateStatus()
+	})
+}
+
+// SetUnfrozenBy sets the "unfrozen_by" field.
+func (u *UserFrozenUpsertOne) SetUnfrozenBy(v uuid.UUID) *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetUnfrozenBy(v)
+	})
+}
+
+// UpdateUnfrozenBy sets the "unfrozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsertOne) UpdateUnfrozenBy() *UserFrozenUpsertOne {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateUnfrozenBy()
+	})
+}
+
+// Exec executes the query.
+func (u *UserFrozenUpsertOne) Exec(ctx context.Context) error {
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for UserFrozenCreate.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *UserFrozenUpsertOne) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// Exec executes the UPSERT query and returns the inserted/updated ID.
+func (u *UserFrozenUpsertOne) ID(ctx context.Context) (id uuid.UUID, err error) {
+	if u.create.driver.Dialect() == dialect.MySQL {
+		// In case of "ON CONFLICT", there is no way to get back non-numeric ID
+		// fields from the database since MySQL does not support the RETURNING clause.
+		return id, errors.New("ent: UserFrozenUpsertOne.ID is not supported by MySQL driver. Use UserFrozenUpsertOne.Exec instead")
+	}
+	node, err := u.create.Save(ctx)
+	if err != nil {
+		return id, err
+	}
+	return node.ID, nil
+}
+
+// IDX is like ID, but panics if an error occurs.
+func (u *UserFrozenUpsertOne) IDX(ctx context.Context) uuid.UUID {
+	id, err := u.ID(ctx)
+	if err != nil {
+		panic(err)
+	}
+	return id
+}
+
 // UserFrozenCreateBulk is the builder for creating many UserFrozen entities in bulk.
 type UserFrozenCreateBulk struct {
 	config
 	builders []*UserFrozenCreate
+	conflict []sql.ConflictOption
 }
 
 // Save creates the UserFrozen entities in the database.
@@ -313,6 +677,7 @@ func (ufcb *UserFrozenCreateBulk) Save(ctx context.Context) ([]*UserFrozen, erro
 					_, err = mutators[i+1].Mutate(root, ufcb.builders[i+1].mutation)
 				} else {
 					spec := &sqlgraph.BatchCreateSpec{Nodes: specs}
+					spec.OnConflict = ufcb.conflict
 					// Invoke the actual operation on the latest mutation in the chain.
 					if err = sqlgraph.BatchCreate(ctx, ufcb.driver, spec); err != nil {
 						if sqlgraph.IsConstraintError(err) {
@@ -359,6 +724,234 @@ func (ufcb *UserFrozenCreateBulk) Exec(ctx context.Context) error {
 // ExecX is like Exec, but panics if an error occurs.
 func (ufcb *UserFrozenCreateBulk) ExecX(ctx context.Context) {
 	if err := ufcb.Exec(ctx); err != nil {
+		panic(err)
+	}
+}
+
+// OnConflict allows configuring the `ON CONFLICT` / `ON DUPLICATE KEY` clause
+// of the `INSERT` statement. For example:
+//
+//	client.UserFrozen.CreateBulk(builders...).
+//		OnConflict(
+//			// Update the row with the new values
+//			// the was proposed for insertion.
+//			sql.ResolveWithNewValues(),
+//		).
+//		// Override some of the fields with custom
+//		// update values.
+//		Update(func(u *ent.UserFrozenUpsert) {
+//			SetUserID(v+v).
+//		}).
+//		Exec(ctx)
+//
+func (ufcb *UserFrozenCreateBulk) OnConflict(opts ...sql.ConflictOption) *UserFrozenUpsertBulk {
+	ufcb.conflict = opts
+	return &UserFrozenUpsertBulk{
+		create: ufcb,
+	}
+}
+
+// OnConflictColumns calls `OnConflict` and configures the columns
+// as conflict target. Using this option is equivalent to using:
+//
+//	client.UserFrozen.Create().
+//		OnConflict(sql.ConflictColumns(columns...)).
+//		Exec(ctx)
+//
+func (ufcb *UserFrozenCreateBulk) OnConflictColumns(columns ...string) *UserFrozenUpsertBulk {
+	ufcb.conflict = append(ufcb.conflict, sql.ConflictColumns(columns...))
+	return &UserFrozenUpsertBulk{
+		create: ufcb,
+	}
+}
+
+// UserFrozenUpsertBulk is the builder for "upsert"-ing
+// a bulk of UserFrozen nodes.
+type UserFrozenUpsertBulk struct {
+	create *UserFrozenCreateBulk
+}
+
+// UpdateNewValues updates the mutable fields using the new values that
+// were set on create. Using this option is equivalent to using:
+//
+//	client.UserFrozen.Create().
+//		OnConflict(
+//			sql.ResolveWithNewValues(),
+//			sql.ResolveWith(func(u *sql.UpdateSet) {
+//				u.SetIgnore(userfrozen.FieldID)
+//			}),
+//		).
+//		Exec(ctx)
+//
+func (u *UserFrozenUpsertBulk) UpdateNewValues() *UserFrozenUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithNewValues())
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(s *sql.UpdateSet) {
+		for _, b := range u.create.builders {
+			if _, exists := b.mutation.ID(); exists {
+				s.SetIgnore(userfrozen.FieldID)
+				return
+			}
+		}
+	}))
+	return u
+}
+
+// Ignore sets each column to itself in case of conflict.
+// Using this option is equivalent to using:
+//
+//	client.UserFrozen.Create().
+//		OnConflict(sql.ResolveWithIgnore()).
+//		Exec(ctx)
+//
+func (u *UserFrozenUpsertBulk) Ignore() *UserFrozenUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWithIgnore())
+	return u
+}
+
+// DoNothing configures the conflict_action to `DO NOTHING`.
+// Supported only by SQLite and PostgreSQL.
+func (u *UserFrozenUpsertBulk) DoNothing() *UserFrozenUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.DoNothing())
+	return u
+}
+
+// Update allows overriding fields `UPDATE` values. See the UserFrozenCreateBulk.OnConflict
+// documentation for more info.
+func (u *UserFrozenUpsertBulk) Update(set func(*UserFrozenUpsert)) *UserFrozenUpsertBulk {
+	u.create.conflict = append(u.create.conflict, sql.ResolveWith(func(update *sql.UpdateSet) {
+		set(&UserFrozenUpsert{UpdateSet: update})
+	}))
+	return u
+}
+
+// SetUserID sets the "user_id" field.
+func (u *UserFrozenUpsertBulk) SetUserID(v uuid.UUID) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetUserID(v)
+	})
+}
+
+// UpdateUserID sets the "user_id" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateUserID() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateUserID()
+	})
+}
+
+// SetFrozenBy sets the "frozen_by" field.
+func (u *UserFrozenUpsertBulk) SetFrozenBy(v uuid.UUID) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetFrozenBy(v)
+	})
+}
+
+// UpdateFrozenBy sets the "frozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateFrozenBy() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateFrozenBy()
+	})
+}
+
+// SetFrozenCause sets the "frozen_cause" field.
+func (u *UserFrozenUpsertBulk) SetFrozenCause(v string) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetFrozenCause(v)
+	})
+}
+
+// UpdateFrozenCause sets the "frozen_cause" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateFrozenCause() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateFrozenCause()
+	})
+}
+
+// SetCreateAt sets the "create_at" field.
+func (u *UserFrozenUpsertBulk) SetCreateAt(v uint32) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetCreateAt(v)
+	})
+}
+
+// AddCreateAt adds v to the "create_at" field.
+func (u *UserFrozenUpsertBulk) AddCreateAt(v uint32) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.AddCreateAt(v)
+	})
+}
+
+// UpdateCreateAt sets the "create_at" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateCreateAt() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateCreateAt()
+	})
+}
+
+// SetEndAt sets the "end_at" field.
+func (u *UserFrozenUpsertBulk) SetEndAt(v uint32) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetEndAt(v)
+	})
+}
+
+// AddEndAt adds v to the "end_at" field.
+func (u *UserFrozenUpsertBulk) AddEndAt(v uint32) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.AddEndAt(v)
+	})
+}
+
+// UpdateEndAt sets the "end_at" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateEndAt() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateEndAt()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *UserFrozenUpsertBulk) SetStatus(v string) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateStatus() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateStatus()
+	})
+}
+
+// SetUnfrozenBy sets the "unfrozen_by" field.
+func (u *UserFrozenUpsertBulk) SetUnfrozenBy(v uuid.UUID) *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.SetUnfrozenBy(v)
+	})
+}
+
+// UpdateUnfrozenBy sets the "unfrozen_by" field to the value that was provided on create.
+func (u *UserFrozenUpsertBulk) UpdateUnfrozenBy() *UserFrozenUpsertBulk {
+	return u.Update(func(s *UserFrozenUpsert) {
+		s.UpdateUnfrozenBy()
+	})
+}
+
+// Exec executes the query.
+func (u *UserFrozenUpsertBulk) Exec(ctx context.Context) error {
+	for i, b := range u.create.builders {
+		if len(b.conflict) != 0 {
+			return fmt.Errorf("ent: OnConflict was set for builder %d. Set it on the UserFrozenCreateBulk instead", i)
+		}
+	}
+	if len(u.create.conflict) == 0 {
+		return errors.New("ent: missing options for UserFrozenCreateBulk.OnConflict")
+	}
+	return u.create.Exec(ctx)
+}
+
+// ExecX is like Exec, but panics if an error occurs.
+func (u *UserFrozenUpsertBulk) ExecX(ctx context.Context) {
+	if err := u.create.Exec(ctx); err != nil {
 		panic(err)
 	}
 }

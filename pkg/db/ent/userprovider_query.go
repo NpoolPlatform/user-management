@@ -337,6 +337,10 @@ func (upq *UserProviderQuery) sqlAll(ctx context.Context) ([]*UserProvider, erro
 
 func (upq *UserProviderQuery) sqlCount(ctx context.Context) (int, error) {
 	_spec := upq.querySpec()
+	_spec.Node.Columns = upq.fields
+	if len(upq.fields) > 0 {
+		_spec.Unique = upq.unique != nil && *upq.unique
+	}
 	return sqlgraph.CountNodes(ctx, upq.driver, _spec)
 }
 
@@ -407,6 +411,9 @@ func (upq *UserProviderQuery) sqlQuery(ctx context.Context) *sql.Selector {
 	if upq.sql != nil {
 		selector = upq.sql
 		selector.Select(selector.Columns(columns...)...)
+	}
+	if upq.unique != nil && *upq.unique {
+		selector.Distinct()
 	}
 	for _, p := range upq.predicates {
 		p(selector)
@@ -686,9 +693,7 @@ func (upgb *UserProviderGroupBy) sqlQuery() *sql.Selector {
 		for _, f := range upgb.fields {
 			columns = append(columns, selector.C(f))
 		}
-		for _, c := range aggregation {
-			columns = append(columns, c)
-		}
+		columns = append(columns, aggregation...)
 		selector.Select(columns...)
 	}
 	return selector.GroupBy(selector.Columns(upgb.fields...)...)

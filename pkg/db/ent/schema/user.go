@@ -26,7 +26,24 @@ func (User) Fields() []ent.Field {
 		field.String("display_name").Default(""),
 		field.String("phone_number").Optional(),
 		field.String("email_address").Optional(),
+		field.UUID("app_id", uuid.UUID{}),
+		// Signup by user or import from other app
 		field.String("signup_method"),
+		field.String("avatar").Default(""),
+		field.String("region").Default(""),
+		field.Uint32("age").Default(0),
+		field.String("gender").Default(""),
+		field.String("birthday").Default(""),
+		field.String("country").Default(""),
+		field.String("province").Default(""),
+		field.String("city").Default(""),
+		field.String("career").Default(""),
+		field.String("first_name").Default(""),
+		field.String("last_name").Default(""),
+		field.String("street_address1").Default(""),
+		field.String("street_address2").Default(""),
+		field.String("organization").Default(""),
+		field.String("postal_code").Default(""),
 		field.Uint32("create_at").
 			DefaultFunc(func() uint32 {
 				return uint32(time.Now().Unix())
@@ -42,21 +59,6 @@ func (User) Fields() []ent.Field {
 			DefaultFunc(func() uint32 {
 				return 0
 			}),
-		field.String("avatar").Default(""),
-		field.String("region").Default(""),
-		field.Uint32("age").Default(0),
-		field.String("gender").Default(""),
-		field.String("birthday").Default(""),
-		field.String("country").Default(""),
-		field.String("province").Default(""),
-		field.String("city").Default(""),
-		field.String("career").Default(""),
-		field.String("first_name").Default(""),
-		field.String("last_name").Default(""),
-		field.String("street_address1").Default(""),
-		field.String("street_address2").Default(""),
-		field.String("compony").Default(""),
-		field.String("postal_code").Default(""),
 	}
 }
 
@@ -67,8 +69,8 @@ func (User) Edges() []ent.Edge {
 
 func (User) Indexes() []ent.Index {
 	return []ent.Index{
-		index.Fields("username"),
-		index.Fields("email_address"),
-		index.Fields("phone_number"),
+		index.Fields("username", "app_id"),
+		index.Fields("email_address", "app_id"),
+		index.Fields("phone_number", "app_id"),
 	}
 }

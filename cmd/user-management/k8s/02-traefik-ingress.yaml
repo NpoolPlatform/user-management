@@ -8,7 +8,10 @@ metadata:
     k8s.kuboard.cn/workload: user-management-appid-userid
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-headers-appid-to-body@kubernetescrd,kube-system-headers-userid-to-body@kubernetescrd,kube-system-common-headers@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,
+                                                      kube-system-headers-appid-to-body@kubernetescrd,
+                                                      kube-system-headers-userid-to-body@kubernetescrd,
+                                                      kube-system-common-headers@kubernetescrd
 
 spec:
   tls:
@@ -67,7 +70,9 @@ metadata:
     k8s.kuboard.cn/workload: user-management-appid
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,kube-system-headers-appid-to-body@kubernetescrd,kube-system-common-headers@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-strip-user-management-prefix@kubernetescrd,
+                                                      kube-system-headers-appid-to-body@kubernetescrd,
+                                                      kube-system-common-headers@kubernetescrd
 
 spec:
   tls:
